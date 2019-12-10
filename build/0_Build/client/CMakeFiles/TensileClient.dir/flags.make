@@ -6,5 +6,5 @@ CXX_FLAGS =  -fopenmp=libomp -O3 -DNDEBUG   -hc -fPIC
 
 CXX_DEFINES = -DTENSILE_DEFAULT_SERIALIZATION -DTENSILE_STATIC_ONLY -DTENSILE_USE_HIP
 
-CXX_INCLUDES = -I/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include -I/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include -isystem /opt/rocm/hip/include -isystem /opt/rocm/hsa/include -isystem /opt/rocm/include -isystem /opt/rocm/rocm_smi/include 
+CXX_INCLUDES = -I/mnt/Tensile/Tensile/Source/client/include -I/mnt/Tensile/Tensile/Source/lib/include -isystem /opt/rocm/hip/include -isystem /opt/rocm/hsa/include -isystem /opt/rocm/include -isystem /opt/rocm/rocm_smi/include 
 

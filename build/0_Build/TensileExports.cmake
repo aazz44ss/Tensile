@@ -43,7 +43,7 @@ add_library(Tensile::TensileHost STATIC IMPORTED)
 
 set_target_properties(Tensile::TensileHost PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "TENSILE_DEFAULT_SERIALIZATION;TENSILE_STATIC_ONLY;TENSILE_USE_HIP"
-  INTERFACE_INCLUDE_DIRECTORIES "/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include"
+  INTERFACE_INCLUDE_DIRECTORIES "/mnt/Tensile/Tensile/Source/lib/include"
   INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:LLVMObjectYAML>;hip::device"
 )
 
@@ -51,7 +51,7 @@ set_target_properties(Tensile::TensileHost PROPERTIES
 set_property(TARGET Tensile::TensileHost APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(Tensile::TensileHost PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LOCATION_RELEASE "/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib/libTensileHost.a"
+  IMPORTED_LOCATION_RELEASE "/mnt/Tensile/Tensile/build/0_Build/lib/libTensileHost.a"
   )
 
 # This file does not depend on other imported targets which have

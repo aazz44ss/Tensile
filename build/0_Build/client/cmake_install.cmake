@@ -1,4 +1,4 @@
-# Install script for directory: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client
+# Install script for directory: /mnt/Tensile/Tensile/Source/client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

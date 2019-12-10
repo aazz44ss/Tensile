@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source
+CMAKE_SOURCE_DIR = /mnt/Tensile/Tensile/Source
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build
+CMAKE_BINARY_DIR = /mnt/Tensile/Tensile/build/0_Build
 
 # Utility rule file for intrinsics_gen.
 
@@ -63,10 +63,10 @@ lib/CMakeFiles/intrinsics_gen.dir/build: intrinsics_gen
 .PHONY : lib/CMakeFiles/intrinsics_gen.dir/build
 
 lib/CMakeFiles/intrinsics_gen.dir/clean:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -P CMakeFiles/intrinsics_gen.dir/cmake_clean.cmake
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -P CMakeFiles/intrinsics_gen.dir/cmake_clean.cmake
 .PHONY : lib/CMakeFiles/intrinsics_gen.dir/clean
 
 lib/CMakeFiles/intrinsics_gen.dir/depend:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib/CMakeFiles/intrinsics_gen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/Tensile/Tensile/build/0_Build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/Tensile/Tensile/Source /mnt/Tensile/Tensile/Source/lib /mnt/Tensile/Tensile/build/0_Build /mnt/Tensile/Tensile/build/0_Build/lib /mnt/Tensile/Tensile/build/0_Build/lib/CMakeFiles/intrinsics_gen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : lib/CMakeFiles/intrinsics_gen.dir/depend
 

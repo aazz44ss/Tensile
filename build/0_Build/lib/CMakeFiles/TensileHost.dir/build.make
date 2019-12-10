@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source
+CMAKE_SOURCE_DIR = /mnt/Tensile/Tensile/Source
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build
+CMAKE_BINARY_DIR = /mnt/Tensile/Tensile/build/0_Build
 
 # Include any dependencies generated for this target.
 include lib/CMakeFiles/TensileHost.dir/depend.make
@@ -58,17 +58,17 @@ include lib/CMakeFiles/TensileHost.dir/progress.make
 include lib/CMakeFiles/TensileHost.dir/flags.make
 
 lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/AMDGPU.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/AMDGPU.cpp
+lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/AMDGPU.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/AMDGPU.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/AMDGPU.cpp > CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/AMDGPU.cpp > CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/AMDGPU.cpp -o CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/AMDGPU.cpp -o CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o.requires:
 
@@ -82,17 +82,17 @@ lib/CMakeFiles/TensileHost.dir/source/AMDGPU.cpp.o.provides.build: lib/CMakeFile
 
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp
+lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp > CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp > CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp -o CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/ContractionProblem.cpp -o CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o.requires:
 
@@ -106,17 +106,17 @@ lib/CMakeFiles/TensileHost.dir/source/ContractionProblem.cpp.o.provides.build: l
 
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp
+lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp > CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp > CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp -o CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/ContractionSolution.cpp -o CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o.requires:
 
@@ -130,17 +130,17 @@ lib/CMakeFiles/TensileHost.dir/source/ContractionSolution.cpp.o.provides.build: 
 
 
 lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/DataTypes.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/DataTypes.cpp
+lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/DataTypes.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/DataTypes.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/DataTypes.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/DataTypes.cpp > CMakeFiles/TensileHost.dir/source/DataTypes.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/DataTypes.cpp > CMakeFiles/TensileHost.dir/source/DataTypes.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/DataTypes.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/DataTypes.cpp -o CMakeFiles/TensileHost.dir/source/DataTypes.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/DataTypes.cpp -o CMakeFiles/TensileHost.dir/source/DataTypes.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o.requires:
 
@@ -154,17 +154,17 @@ lib/CMakeFiles/TensileHost.dir/source/DataTypes.cpp.o.provides.build: lib/CMakeF
 
 
 lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Debug.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/Debug.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Debug.cpp
+lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/Debug.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/Debug.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/Debug.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/Debug.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Debug.cpp > CMakeFiles/TensileHost.dir/source/Debug.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/Debug.cpp > CMakeFiles/TensileHost.dir/source/Debug.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/Debug.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Debug.cpp -o CMakeFiles/TensileHost.dir/source/Debug.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/Debug.cpp -o CMakeFiles/TensileHost.dir/source/Debug.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.o.requires:
 
@@ -178,17 +178,17 @@ lib/CMakeFiles/TensileHost.dir/source/Debug.cpp.o.provides.build: lib/CMakeFiles
 
 
 lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp
+lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp > CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp > CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp -o CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/EmbeddedLibrary.cpp -o CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o.requires:
 
@@ -202,17 +202,17 @@ lib/CMakeFiles/TensileHost.dir/source/EmbeddedLibrary.cpp.o.provides.build: lib/
 
 
 lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/KernelArguments.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/KernelArguments.cpp
+lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/KernelArguments.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/KernelArguments.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/KernelArguments.cpp > CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/KernelArguments.cpp > CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/KernelArguments.cpp -o CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/KernelArguments.cpp -o CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o.requires:
 
@@ -226,17 +226,17 @@ lib/CMakeFiles/TensileHost.dir/source/KernelArguments.cpp.o.provides.build: lib/
 
 
 lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp
+lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp > CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp > CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp -o CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/TensorDescriptor.cpp -o CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o.requires:
 
@@ -250,17 +250,17 @@ lib/CMakeFiles/TensileHost.dir/source/TensorDescriptor.cpp.o.provides.build: lib
 
 
 lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorOps.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorOps.cpp
+lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/TensorOps.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/TensorOps.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/TensorOps.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorOps.cpp > CMakeFiles/TensileHost.dir/source/TensorOps.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/TensorOps.cpp > CMakeFiles/TensileHost.dir/source/TensorOps.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/TensorOps.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/TensorOps.cpp -o CMakeFiles/TensileHost.dir/source/TensorOps.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/TensorOps.cpp -o CMakeFiles/TensileHost.dir/source/TensorOps.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o.requires:
 
@@ -274,17 +274,17 @@ lib/CMakeFiles/TensileHost.dir/source/TensorOps.cpp.o.provides.build: lib/CMakeF
 
 
 lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Tensile.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/Tensile.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Tensile.cpp
+lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/Tensile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/Tensile.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/Tensile.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/Tensile.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Tensile.cpp > CMakeFiles/TensileHost.dir/source/Tensile.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/Tensile.cpp > CMakeFiles/TensileHost.dir/source/Tensile.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/Tensile.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Tensile.cpp -o CMakeFiles/TensileHost.dir/source/Tensile.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/Tensile.cpp -o CMakeFiles/TensileHost.dir/source/Tensile.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.o.requires:
 
@@ -298,17 +298,17 @@ lib/CMakeFiles/TensileHost.dir/source/Tensile.cpp.o.provides.build: lib/CMakeFil
 
 
 lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/Utils.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Utils.cpp
+lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/Utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/Utils.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/Utils.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/Utils.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Utils.cpp > CMakeFiles/TensileHost.dir/source/Utils.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/Utils.cpp > CMakeFiles/TensileHost.dir/source/Utils.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/Utils.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/Utils.cpp -o CMakeFiles/TensileHost.dir/source/Utils.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/Utils.cpp -o CMakeFiles/TensileHost.dir/source/Utils.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.o.requires:
 
@@ -322,17 +322,17 @@ lib/CMakeFiles/TensileHost.dir/source/Utils.cpp.o.provides.build: lib/CMakeFiles
 
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp
+lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp > CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp > CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp -o CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/llvm/YAML.cpp -o CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o.requires:
 
@@ -346,17 +346,17 @@ lib/CMakeFiles/TensileHost.dir/source/llvm/YAML.cpp.o.provides.build: lib/CMakeF
 
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp
+lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp > CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp > CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp -o CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/llvm/Loading.cpp -o CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o.requires:
 
@@ -370,17 +370,17 @@ lib/CMakeFiles/TensileHost.dir/source/llvm/Loading.cpp.o.provides.build: lib/CMa
 
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp
+lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp > CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp > CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp -o CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/hip/HipSolutionAdapter.cpp -o CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o.requires:
 
@@ -394,17 +394,17 @@ lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapter.cpp.o.provides.buil
 
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o: lib/CMakeFiles/TensileHost.dir/flags.make
-lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp
+lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o: /mnt/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o -c /mnt/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.i"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp > CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp > CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.i
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.s"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp -o CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && /opt/rocm/bin/hcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Tensile/Tensile/Source/lib/source/hip/HipHardware.cpp -o CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.s
 
 lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o.requires:
 
@@ -455,9 +455,9 @@ lib/libTensileHost.a: lib/CMakeFiles/TensileHost.dir/source/hip/HipSolutionAdapt
 lib/libTensileHost.a: lib/CMakeFiles/TensileHost.dir/source/hip/HipHardware.cpp.o
 lib/libTensileHost.a: lib/CMakeFiles/TensileHost.dir/build.make
 lib/libTensileHost.a: lib/CMakeFiles/TensileHost.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX static library libTensileHost.a"
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -P CMakeFiles/TensileHost.dir/cmake_clean_target.cmake
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TensileHost.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/Tensile/Tensile/build/0_Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX static library libTensileHost.a"
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -P CMakeFiles/TensileHost.dir/cmake_clean_target.cmake
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TensileHost.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 lib/CMakeFiles/TensileHost.dir/build: lib/libTensileHost.a
@@ -483,10 +483,10 @@ lib/CMakeFiles/TensileHost.dir/requires: lib/CMakeFiles/TensileHost.dir/source/h
 .PHONY : lib/CMakeFiles/TensileHost.dir/requires
 
 lib/CMakeFiles/TensileHost.dir/clean:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -P CMakeFiles/TensileHost.dir/cmake_clean.cmake
+	cd /mnt/Tensile/Tensile/build/0_Build/lib && $(CMAKE_COMMAND) -P CMakeFiles/TensileHost.dir/cmake_clean.cmake
 .PHONY : lib/CMakeFiles/TensileHost.dir/clean
 
 lib/CMakeFiles/TensileHost.dir/depend:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/lib/CMakeFiles/TensileHost.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/Tensile/Tensile/build/0_Build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/Tensile/Tensile/Source /mnt/Tensile/Tensile/Source/lib /mnt/Tensile/Tensile/build/0_Build /mnt/Tensile/Tensile/build/0_Build/lib /mnt/Tensile/Tensile/build/0_Build/lib/CMakeFiles/TensileHost.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : lib/CMakeFiles/TensileHost.dir/depend
 

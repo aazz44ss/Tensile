@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source
+CMAKE_SOURCE_DIR = /mnt/Tensile/Tensile/Source
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build
+CMAKE_BINARY_DIR = /mnt/Tensile/Tensile/build/0_Build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(CMAKE_COMMAND) -E cmake_progress_start /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/client/CMakeFiles/progress.marks
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles 0
+	cd /mnt/Tensile/Tensile/build/0_Build && $(CMAKE_COMMAND) -E cmake_progress_start /mnt/Tensile/Tensile/build/0_Build/CMakeFiles /mnt/Tensile/Tensile/build/0_Build/client/CMakeFiles/progress.marks
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/Tensile/Tensile/build/0_Build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/clean
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/preinstall
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/preinstall
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /mnt/Tensile/Tensile/build/0_Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 client/CMakeFiles/tensile_client.dir/rule:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/tensile_client.dir/rule
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/tensile_client.dir/rule
 .PHONY : client/CMakeFiles/tensile_client.dir/rule
 
 # Convenience name for target.
@@ -122,12 +122,12 @@ tensile_client: client/CMakeFiles/tensile_client.dir/rule
 
 # fast build rule for target.
 tensile_client/fast:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/build
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/build
 .PHONY : tensile_client/fast
 
 # Convenience name for target.
 client/CMakeFiles/TensileClient.dir/rule:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/TensileClient.dir/rule
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/TensileClient.dir/rule
 .PHONY : client/CMakeFiles/TensileClient.dir/rule
 
 # Convenience name for target.
@@ -137,7 +137,7 @@ TensileClient: client/CMakeFiles/TensileClient.dir/rule
 
 # fast build rule for target.
 TensileClient/fast:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/build
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/build
 .PHONY : TensileClient/fast
 
 main.o: main.cpp.o
@@ -146,7 +146,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/main.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -155,7 +155,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/main.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -164,7 +164,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/main.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/tensile_client.dir/build.make client/CMakeFiles/tensile_client.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 source/BenchmarkTimer.o: source/BenchmarkTimer.cpp.o
@@ -173,7 +173,7 @@ source/BenchmarkTimer.o: source/BenchmarkTimer.cpp.o
 
 # target to build an object file
 source/BenchmarkTimer.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/BenchmarkTimer.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/BenchmarkTimer.cpp.o
 .PHONY : source/BenchmarkTimer.cpp.o
 
 source/BenchmarkTimer.i: source/BenchmarkTimer.cpp.i
@@ -182,7 +182,7 @@ source/BenchmarkTimer.i: source/BenchmarkTimer.cpp.i
 
 # target to preprocess a source file
 source/BenchmarkTimer.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/BenchmarkTimer.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/BenchmarkTimer.cpp.i
 .PHONY : source/BenchmarkTimer.cpp.i
 
 source/BenchmarkTimer.s: source/BenchmarkTimer.cpp.s
@@ -191,7 +191,7 @@ source/BenchmarkTimer.s: source/BenchmarkTimer.cpp.s
 
 # target to generate assembly for a file
 source/BenchmarkTimer.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/BenchmarkTimer.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/BenchmarkTimer.cpp.s
 .PHONY : source/BenchmarkTimer.cpp.s
 
 source/CSVStackFile.o: source/CSVStackFile.cpp.o
@@ -200,7 +200,7 @@ source/CSVStackFile.o: source/CSVStackFile.cpp.o
 
 # target to build an object file
 source/CSVStackFile.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/CSVStackFile.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/CSVStackFile.cpp.o
 .PHONY : source/CSVStackFile.cpp.o
 
 source/CSVStackFile.i: source/CSVStackFile.cpp.i
@@ -209,7 +209,7 @@ source/CSVStackFile.i: source/CSVStackFile.cpp.i
 
 # target to preprocess a source file
 source/CSVStackFile.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/CSVStackFile.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/CSVStackFile.cpp.i
 .PHONY : source/CSVStackFile.cpp.i
 
 source/CSVStackFile.s: source/CSVStackFile.cpp.s
@@ -218,7 +218,7 @@ source/CSVStackFile.s: source/CSVStackFile.cpp.s
 
 # target to generate assembly for a file
 source/CSVStackFile.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/CSVStackFile.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/CSVStackFile.cpp.s
 .PHONY : source/CSVStackFile.cpp.s
 
 source/ClientProblemFactory.o: source/ClientProblemFactory.cpp.o
@@ -227,7 +227,7 @@ source/ClientProblemFactory.o: source/ClientProblemFactory.cpp.o
 
 # target to build an object file
 source/ClientProblemFactory.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ClientProblemFactory.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ClientProblemFactory.cpp.o
 .PHONY : source/ClientProblemFactory.cpp.o
 
 source/ClientProblemFactory.i: source/ClientProblemFactory.cpp.i
@@ -236,7 +236,7 @@ source/ClientProblemFactory.i: source/ClientProblemFactory.cpp.i
 
 # target to preprocess a source file
 source/ClientProblemFactory.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ClientProblemFactory.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ClientProblemFactory.cpp.i
 .PHONY : source/ClientProblemFactory.cpp.i
 
 source/ClientProblemFactory.s: source/ClientProblemFactory.cpp.s
@@ -245,7 +245,7 @@ source/ClientProblemFactory.s: source/ClientProblemFactory.cpp.s
 
 # target to generate assembly for a file
 source/ClientProblemFactory.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ClientProblemFactory.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ClientProblemFactory.cpp.s
 .PHONY : source/ClientProblemFactory.cpp.s
 
 source/ConvolutionProblem.o: source/ConvolutionProblem.cpp.o
@@ -254,7 +254,7 @@ source/ConvolutionProblem.o: source/ConvolutionProblem.cpp.o
 
 # target to build an object file
 source/ConvolutionProblem.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ConvolutionProblem.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ConvolutionProblem.cpp.o
 .PHONY : source/ConvolutionProblem.cpp.o
 
 source/ConvolutionProblem.i: source/ConvolutionProblem.cpp.i
@@ -263,7 +263,7 @@ source/ConvolutionProblem.i: source/ConvolutionProblem.cpp.i
 
 # target to preprocess a source file
 source/ConvolutionProblem.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ConvolutionProblem.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ConvolutionProblem.cpp.i
 .PHONY : source/ConvolutionProblem.cpp.i
 
 source/ConvolutionProblem.s: source/ConvolutionProblem.cpp.s
@@ -272,7 +272,7 @@ source/ConvolutionProblem.s: source/ConvolutionProblem.cpp.s
 
 # target to generate assembly for a file
 source/ConvolutionProblem.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ConvolutionProblem.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ConvolutionProblem.cpp.s
 .PHONY : source/ConvolutionProblem.cpp.s
 
 source/DataInitialization.o: source/DataInitialization.cpp.o
@@ -281,7 +281,7 @@ source/DataInitialization.o: source/DataInitialization.cpp.o
 
 # target to build an object file
 source/DataInitialization.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/DataInitialization.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/DataInitialization.cpp.o
 .PHONY : source/DataInitialization.cpp.o
 
 source/DataInitialization.i: source/DataInitialization.cpp.i
@@ -290,7 +290,7 @@ source/DataInitialization.i: source/DataInitialization.cpp.i
 
 # target to preprocess a source file
 source/DataInitialization.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/DataInitialization.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/DataInitialization.cpp.i
 .PHONY : source/DataInitialization.cpp.i
 
 source/DataInitialization.s: source/DataInitialization.cpp.s
@@ -299,7 +299,7 @@ source/DataInitialization.s: source/DataInitialization.cpp.s
 
 # target to generate assembly for a file
 source/DataInitialization.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/DataInitialization.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/DataInitialization.cpp.s
 .PHONY : source/DataInitialization.cpp.s
 
 source/HardwareMonitor.o: source/HardwareMonitor.cpp.o
@@ -308,7 +308,7 @@ source/HardwareMonitor.o: source/HardwareMonitor.cpp.o
 
 # target to build an object file
 source/HardwareMonitor.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitor.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitor.cpp.o
 .PHONY : source/HardwareMonitor.cpp.o
 
 source/HardwareMonitor.i: source/HardwareMonitor.cpp.i
@@ -317,7 +317,7 @@ source/HardwareMonitor.i: source/HardwareMonitor.cpp.i
 
 # target to preprocess a source file
 source/HardwareMonitor.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitor.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitor.cpp.i
 .PHONY : source/HardwareMonitor.cpp.i
 
 source/HardwareMonitor.s: source/HardwareMonitor.cpp.s
@@ -326,7 +326,7 @@ source/HardwareMonitor.s: source/HardwareMonitor.cpp.s
 
 # target to generate assembly for a file
 source/HardwareMonitor.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitor.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitor.cpp.s
 .PHONY : source/HardwareMonitor.cpp.s
 
 source/HardwareMonitorListener.o: source/HardwareMonitorListener.cpp.o
@@ -335,7 +335,7 @@ source/HardwareMonitorListener.o: source/HardwareMonitorListener.cpp.o
 
 # target to build an object file
 source/HardwareMonitorListener.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitorListener.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitorListener.cpp.o
 .PHONY : source/HardwareMonitorListener.cpp.o
 
 source/HardwareMonitorListener.i: source/HardwareMonitorListener.cpp.i
@@ -344,7 +344,7 @@ source/HardwareMonitorListener.i: source/HardwareMonitorListener.cpp.i
 
 # target to preprocess a source file
 source/HardwareMonitorListener.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitorListener.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitorListener.cpp.i
 .PHONY : source/HardwareMonitorListener.cpp.i
 
 source/HardwareMonitorListener.s: source/HardwareMonitorListener.cpp.s
@@ -353,7 +353,7 @@ source/HardwareMonitorListener.s: source/HardwareMonitorListener.cpp.s
 
 # target to generate assembly for a file
 source/HardwareMonitorListener.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitorListener.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/HardwareMonitorListener.cpp.s
 .PHONY : source/HardwareMonitorListener.cpp.s
 
 source/MetaRunListener.o: source/MetaRunListener.cpp.o
@@ -362,7 +362,7 @@ source/MetaRunListener.o: source/MetaRunListener.cpp.o
 
 # target to build an object file
 source/MetaRunListener.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/MetaRunListener.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/MetaRunListener.cpp.o
 .PHONY : source/MetaRunListener.cpp.o
 
 source/MetaRunListener.i: source/MetaRunListener.cpp.i
@@ -371,7 +371,7 @@ source/MetaRunListener.i: source/MetaRunListener.cpp.i
 
 # target to preprocess a source file
 source/MetaRunListener.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/MetaRunListener.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/MetaRunListener.cpp.i
 .PHONY : source/MetaRunListener.cpp.i
 
 source/MetaRunListener.s: source/MetaRunListener.cpp.s
@@ -380,7 +380,7 @@ source/MetaRunListener.s: source/MetaRunListener.cpp.s
 
 # target to generate assembly for a file
 source/MetaRunListener.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/MetaRunListener.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/MetaRunListener.cpp.s
 .PHONY : source/MetaRunListener.cpp.s
 
 source/ProgressListener.o: source/ProgressListener.cpp.o
@@ -389,7 +389,7 @@ source/ProgressListener.o: source/ProgressListener.cpp.o
 
 # target to build an object file
 source/ProgressListener.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ProgressListener.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ProgressListener.cpp.o
 .PHONY : source/ProgressListener.cpp.o
 
 source/ProgressListener.i: source/ProgressListener.cpp.i
@@ -398,7 +398,7 @@ source/ProgressListener.i: source/ProgressListener.cpp.i
 
 # target to preprocess a source file
 source/ProgressListener.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ProgressListener.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ProgressListener.cpp.i
 .PHONY : source/ProgressListener.cpp.i
 
 source/ProgressListener.s: source/ProgressListener.cpp.s
@@ -407,7 +407,7 @@ source/ProgressListener.s: source/ProgressListener.cpp.s
 
 # target to generate assembly for a file
 source/ProgressListener.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ProgressListener.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ProgressListener.cpp.s
 .PHONY : source/ProgressListener.cpp.s
 
 source/Reference.o: source/Reference.cpp.o
@@ -416,7 +416,7 @@ source/Reference.o: source/Reference.cpp.o
 
 # target to build an object file
 source/Reference.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/Reference.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/Reference.cpp.o
 .PHONY : source/Reference.cpp.o
 
 source/Reference.i: source/Reference.cpp.i
@@ -425,7 +425,7 @@ source/Reference.i: source/Reference.cpp.i
 
 # target to preprocess a source file
 source/Reference.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/Reference.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/Reference.cpp.i
 .PHONY : source/Reference.cpp.i
 
 source/Reference.s: source/Reference.cpp.s
@@ -434,7 +434,7 @@ source/Reference.s: source/Reference.cpp.s
 
 # target to generate assembly for a file
 source/Reference.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/Reference.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/Reference.cpp.s
 .PHONY : source/Reference.cpp.s
 
 source/ReferenceValidator.o: source/ReferenceValidator.cpp.o
@@ -443,7 +443,7 @@ source/ReferenceValidator.o: source/ReferenceValidator.cpp.o
 
 # target to build an object file
 source/ReferenceValidator.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ReferenceValidator.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ReferenceValidator.cpp.o
 .PHONY : source/ReferenceValidator.cpp.o
 
 source/ReferenceValidator.i: source/ReferenceValidator.cpp.i
@@ -452,7 +452,7 @@ source/ReferenceValidator.i: source/ReferenceValidator.cpp.i
 
 # target to preprocess a source file
 source/ReferenceValidator.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ReferenceValidator.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ReferenceValidator.cpp.i
 .PHONY : source/ReferenceValidator.cpp.i
 
 source/ReferenceValidator.s: source/ReferenceValidator.cpp.s
@@ -461,7 +461,7 @@ source/ReferenceValidator.s: source/ReferenceValidator.cpp.s
 
 # target to generate assembly for a file
 source/ReferenceValidator.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ReferenceValidator.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ReferenceValidator.cpp.s
 .PHONY : source/ReferenceValidator.cpp.s
 
 source/ResultFileReporter.o: source/ResultFileReporter.cpp.o
@@ -470,7 +470,7 @@ source/ResultFileReporter.o: source/ResultFileReporter.cpp.o
 
 # target to build an object file
 source/ResultFileReporter.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ResultFileReporter.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ResultFileReporter.cpp.o
 .PHONY : source/ResultFileReporter.cpp.o
 
 source/ResultFileReporter.i: source/ResultFileReporter.cpp.i
@@ -479,7 +479,7 @@ source/ResultFileReporter.i: source/ResultFileReporter.cpp.i
 
 # target to preprocess a source file
 source/ResultFileReporter.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ResultFileReporter.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ResultFileReporter.cpp.i
 .PHONY : source/ResultFileReporter.cpp.i
 
 source/ResultFileReporter.s: source/ResultFileReporter.cpp.s
@@ -488,7 +488,7 @@ source/ResultFileReporter.s: source/ResultFileReporter.cpp.s
 
 # target to generate assembly for a file
 source/ResultFileReporter.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ResultFileReporter.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/ResultFileReporter.cpp.s
 .PHONY : source/ResultFileReporter.cpp.s
 
 source/TimingEvents.o: source/TimingEvents.cpp.o
@@ -497,7 +497,7 @@ source/TimingEvents.o: source/TimingEvents.cpp.o
 
 # target to build an object file
 source/TimingEvents.cpp.o:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/TimingEvents.cpp.o
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/TimingEvents.cpp.o
 .PHONY : source/TimingEvents.cpp.o
 
 source/TimingEvents.i: source/TimingEvents.cpp.i
@@ -506,7 +506,7 @@ source/TimingEvents.i: source/TimingEvents.cpp.i
 
 # target to preprocess a source file
 source/TimingEvents.cpp.i:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/TimingEvents.cpp.i
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/TimingEvents.cpp.i
 .PHONY : source/TimingEvents.cpp.i
 
 source/TimingEvents.s: source/TimingEvents.cpp.s
@@ -515,7 +515,7 @@ source/TimingEvents.s: source/TimingEvents.cpp.s
 
 # target to generate assembly for a file
 source/TimingEvents.cpp.s:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/TimingEvents.cpp.s
+	cd /mnt/Tensile/Tensile/build/0_Build && $(MAKE) -f client/CMakeFiles/TensileClient.dir/build.make client/CMakeFiles/TensileClient.dir/source/TimingEvents.cpp.s
 .PHONY : source/TimingEvents.cpp.s
 
 # Help Target
@@ -581,6 +581,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /mnt/Tensile/Tensile/build/0_Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

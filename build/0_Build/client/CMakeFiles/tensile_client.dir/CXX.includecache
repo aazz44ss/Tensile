@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/BenchmarkTimer.hpp
+/mnt/Tensile/Tensile/Source/client/include/BenchmarkTimer.hpp
 RunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 chrono
 -
 cstddef
@@ -20,7 +20,7 @@ Tensile/ContractionProblem.hpp
 Tensile/ContractionSolution.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/CSVStackFile.hpp
+/mnt/Tensile/Tensile/Source/client/include/CSVStackFile.hpp
 fstream
 -
 memory
@@ -32,7 +32,7 @@ vector
 boost/lexical_cast.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ClientProblemFactory.hpp
+/mnt/Tensile/Tensile/Source/client/include/ClientProblemFactory.hpp
 Tensile/Tensile.hpp
 -
 Tensile/ContractionProblem.hpp
@@ -42,7 +42,7 @@ boost/program_options.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ConvolutionProblem.hpp
+/mnt/Tensile/Tensile/Source/client/include/ConvolutionProblem.hpp
 Tensile/Tensile.hpp
 -
 Tensile/ContractionProblem_fwd.hpp
@@ -52,19 +52,19 @@ Tensile/TensorDescriptor_fwd.hpp
 vector
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/DataInitialization.hpp
+/mnt/Tensile/Tensile/Source/client/include/DataInitialization.hpp
 boost/program_options.hpp
 -
 Tensile/ContractionProblem.hpp
 -
 ClientProblemFactory.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ClientProblemFactory.hpp
+/mnt/Tensile/Tensile/Source/client/include/ClientProblemFactory.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/HardwareMonitorListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/HardwareMonitorListener.hpp
 RunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 chrono
 -
 cstddef
@@ -74,15 +74,15 @@ future
 boost/program_options.hpp
 -
 HardwareMonitor_fwd.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/HardwareMonitor_fwd.hpp
+/mnt/Tensile/Tensile/Source/client/include/HardwareMonitor_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/HardwareMonitor_fwd.hpp
+/mnt/Tensile/Tensile/Source/client/include/HardwareMonitor_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/LogReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/LogReporter.hpp
 ResultReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultReporter.hpp
 CSVStackFile.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/CSVStackFile.hpp
+/mnt/Tensile/Tensile/Source/client/include/CSVStackFile.hpp
 cstddef
 -
 string
@@ -94,35 +94,35 @@ boost/lexical_cast.hpp
 boost/program_options.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/MetaResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/MetaResultReporter.hpp
 RunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/MetaRunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/MetaRunListener.hpp
 Tensile/ContractionProblem.hpp
 -
 Tensile/ContractionSolution.hpp
 -
 RunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 ResultReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultReporter.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ProgressListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/ProgressListener.hpp
 RunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 ResultReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultReporter.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ReferenceValidator.hpp
+/mnt/Tensile/Tensile/Source/client/include/ReferenceValidator.hpp
 RunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 boost/program_options.hpp
 -
 Tensile/ContractionProblem.hpp
@@ -132,43 +132,43 @@ Tensile/ContractionSolution.hpp
 ConvolutionProblem.hpp
 -
 DataInitialization.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/DataInitialization.hpp
+/mnt/Tensile/Tensile/Source/client/include/DataInitialization.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultFileReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultFileReporter.hpp
 ResultReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultReporter.hpp
 CSVStackFile.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/CSVStackFile.hpp
+/mnt/Tensile/Tensile/Source/client/include/CSVStackFile.hpp
 boost/program_options.hpp
 -
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultReporter.hpp
 RunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 cstddef
 -
 string
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultReporter_fwd.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultReporter_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/RunListener.hpp
+/mnt/Tensile/Tensile/Source/client/include/RunListener.hpp
 Tensile/ContractionProblem.hpp
 -
 Tensile/ContractionSolution.hpp
 -
 ResultReporter_fwd.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/ResultReporter_fwd.hpp
+/mnt/Tensile/Tensile/Source/client/include/ResultReporter_fwd.hpp
 TimingEvents.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/TimingEvents.hpp
+/mnt/Tensile/Tensile/Source/client/include/TimingEvents.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/include/TimingEvents.hpp
+/mnt/Tensile/Tensile/Source/client/include/TimingEvents.hpp
 hip/hip_runtime.h
 -
 cstddef
@@ -176,7 +176,7 @@ cstddef
 vector
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/main.cpp
+/mnt/Tensile/Tensile/Source/client/main.cpp
 Tensile/Tensile.hpp
 -
 Tensile/Contractions.hpp
@@ -192,29 +192,29 @@ Tensile/hip/HipHardware.hpp
 Tensile/hip/HipUtils.hpp
 -
 BenchmarkTimer.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/BenchmarkTimer.hpp
+/mnt/Tensile/Tensile/Source/client/BenchmarkTimer.hpp
 ClientProblemFactory.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/ClientProblemFactory.hpp
+/mnt/Tensile/Tensile/Source/client/ClientProblemFactory.hpp
 DataInitialization.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/DataInitialization.hpp
+/mnt/Tensile/Tensile/Source/client/DataInitialization.hpp
 HardwareMonitorListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/HardwareMonitorListener.hpp
+/mnt/Tensile/Tensile/Source/client/HardwareMonitorListener.hpp
 MetaRunListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/MetaRunListener.hpp
+/mnt/Tensile/Tensile/Source/client/MetaRunListener.hpp
 ProgressListener.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/ProgressListener.hpp
+/mnt/Tensile/Tensile/Source/client/ProgressListener.hpp
 ReferenceValidator.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/ReferenceValidator.hpp
+/mnt/Tensile/Tensile/Source/client/ReferenceValidator.hpp
 TimingEvents.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/TimingEvents.hpp
+/mnt/Tensile/Tensile/Source/client/TimingEvents.hpp
 LogReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/LogReporter.hpp
+/mnt/Tensile/Tensile/Source/client/LogReporter.hpp
 MetaResultReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/MetaResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/MetaResultReporter.hpp
 ResultReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/ResultReporter.hpp
+/mnt/Tensile/Tensile/Source/client/ResultReporter.hpp
 ResultFileReporter.hpp
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/client/ResultFileReporter.hpp
+/mnt/Tensile/Tensile/Source/client/ResultFileReporter.hpp
 boost/program_options.hpp
 -
 boost/algorithm/string/split.hpp
@@ -224,15 +224,15 @@ boost/algorithm/string/classification.hpp
 cstddef
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/AMDGPU.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/AMDGPU.hpp
 Tensile/Tensile.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Comparison.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Comparison.hpp
 type_traits
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/ContractionProblem.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/ContractionProblem.hpp
 Tensile/Tensile.hpp
 -
 Tensile/ContractionSolution_fwd.hpp
@@ -246,9 +246,9 @@ Tensile/TensorOps.hpp
 Tensile/Utils.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/ContractionProblem_fwd.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/ContractionProblem_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/ContractionSolution.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/ContractionSolution.hpp
 memory
 -
 cstddef
@@ -266,9 +266,9 @@ Tensile/DataTypes.hpp
 Tensile/Predicates.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/ContractionSolution_fwd.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/ContractionSolution_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Contractions.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Contractions.hpp
 Tensile/ContractionProblem.hpp
 -
 Tensile/ContractionSolution.hpp
@@ -280,7 +280,7 @@ Tensile/Tensile.hpp
 Tensile/TensorDescriptor.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/DataTypes.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/DataTypes.hpp
 cstdlib
 -
 complex
@@ -302,7 +302,7 @@ Tensile/DataTypes_Half.hpp
 Tensile/DataTypes_Int8x4.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/DataTypes_BFloat16.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/DataTypes_BFloat16.hpp
 cmath
 -
 cinttypes
@@ -310,15 +310,15 @@ cinttypes
 iostream
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/DataTypes_Half.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/DataTypes_Half.hpp
 hip/hip_runtime.h
 -
 Tensile/DistinctType.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/DataTypes_Int8x4.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/DataTypes_Int8x4.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/DistinctType.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/DistinctType.hpp
 cstdlib
 -
 iostream
@@ -330,13 +330,13 @@ string
 Tensile/Comparison.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/EmbeddedLibrary.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/EmbeddedLibrary.hpp
 Tensile/Tensile.hpp
 -
 Tensile/Singleton.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/KernelArguments.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/KernelArguments.hpp
 cstring
 -
 sstream
@@ -352,11 +352,11 @@ Tensile/DataTypes.hpp
 Tensile/Macros.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Macros.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Macros.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/MasterSolutionLibrary.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/MasterSolutionLibrary.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Predicates.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Predicates.hpp
 algorithm
 -
 string
@@ -368,7 +368,7 @@ Tensile/Properties.hpp
 Tensile/Utils.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Properties.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Properties.hpp
 cstddef
 -
 string
@@ -376,11 +376,11 @@ string
 Tensile/Utils.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Singleton.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Singleton.hpp
 mutex
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/SolutionLibrary.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/SolutionLibrary.hpp
 memory
 -
 set
@@ -390,9 +390,9 @@ string
 Tensile/Tensile.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/SolutionLibrary_fwd.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/SolutionLibrary_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Tensile.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Tensile.hpp
 cstddef
 -
 map
@@ -414,9 +414,9 @@ Tensile/KernelArguments.hpp
 Tensile/geom.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Tensile_fwd.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Tensile_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/TensorDescriptor.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/TensorDescriptor.hpp
 cassert
 -
 algorithm
@@ -436,9 +436,9 @@ Tensile/Macros.hpp
 Tensile/Utils.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/TensorDescriptor_fwd.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/TensorDescriptor_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/TensorOps.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/TensorOps.hpp
 Tensile/Tensile.hpp
 -
 Tensile/TensorOps_fwd.hpp
@@ -446,9 +446,9 @@ Tensile/TensorOps_fwd.hpp
 Tensile/TensorDescriptor_fwd.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/TensorOps_fwd.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/TensorOps_fwd.hpp
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/Utils.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/Utils.hpp
 array
 -
 cmath
@@ -464,7 +464,7 @@ sstream
 type_traits
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/geom.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/geom.hpp
 cstddef
 -
 cstdint
@@ -474,7 +474,7 @@ iostream
 Tensile/Macros.hpp
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/hip/HipHardware.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/hip/HipHardware.hpp
 Tensile/Tensile.hpp
 -
 Tensile/AMDGPU.hpp
@@ -482,7 +482,7 @@ Tensile/AMDGPU.hpp
 hip/hip_runtime.h
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/hip/HipSolutionAdapter.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/hip/HipSolutionAdapter.hpp
 Tensile/Tensile.hpp
 -
 hip/hip_runtime.h
@@ -490,7 +490,7 @@ hip/hip_runtime.h
 mutex
 -
 
-/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/Tensile/Source/lib/include/Tensile/hip/HipUtils.hpp
+/mnt/Tensile/Tensile/Source/lib/include/Tensile/hip/HipUtils.hpp
 hip/hip_runtime.h
 -
 stdexcept
@@ -600,6 +600,8 @@ host_defines.h
 hip/hcc_detail/hip_common.h
 -
 cmath
+-
+cstdint
 -
 math.h
 -

@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/3.5.1/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/3.5.1/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /opt/rocm/bin/hcc 
@@ -23,75 +23,75 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is Clang, found in "/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
+The CXX compiler identification is Clang, found in "/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_8545e/fast"
-/usr/bin/make -f CMakeFiles/cmTC_8545e.dir/build.make CMakeFiles/cmTC_8545e.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8545e.dir/testCCompiler.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_8545e.dir/testCCompiler.c.o   -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_8545e
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8545e.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_8545e.dir/testCCompiler.c.o  -o cmTC_8545e 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_25734/fast"
+/usr/bin/make -f CMakeFiles/cmTC_25734.dir/build.make CMakeFiles/cmTC_25734.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_25734.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_25734.dir/testCCompiler.c.o   -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_25734
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25734.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_25734.dir/testCCompiler.c.o  -o cmTC_25734 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_c26f0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_c26f0.dir/build.make CMakeFiles/cmTC_c26f0.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_c26f0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c26f0.dir/link.txt --verbose=1
-/usr/bin/cc      -v CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o  -o cmTC_c26f0  
+Run Build Command:"/usr/bin/make" "cmTC_99927/fast"
+/usr/bin/make -f CMakeFiles/cmTC_99927.dir/build.make CMakeFiles/cmTC_99927.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_99927
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_99927.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o  -o cmTC_99927  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
 Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.12' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.11) 
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_c26f0' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccbdjDca.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_c26f0 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_99927' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc6X5Zj4.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_99927 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_c26f0/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_c26f0.dir/build.make CMakeFiles/cmTC_c26f0.dir/build]
-  ignore line: [make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_c26f0]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c26f0.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o  -o cmTC_c26f0  ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_99927/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_99927.dir/build.make CMakeFiles/cmTC_99927.dir/build]
+  ignore line: [make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_99927]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_99927.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o  -o cmTC_99927  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
   ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.12' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.11) ]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_c26f0' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccbdjDca.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_c26f0 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_99927' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc6X5Zj4.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_99927 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccbdjDca.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cc6X5Zj4.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -108,7 +108,7 @@ Parsed C implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_c26f0] ==> ignore
+    arg [cmTC_99927] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
@@ -120,7 +120,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_c26f0.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_99927.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -152,17 +152,17 @@ Parsed C implicit link information from above output:
 
 
 Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7d44a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7d44a.dir/build.make CMakeFiles/cmTC_7d44a.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7d44a.dir/feature_tests.c.o
-/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_7d44a.dir/feature_tests.c.o   -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_7d44a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d44a.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_7d44a.dir/feature_tests.c.o  -o cmTC_7d44a 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_709aa/fast"
+/usr/bin/make -f CMakeFiles/cmTC_709aa.dir/build.make CMakeFiles/cmTC_709aa.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_709aa.dir/feature_tests.c.o
+/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_709aa.dir/feature_tests.c.o   -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_709aa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_709aa.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_709aa.dir/feature_tests.c.o  -o cmTC_709aa 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -172,17 +172,17 @@ make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build
 
 
 Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7e001/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7e001.dir/build.make CMakeFiles/cmTC_7e001.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7e001.dir/feature_tests.c.o
-/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_7e001.dir/feature_tests.c.o   -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_7e001
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7e001.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_7e001.dir/feature_tests.c.o  -o cmTC_7e001 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_0affa/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0affa.dir/build.make CMakeFiles/cmTC_0affa.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0affa.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_0affa.dir/feature_tests.c.o   -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_0affa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0affa.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_0affa.dir/feature_tests.c.o  -o cmTC_0affa 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -192,17 +192,17 @@ make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build
 
 
 Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7f1df/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7f1df.dir/build.make CMakeFiles/cmTC_7f1df.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7f1df.dir/feature_tests.c.o
-/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_7f1df.dir/feature_tests.c.o   -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_7f1df
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7f1df.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_7f1df.dir/feature_tests.c.o  -o cmTC_7f1df 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_c10de/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c10de.dir/build.make CMakeFiles/cmTC_c10de.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c10de.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_c10de.dir/feature_tests.c.o   -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_c10de
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c10de.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_c10de.dir/feature_tests.c.o  -o cmTC_c10de 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -210,31 +210,31 @@ make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build
     Feature record: C_FEATURE:0c_static_assert
     Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7d92f/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7d92f.dir/build.make CMakeFiles/cmTC_7d92f.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_7d92f.dir/testCXXCompiler.cxx.o
-/opt/rocm/bin/hcc      -o CMakeFiles/cmTC_7d92f.dir/testCXXCompiler.cxx.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_7d92f
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d92f.dir/link.txt --verbose=1
-/opt/rocm/bin/hcc        CMakeFiles/cmTC_7d92f.dir/testCXXCompiler.cxx.o  -o cmTC_7d92f 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_01853/fast"
+/usr/bin/make -f CMakeFiles/cmTC_01853.dir/build.make CMakeFiles/cmTC_01853.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_01853.dir/testCXXCompiler.cxx.o
+/opt/rocm/bin/hcc      -o CMakeFiles/cmTC_01853.dir/testCXXCompiler.cxx.o -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_01853
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_01853.dir/link.txt --verbose=1
+/opt/rocm/bin/hcc        CMakeFiles/cmTC_01853.dir/testCXXCompiler.cxx.o  -o cmTC_01853 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_41656/fast"
-/usr/bin/make -f CMakeFiles/cmTC_41656.dir/build.make CMakeFiles/cmTC_41656.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o
-/opt/rocm/bin/hcc      -o CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_41656
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41656.dir/link.txt --verbose=1
-/opt/rocm/bin/hcc       -v CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_41656  
-HCC clang version 10.0.0 (/data/jenkins-workspace/compute-rocm-dkms-no-npi@2/external/hcc-tot/clang 1a0cfad8e7dec86155a2fe63c7d339ac5869b13a) (/data/jenkins-workspace/compute-rocm-dkms-no-npi@2/external/hcc-tot/compiler 9a5a36edb72d3603b6420220cad6d80870114dfd) (based on HCC 2.8.19353-e5f03b3-1a0cfad-9a5a36e )
+Run Build Command:"/usr/bin/make" "cmTC_26914/fast"
+/usr/bin/make -f CMakeFiles/cmTC_26914.dir/build.make CMakeFiles/cmTC_26914.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o
+/opt/rocm/bin/hcc      -o CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_26914
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_26914.dir/link.txt --verbose=1
+/opt/rocm/bin/hcc       -v CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_26914  
+HCC clang version 10.0.0 (/data/jenkins-workspace/compute-rocm-rel-2.10/external/hcc-tot/clang ff0b0f5c4cf44693090329259c1879a6f2071825) (/data/jenkins-workspace/compute-rocm-rel-2.10/external/hcc-tot/compiler 6c4a0468561ede786b0fe714b9544e7c2adb0102) (based on HCC 2.10.19446-7ffdb8b-ff0b0f5-6c4a046 )
 Target: x86_64-unknown-linux-gnu
 Thread model: posix
 InstalledDir: /opt/rocm/bin
@@ -248,23 +248,23 @@ Candidate multilib: 32;@m32
 Candidate multilib: x32;@mx32
 Selected multilib: .;@m64
 Found HCC installation: /opt/rocm/bin/..
- "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_41656 /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0 -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../.. -L/opt/rocm/hcc/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crtn.o
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+ "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_26914 /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0 -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../.. -L/opt/rocm/hcc/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crtn.o
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_41656/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_41656.dir/build.make CMakeFiles/cmTC_41656.dir/build]
-  ignore line: [make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/opt/rocm/bin/hcc      -o CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_41656]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41656.dir/link.txt --verbose=1]
-  ignore line: [/opt/rocm/bin/hcc       -v CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_41656  ]
-  ignore line: [HCC clang version 10.0.0 (/data/jenkins-workspace/compute-rocm-dkms-no-npi@2/external/hcc-tot/clang 1a0cfad8e7dec86155a2fe63c7d339ac5869b13a) (/data/jenkins-workspace/compute-rocm-dkms-no-npi@2/external/hcc-tot/compiler 9a5a36edb72d3603b6420220cad6d80870114dfd) (based on HCC 2.8.19353-e5f03b3-1a0cfad-9a5a36e )]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_26914/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_26914.dir/build.make CMakeFiles/cmTC_26914.dir/build]
+  ignore line: [make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/opt/rocm/bin/hcc      -o CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_26914]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_26914.dir/link.txt --verbose=1]
+  ignore line: [/opt/rocm/bin/hcc       -v CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_26914  ]
+  ignore line: [HCC clang version 10.0.0 (/data/jenkins-workspace/compute-rocm-rel-2.10/external/hcc-tot/clang ff0b0f5c4cf44693090329259c1879a6f2071825) (/data/jenkins-workspace/compute-rocm-rel-2.10/external/hcc-tot/compiler 6c4a0468561ede786b0fe714b9544e7c2adb0102) (based on HCC 2.10.19446-7ffdb8b-ff0b0f5-6c4a046 )]
   ignore line: [Target: x86_64-unknown-linux-gnu]
   ignore line: [Thread model: posix]
   ignore line: [InstalledDir: /opt/rocm/bin]
@@ -282,7 +282,7 @@ Parsed CXX implicit link information from above output:
   ignore line: [Selected multilib: .]
   ignore line: [@m64]
   ignore line: [Found HCC installation: /opt/rocm/bin/..]
-  link line: [ "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_41656 /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0 -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../.. -L/opt/rocm/hcc/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crtn.o]
+  link line: [ "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_26914 /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0 -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../.. -L/opt/rocm/hcc/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/bin/ld] ==> ignore
     arg [-zrelro] ==> ignore
     arg [--hash-style=gnu] ==> ignore
@@ -292,7 +292,7 @@ Parsed CXX implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_41656] ==> ignore
+    arg [cmTC_26914] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5.4.0/crtbegin.o] ==> ignore
@@ -305,7 +305,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/opt/rocm/hcc/bin/../lib] ==> dir [/opt/rocm/hcc/bin/../lib]
     arg [-L/lib] ==> dir [/lib]
     arg [-L/usr/lib] ==> dir [/usr/lib]
-    arg [CMakeFiles/cmTC_41656.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_26914.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -336,17 +336,17 @@ Parsed CXX implicit link information from above output:
 
 
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_53b54/fast"
-/usr/bin/make -f CMakeFiles/cmTC_53b54.dir/build.make CMakeFiles/cmTC_53b54.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_53b54.dir/feature_tests.cxx.o
-/opt/rocm/bin/hcc     -std=c++14 -o CMakeFiles/cmTC_53b54.dir/feature_tests.cxx.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_53b54
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_53b54.dir/link.txt --verbose=1
-/opt/rocm/bin/hcc        CMakeFiles/cmTC_53b54.dir/feature_tests.cxx.o  -o cmTC_53b54 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_9f5ef/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9f5ef.dir/build.make CMakeFiles/cmTC_9f5ef.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9f5ef.dir/feature_tests.cxx.o
+/opt/rocm/bin/hcc     -std=c++14 -o CMakeFiles/cmTC_9f5ef.dir/feature_tests.cxx.o -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_9f5ef
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f5ef.dir/link.txt --verbose=1
+/opt/rocm/bin/hcc        CMakeFiles/cmTC_9f5ef.dir/feature_tests.cxx.o  -o cmTC_9f5ef 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -409,17 +409,17 @@ make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_67811/fast"
-/usr/bin/make -f CMakeFiles/cmTC_67811.dir/build.make CMakeFiles/cmTC_67811.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_67811.dir/feature_tests.cxx.o
-/opt/rocm/bin/hcc     -std=c++11 -o CMakeFiles/cmTC_67811.dir/feature_tests.cxx.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_67811
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_67811.dir/link.txt --verbose=1
-/opt/rocm/bin/hcc        CMakeFiles/cmTC_67811.dir/feature_tests.cxx.o  -o cmTC_67811 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_b07d7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b07d7.dir/build.make CMakeFiles/cmTC_b07d7.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b07d7.dir/feature_tests.cxx.o
+/opt/rocm/bin/hcc     -std=c++11 -o CMakeFiles/cmTC_b07d7.dir/feature_tests.cxx.o -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_b07d7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b07d7.dir/link.txt --verbose=1
+/opt/rocm/bin/hcc        CMakeFiles/cmTC_b07d7.dir/feature_tests.cxx.o  -o cmTC_b07d7 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -482,17 +482,17 @@ make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_59b75/fast"
-/usr/bin/make -f CMakeFiles/cmTC_59b75.dir/build.make CMakeFiles/cmTC_59b75.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_59b75.dir/feature_tests.cxx.o
-/opt/rocm/bin/hcc     -std=c++98 -o CMakeFiles/cmTC_59b75.dir/feature_tests.cxx.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_59b75
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_59b75.dir/link.txt --verbose=1
-/opt/rocm/bin/hcc        CMakeFiles/cmTC_59b75.dir/feature_tests.cxx.o  -o cmTC_59b75 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_3bff2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3bff2.dir/build.make CMakeFiles/cmTC_3bff2.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_3bff2.dir/feature_tests.cxx.o
+/opt/rocm/bin/hcc     -std=c++98 -o CMakeFiles/cmTC_3bff2.dir/feature_tests.cxx.o -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_3bff2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3bff2.dir/link.txt --verbose=1
+/opt/rocm/bin/hcc        CMakeFiles/cmTC_3bff2.dir/feature_tests.cxx.o  -o cmTC_3bff2 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -553,17 +553,17 @@ make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build
     Feature record: CXX_FEATURE:0cxx_variadic_macros
     Feature record: CXX_FEATURE:0cxx_variadic_templates
 Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED succeeded with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_b8bc1/fast"
-/usr/bin/make -f CMakeFiles/cmTC_b8bc1.dir/build.make CMakeFiles/cmTC_b8bc1.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_b8bc1.dir/src.c.o
-/usr/bin/cc    -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTC_b8bc1.dir/src.c.o   -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_b8bc1
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b8bc1.dir/link.txt --verbose=1
-/usr/bin/cc   -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTC_b8bc1.dir/src.c.o  -o cmTC_b8bc1 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_05eb3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_05eb3.dir/build.make CMakeFiles/cmTC_05eb3.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_05eb3.dir/src.c.o
+/usr/bin/cc    -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTC_05eb3.dir/src.c.o   -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_05eb3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_05eb3.dir/link.txt --verbose=1
+/usr/bin/cc   -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTC_05eb3.dir/src.c.o  -o cmTC_05eb3 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 Source file was:
 
@@ -577,17 +577,17 @@ int main() {
 }
 
 Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED succeeded with the following output:
-Change Dir: /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp
+Change Dir: /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_682a9/fast"
-/usr/bin/make -f CMakeFiles/cmTC_682a9.dir/build.make CMakeFiles/cmTC_682a9.dir/build
-make[1]: Entering directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_682a9.dir/src.cxx.o
-/opt/rocm/bin/hcc     -DOpenMP_FLAG_DETECTED -fopenmp=libomp   -o CMakeFiles/cmTC_682a9.dir/src.cxx.o -c /home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_682a9
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_682a9.dir/link.txt --verbose=1
-/opt/rocm/bin/hcc    -DOpenMP_FLAG_DETECTED -fopenmp=libomp    CMakeFiles/cmTC_682a9.dir/src.cxx.o  -o cmTC_682a9 
-make[1]: Leaving directory '/home/tonyh/Source/Tensile/3_mfma_bf16/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_dad1c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_dad1c.dir/build.make CMakeFiles/cmTC_dad1c.dir/build
+make[1]: Entering directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_dad1c.dir/src.cxx.o
+/opt/rocm/bin/hcc     -DOpenMP_FLAG_DETECTED -fopenmp=libomp   -o CMakeFiles/cmTC_dad1c.dir/src.cxx.o -c /mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_dad1c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dad1c.dir/link.txt --verbose=1
+/opt/rocm/bin/hcc    -DOpenMP_FLAG_DETECTED -fopenmp=libomp    CMakeFiles/cmTC_dad1c.dir/src.cxx.o  -o cmTC_dad1c 
+make[1]: Leaving directory '/mnt/Tensile/Tensile/build/0_Build/CMakeFiles/CMakeTmp'
 
 Source file was:
 
