@@ -396,7 +396,9 @@ shader main
 /******************************************/
 // Loop: i=0...n-1
 label_0005:
-
+  
+  s_barrier // fetch barrier 4 + (6*i) : wait for update LDS A[0] and B[0]
+  
   /* load A buffer to LDS A[0] */
   // Fetch A for Unroll iteration# (u+2) for 32 k indices
   buffer_load_dwordx4 v[vgprG2LA0+0],  v[vgprGlobalReadOfvarA+0],  s[sgprSrdA:sgprSrdA+3], 0 offen:1
@@ -426,7 +428,9 @@ label_0005:
   //*************************
   // Unroll Looop 1
   //**************************
-
+  
+  s_barrier // fetch barrier 7 + (6*i) : wait for update LDS A[1] and B[1]
+  
   /* load A buffer to LDS A[1] */
   // Fetch A for Unroll iteration# (u+3) for 32 k indices
   buffer_load_dwordx4 v[vgprG2LA1+0],  v[vgprGlobalReadOfvarA+0],  s[sgprSrdA:sgprSrdA+3], 0 offen:1
@@ -655,6 +659,8 @@ wave0_entry_start:
   ds_read_b64       v_regs(vgprValuB_X0_I0,4+0*8), v_regs(vgprLocalReadAddrB,0)  offset:32
   ds_read_b64       v_regs(vgprValuB_X0_I0,6+0*8), v_regs(vgprLocalReadAddrB,0)  offset:48
   
+  s_barrier // fetch barrier 4 + (6*i) : ready for update LDS A[0] and B[0]
+  
   v_mfma_f32_32x32x8f16   v[vgprAcc+16], v[vgprValuA_X0_I0+8+0], v_regs(vgprValuB_X0_I0, 0+p*8), v[vgprAcc+16]
   s_waitcnt lgkmcnt(2)
   v_mfma_f32_32x32x8f16   v[vgprAcc+0],  v[vgprValuA_X0_I0+0+2], v_regs(vgprValuB_X0_I0, 2+p*8), v[vgprAcc+0]
@@ -701,6 +707,9 @@ wave0_entry_start:
   v_mfma_f32_32x32x8f16 v[vgprAcc+0],  v[vgprValuA_X0_I0+16*p+0+0], v_regs(vgprValuB_X0_I0, 0+p*8), v[vgprAcc+0]
   ds_read_b64       v_regs(vgprValuB_X0_I0,4+p*8),  v_regs(vgprLocalReadAddrB,p)  offset:32
   ds_read_b64       v_regs(vgprValuB_X0_I0,6+p*8),  v_regs(vgprLocalReadAddrB,p)  offset:48
+  
+  s_barrier // compute barrier 7 : ready for update LDS A[1] and B[1]
+  
   v_mfma_f32_32x32x8f16 v[vgprAcc+16], v[vgprValuA_X0_I0+16*p+8+0], v_regs(vgprValuB_X0_I0, 0+p*8), v[vgprAcc+16]
   s_waitcnt lgkmcnt(2)
   v_mfma_f32_32x32x8f16 v[vgprAcc+0],  v[vgprValuA_X0_I0+16*p+0+2], v_regs(vgprValuB_X0_I0, 2+p*8), v[vgprAcc+0]
@@ -761,6 +770,8 @@ label_0001:
      v_mfma_f32_32x32x8f16 v[vgprAcc+0],  v[vgprValuA_X0_I0+16*p+0+0], v_regs(vgprValuB_X0_I0, 0+p*8), v[vgprAcc+0]
      ds_read_b64       v_regs(vgprValuB_X0_I0,4+p*8),  v_regs(vgprLocalReadAddrB,p)  offset:32
      ds_read_b64       v_regs(vgprValuB_X0_I0,6+p*8),  v_regs(vgprLocalReadAddrB,p)  offset:48
+     
+     s_barrier // compute barrier 10 : ready for update LDS A[0] and B[0] | or | LDS A[1] and B[1]
      
      v_mfma_f32_32x32x8f16 v[vgprAcc+16], v[vgprValuA_X0_I0+16*p+8+0], v_regs(vgprValuB_X0_I0, 0+p*8), v[vgprAcc+16]
      s_waitcnt lgkmcnt(2)
