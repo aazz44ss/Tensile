@@ -1,0 +1,2 @@
+Index,KernelName,gpu-id,queue-id,queue-index,tid,grd,wgr,lds,scr,vgpr,sgpr,fbar,sig
+0,"Cijk_Alik_Bljk_HBH_MT128x128x32_SE_K1",0,0,0,51123,1966080,512,65536,0,0,0,0,0x7f5dc7e0d200
