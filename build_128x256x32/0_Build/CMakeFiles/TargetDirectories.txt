@@ -1,0 +1,10 @@
+/home/henry/Tensile/build_128x256x32/0_Build/CMakeFiles/edit_cache.dir
+/home/henry/Tensile/build_128x256x32/0_Build/CMakeFiles/rebuild_cache.dir
+/home/henry/Tensile/build_128x256x32/0_Build/lib/CMakeFiles/edit_cache.dir
+/home/henry/Tensile/build_128x256x32/0_Build/lib/CMakeFiles/TensileHost.dir
+/home/henry/Tensile/build_128x256x32/0_Build/lib/CMakeFiles/rebuild_cache.dir
+/home/henry/Tensile/build_128x256x32/0_Build/lib/CMakeFiles/intrinsics_gen.dir
+/home/henry/Tensile/build_128x256x32/0_Build/client/CMakeFiles/rebuild_cache.dir
+/home/henry/Tensile/build_128x256x32/0_Build/client/CMakeFiles/edit_cache.dir
+/home/henry/Tensile/build_128x256x32/0_Build/client/CMakeFiles/tensile_client.dir
+/home/henry/Tensile/build_128x256x32/0_Build/client/CMakeFiles/TensileClient.dir
