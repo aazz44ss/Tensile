@@ -213,16 +213,16 @@ shader main
   
   
   // hardcode WorkGroupMapping
-  s_and_b32 s88, 7, s[sgprWorkGroup1]                     // wg1 % WGM
+  s_and_b32 s88, 3, s[sgprWorkGroup1]                     // wg1 % WGM
   s_mul_i32 s88, s88, s[sgprNumWorkGroups0]                //(wg1 % WGM) * nwg0
   s_add_i32 s88, s88, s[sgprWorkGroup0] // wgSerial = wg0 + (wg1 % WGM) * nwg0
   
-  s_lshr_b32 s89, s88, 3                // wg0_new = wgSerial / WGM
+  s_lshr_b32 s89, s88, 2                // wg0_new = wgSerial / WGM
   s_mov_b32 s[sgprWorkGroup0], s89      // wg0 = wg0_new
   
-  s_and_b32 s89, 7, s88                  // wgSerial % WGM
-  s_lshr_b32 s90, s[sgprWorkGroup1], 3  // block = wg1 / WGM
-  s_lshl_b32 s90, s90, 3
+  s_and_b32 s89, 3, s88                  // wgSerial % WGM
+  s_lshr_b32 s90, s[sgprWorkGroup1], 2  // block = wg1 / WGM
+  s_lshl_b32 s90, s90, 2
   s_add_i32 s89, s89, s90
   s_mov_b32 s[sgprWorkGroup1], s89
   
@@ -433,7 +433,7 @@ label_0005:
   buffer_load_dwordx4 v[vgprG2LA0+0],  v[vgprGlobalReadOfvarA0+0],  s[sgprSrdA:sgprSrdA+3], 0 offen:1 glc:1
   buffer_load_dwordx4 v[vgprG2LA0+4],  v[vgprGlobalReadOfvarA0+1],  s[sgprSrdA:sgprSrdA+3], 0 offen:1 glc:1
   
-  s_waitcnt vmcnt(8)
+  s_waitcnt vmcnt(10)
   ds_write_b128 v[vgprLocalWriteAddrB+0], v[vgprG2LB0+0] offset:varlds_Bsize_per_wr*0
   ds_write_b128 v[vgprLocalWriteAddrB+0], v[vgprG2LB0+4] offset:varlds_Bsize_per_wr*8
   
@@ -469,7 +469,7 @@ label_0005:
   buffer_load_dwordx4 v[vgprG2LA1+0],  v[vgprGlobalReadOfvarA1+0],  s[sgprSrdA:sgprSrdA+3], 0 offen:1 glc:1
   buffer_load_dwordx4 v[vgprG2LA1+4],  v[vgprGlobalReadOfvarA1+1],  s[sgprSrdA:sgprSrdA+3], 0 offen:1 glc:1
   
-  s_waitcnt vmcnt(8)
+  s_waitcnt vmcnt(10)
   ds_write_b128 v[vgprLocalWriteAddrB+1], v[vgprG2LB1+0] offset:varlds_Bsize_per_wr*0
   ds_write_b128 v[vgprLocalWriteAddrB+1], v[vgprG2LB1+4] offset:varlds_Bsize_per_wr*8
   
@@ -660,16 +660,16 @@ wave0_entry_start:
   
   
   // hardcode WorkGroupMapping
-  s_and_b32 s88, 7, s[sgprWorkGroup1]                     // wg1 % WGM
+  s_and_b32 s88, 3, s[sgprWorkGroup1]                     // wg1 % WGM
   s_mul_i32 s88, s88, s[sgprNumWorkGroups0]                //(wg1 % WGM) * nwg0
   s_add_i32 s88, s88, s[sgprWorkGroup0] // wgSerial = wg0 + (wg1 % WGM) * nwg0
   
-  s_lshr_b32 s89, s88, 3                // wg0_new = wgSerial / WGM
+  s_lshr_b32 s89, s88, 2                // wg0_new = wgSerial / WGM
   s_mov_b32 s[sgprWorkGroup0], s89      // wg0 = wg0_new
   
-  s_and_b32 s89, 7, s88                  // wgSerial % WGM
-  s_lshr_b32 s90, s[sgprWorkGroup1], 3  // block = wg1 / WGM
-  s_lshl_b32 s90, s90, 3
+  s_and_b32 s89, 3, s88                  // wgSerial % WGM
+  s_lshr_b32 s90, s[sgprWorkGroup1], 2  // block = wg1 / WGM
+  s_lshl_b32 s90, s90, 2
   s_add_i32 s89, s89, s90
   s_mov_b32 s[sgprWorkGroup1], s89
   
