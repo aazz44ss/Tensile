@@ -671,6 +671,7 @@ wave0_entry_start:
   
   s_waitcnt lgkmcnt(14)
   v_mfma_f32_32x32x8f16   v[vgprAcc+0],  v[vgprValuA_X0_I0+16*0+0+6], v[vgprValuB_X0_I0+8*0+6], v[vgprAcc+0]
+  s_nop 8
   
   s_waitcnt lgkmcnt(0)
   s_barrier // compute barrier 2 : ready for update LDS///////////
@@ -755,6 +756,7 @@ label_0001:
   
   s_waitcnt lgkmcnt(12)
   v_mfma_f32_32x32x8f16   v[vgprAcc+0],  v[vgprValuA_X0_I0+16*1+0+4], v[vgprValuB_X0_I0+8*1+4], v[vgprAcc+0]
+  s_nop 8
   
   s_waitcnt lgkmcnt(0)
   s_barrier // compute barrier 2 : ready for update LDS///////////
