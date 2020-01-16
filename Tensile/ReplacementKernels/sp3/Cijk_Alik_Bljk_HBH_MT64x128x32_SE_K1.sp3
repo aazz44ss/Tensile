@@ -198,10 +198,10 @@ shader main
   v_and_b32             v[vgprSerial+3], 0xf, s[hw_id]        //waveId
   v_readfirstlane_b32   s[hw_id+1], v[vgprSerial+3]
   
-  
+  /*
   // hardcode WorkGroupMapping
   s_load_dword s[sgprNumWorkGroups0], s[sgprKernArgAddress:sgprKernArgAddress+1], 0x74
-  
+  */
   
   
   s_cmp_eq_u32     s[hw_id+1], 1
@@ -209,7 +209,7 @@ shader main
 
   s_waitcnt lgkmcnt(0)                               // wait for 144 bytes of kern args
 
-
+/*
   // hardcode WorkGroupMapping
   s_and_b32 s88, 7, s[sgprWorkGroup1]                     // wg1 % WGM
   s_mul_i32 s88, s88, s[sgprNumWorkGroups0]                //(wg1 % WGM) * nwg0
@@ -223,7 +223,7 @@ shader main
   s_lshl_b32 s90, s90, 3
   s_add_i32 s89, s89, s90
   s_mov_b32 s[sgprWorkGroup1], s89
-  
+*/
   /******************************************/
   /*   global read addresses: addresses A   */
   /******************************************/
@@ -565,7 +565,7 @@ wave0_entry_start:
 
   s_waitcnt lgkmcnt(0)
   
-  
+/*
   // hardcode WorkGroupMapping
   s_and_b32 s88, 7, s[sgprWorkGroup1]                     // wg1 % WGM
   s_mul_i32 s88, s88, s[sgprNumWorkGroups0]                //(wg1 % WGM) * nwg0
@@ -579,7 +579,7 @@ wave0_entry_start:
   s_lshl_b32 s90, s90, 3
   s_add_i32 s89, s89, s90
   s_mov_b32 s[sgprWorkGroup1], s89
-  
+*/
   
 /*****************************************************************/
 /* Global Address C calculation */
