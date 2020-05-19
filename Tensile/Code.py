@@ -289,6 +289,7 @@ class Inst(Item):
       formatting += ", %s"
     instStr = formatting % (params)
     self.text = self.formatWithComment(instStr, comment)
+    self.name = self.text
 
   def formatWithComment(self, instStr, comment):
     return "%-50s // %s\n" % (instStr, comment)
