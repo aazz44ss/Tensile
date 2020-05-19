@@ -2470,6 +2470,12 @@ class KernelWriterSource(KernelWriter):
     return kStr
 
   ##############################################################################
+  # warming up global cache
+  ##############################################################################
+  def globalReadWarmup(self, kernel, tP):
+    return ""
+
+  ##############################################################################
   # Local Write: Swap Offsets A/B
   ##############################################################################
   def localWriteSwapOffsets(self, kernel, tP):
