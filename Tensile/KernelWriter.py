@@ -761,10 +761,19 @@ class KernelWriter(metaclass=abc.ABCMeta):
       kl.append(self.comment("prefetch: global -> local"))
       kl.append(self.openSumAtLeastUnroll(kernel, prefetch=True, isPap=isPap, isOptNLL=False))
       if self.enable["GlobalRead"]:
+        if kernel["GlobalReadWarmup"]:
+          kl.append(self.comment("Warming up caches"))
+          glA, warmupA = self.globalReadDo(kernel, 0, tensorParametersA, warmup=True)
+          glB, warmupB = self.globalReadDo(kernel, 0, tensorParametersB, warmup=True)
+          kl.append(str(warmupA))
+          kl.append(str(warmupB))
+        else:
+          glA = self.globalReadDo(kernel, 0, tensorParametersA)
+          glB = self.globalReadDo(kernel, 0, tensorParametersB)
         kl.append(str(self.directToLdsM0Update(kernel, 0, tensorParametersA)))
-        kl.append(str(self.globalReadDo(kernel, 0, tensorParametersA)))
+        kl.append(str(glA))
         kl.append(str(self.directToLdsM0Update(kernel, 0, tensorParametersB)))
-        kl.append(str(self.globalReadDo(kernel, 0, tensorParametersB)))
+        kl.append(str(glB))
       if self.enable["GlobalReadInc"]:
         kl.append(self.globalReadIncrementAB(kernel, self.unrollIdx, pfi))
 
@@ -2584,7 +2593,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
   # mode: 0=prefetch, 1=unroll loop, 2=guardK
   ##############################################################################
   @abc.abstractmethod
-  def globalReadDo(self, kernel, mode, tP):
+  def globalReadDo(self, kernel, mode, tP, warmup=False):
     return ""
 
   ##############################################################################
