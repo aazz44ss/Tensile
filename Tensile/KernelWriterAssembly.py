@@ -6810,7 +6810,7 @@ class KernelWriterAssembly(KernelWriter):
   ##############################################################################
   # Global Read: Do It A/B
   ##############################################################################
-  def globalReadDo(self, kernel, mode, tP):
+  def globalReadDo(self, kernel, mode, tP, warmup=False):
     tc = tP["tensorChar"]
     problemType = self.kernel["ProblemType"]
     imod = Code.StructuredModule("globalReadDo%s_%u"%(tc,mode))
@@ -6982,8 +6982,49 @@ class KernelWriterAssembly(KernelWriter):
     if problemType["ZeroPad%s"%tc]:
       self.vgprPool.checkIn(addrV)
 
+    warmupMod = Code.Module("glWarmup%s"%(tc)) 
+    if warmup:
+      vgprSizePerpDim = self.vgprPool.checkOut(1, "sizePerpDim") # MT reach along perp dim
+      vgprNumThreadToUse = self.vgprPool.checkOut(1, "stridePerpDim") # 1d spread between each workitem
+      vgprNumElements = self.vgprPool.checkOut(1, "numElems")
+      vgprDummy = self.vgprPool.checkOut(1, "dummy")
+      vgprOffset = self.vgprPool.checkOut(1, "byteOffset")
 
-    return imod
+      sumChar = "L" # TODO: get sum char
+      sizePerpDim = sgpr("Size%s"%sumChar) if tP["tlu"] else kernel[tP["mt"]]
+      sizeCoalDim = kernel[tP["mt"]]       if tP["tlu"] else sgpr("Size%s"%sumChar)
+      stridePerpDim = "Stride%s%s"%(tc, (sumChar if tP["tlu"] else tP['tileChar']))
+
+      warmupMod.addInst("v_mov_b32", vgpr(vgprNumElements), hex(2*1024*1024//tP["bpe"]), "number of elements that use 2MB page")
+      warmupMod.addInst("v_mul_lo_u32", vgpr(vgprOffset), vgpr(vgprNumElements), vgpr("Serial"), "touch 2MB per thread")
+
+      # to get number of 2MB page to use per tile
+      warmupMod.addInst("v_mov_b32", vgpr(vgprSizePerpDim), sizePerpDim, "size of perp dim")
+      warmupMod.addInst("v_mov_b32", vgpr(vgprNumThreadToUse), sgpr(stridePerpDim), "stride")
+      warmupMod.addInst("v_mul_lo_u32", vgpr(vgprNumThreadToUse), vgpr(vgprNumThreadToUse), vgpr(vgprSizePerpDim), "size Per tile")
+      warmupMod.addInst("v_cvt_f32_u32", vgpr(vgprNumThreadToUse), vgpr(vgprNumThreadToUse), "")
+      warmupMod.addInst("v_log_f32", vgpr(vgprNumThreadToUse), vgpr(vgprNumThreadToUse), "")
+      warmupMod.addInst("v_ceil_f32", vgpr(vgprNumThreadToUse), vgpr(vgprNumThreadToUse), "round to next integer")
+      warmupMod.addInst("v_cvt_u32_f32", vgpr(vgprNumThreadToUse), vgpr(vgprNumThreadToUse), "convert to u32")
+      warmupMod.addInst("v_lshlrev_b32", vgpr(vgprNumThreadToUse), vgpr(vgprNumThreadToUse), "1", "roundup size per tile to power of 2")
+      warmupMod.addInst("v_lshrrev_b32", vgpr(vgprNumThreadToUse), log2(2*1024*1024//tP["bpe"]), vgpr(vgprNumThreadToUse), "number of 2MB page to use per tile")
+      warmupMod.addInst("v_cmpx_lt_u32", "vcc", vgpr("Serial"), vgpr(vgprNumThreadToUse), "disable thread falling out of bound")
+      
+      warmupMod.addInst("v_add_u32", vgpr(vgprOffset), hex(self.srdShiftLeft[tc]), vgpr(vgprOffset), "add prepad for pointer shift")
+      warmupMod.addInst("v_lshlrev_b32", vgpr(vgprOffset), log2(tP["bpe"]), vgpr(vgprOffset), "scale by byte per elem")
+      warmupMod.addInst("buffer_load_dword", vgpr(vgprDummy), vgpr(vgprOffset), sgpr("Srd%s"%tc, 4), "0", "offen offset:0", "")
+      warmupMod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
+      if tc == 'B' :
+        warmupMod.addInst("s_waitcnt", "vmcnt(0)", "")
+        warmupMod.addInst("s_barrier", "")
+
+      self.vgprPool.checkIn(vgprSizePerpDim)
+      self.vgprPool.checkIn(vgprNumThreadToUse)
+      self.vgprPool.checkIn(vgprNumElements)
+      self.vgprPool.checkIn(vgprDummy)
+      self.vgprPool.checkIn(vgprOffset)
+
+    return imod if warmup is not True else (imod, warmupMod)
 
   ##############################################################################
   # Local Write: Swap Offsets A/B
