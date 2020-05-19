@@ -593,8 +593,20 @@ class KernelWriter(metaclass=abc.ABCMeta):
 
       readsToWait = len(list(self.localWriteACode.items())) + len(list(self.localWriteBCode.items()))
       readsToWaitNGLL = readsToWait
-
       localwriteCnt = 0
+
+      # can bypassWarmUpReads
+      # TODO: PGR1 can also bypassWarmUpReads too, but need to be careful
+      #       about some of WarmUpReads interleave with localWrites
+      if kernel["GlobalReadWarmup"] and \
+          (kernel["PrefetchGlobalRead"] == 2 or \
+          (kernel["ScheduleIterAlg"] == 3 and kernel["PrefetchGlobalRead"] == 1 and self.lwStartMfmaIndex - self.grEndMfmaIndex > 1) or \
+          (kernel["ScheduleIterAlg"] == 2 and kernel["PrefetchGlobalRead"] == 1)):
+        if kernel["ProblemType"]["TLUA"]:
+          readsToWait += 1
+        if kernel["ProblemType"]["TLUB"]:
+          readsToWait += 1
+
       for u in range(startIter, localWriteEndIter+1):
         if u==(localWriteEndIter):
           itemPerIter = len(itemsLWToSched) # schedule all remaining activity
@@ -1378,8 +1390,12 @@ class KernelWriter(metaclass=abc.ABCMeta):
       # addresses
       kl.append(self.comment("global read addresses: addresses a"))
       kl.append(self.graAddresses(kernel, tensorParametersA))
+      if kernel["GlobalReadWarmup"] and not self.staggerU:
+        kl.append(str(self.globalReadWarmup(kernel, tensorParametersA)))
       kl.append(self.comment("global read addresses: addresses b"))
       kl.append(self.graAddresses(kernel, tensorParametersB))
+      if kernel["GlobalReadWarmup"] and not self.staggerU:
+        kl.append(str(self.globalReadWarmup(kernel, tensorParametersB)))
 
       self.dontAppendCode = isPap
       # increments
@@ -1502,8 +1518,17 @@ class KernelWriter(metaclass=abc.ABCMeta):
 
       else:
         if self.enable["GlobalRead"]:
+          if kernel["GlobalReadWarmup"]:
+            kl.append(self.comment("waiting for A warm up"))
+            kl.append(str(Code.WaitCnt(self.version, -1, 1, "waiting for A warm up")))
+            kl.append(self.syncThreads(kernel))
           kl.append(str(self.directToLdsM0Update(kernel, 0, tensorParametersA)))
           kl.append(str(self.globalReadDo(kernel, 0, tensorParametersA)))
+          if kernel["GlobalReadWarmup"]:
+            kl.append(self.comment("waiting for B warm up"))
+            cntVal = min(globalParameters["AsmCaps"][globalParameters["CurrentISA"]]["MaxVmcnt"], kernel["NumLoadsPerpendicularA"] * kernel["NumLoadsCoalescedA"] * self.numReadVectorComponentsA)
+            kl.append(str(Code.WaitCnt(self.version, -1, cntVal, "waiting for B warm up")))
+            kl.append(self.syncThreads(kernel))
           kl.append(str(self.directToLdsM0Update(kernel, 0, tensorParametersB)))
           kl.append(str(self.globalReadDo(kernel, 0, tensorParametersB)))
         if self.enable["GlobalReadInc"]:
@@ -1528,6 +1553,12 @@ class KernelWriter(metaclass=abc.ABCMeta):
       kl.append(self.comment3(" NoGlobalLoadLoop - Begin"))
       self.perIterLocalWriteCode = self.perIterLocalWriteCodeNGLL
       self.perIterLocalWriteCanSkip = [ 0 for i in range (kernel["LoopIters"]) ]
+      warmupA = self.globalReadIncrements.findNamedItem("globalReadIncrementA").findNamedItem("glWarmupA")
+      if warmupA:
+        self.globalReadIncrements.findNamedItem("globalReadIncrementA").items().remove(warmupA)
+      warmupB = self.globalReadIncrements.findNamedItem("globalReadIncrementB").findNamedItem("glWarmupB")
+      if warmupB:
+        self.globalReadIncrements.findNamedItem("globalReadIncrementB").items().remove(warmupB)
     else:
       if not isOptNLL:
         kl.append(self.comment3("Ord. NoLoadLoop - Begin"))
@@ -1981,6 +2012,12 @@ class KernelWriter(metaclass=abc.ABCMeta):
       kl.append(self.openString(kernel))
 
       pflr     = self.numItersPLR  # how many pf already done above
+
+      if kernel["GlobalReadWarmup"] and kernel["PrefetchGlobalRead"] == 1:
+        if self.enable["Wait"]:
+          kl.append(self.wait(kernel, tensorParametersA, tensorParametersB, 0, -1, -1, "wait for warming up"))
+        if self.enable["Sync"]:
+          kl.append(self.syncThreads(kernel))
 
       ############################################################################
       # unrolled loop: mac iterations
@@ -3580,6 +3617,13 @@ class KernelWriter(metaclass=abc.ABCMeta):
   ##############################################################################
   @abc.abstractmethod
   def globalReadDo(self, kernel, mode, tP):
+    return ""
+
+  ##############################################################################
+  # warming up global cache
+  ##############################################################################
+  @abc.abstractmethod
+  def globalReadWarmup(self, kernel, tP):
     return ""
 
   ##############################################################################

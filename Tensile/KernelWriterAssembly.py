@@ -1001,6 +1001,12 @@ class KernelWriterAssembly(KernelWriter):
       numberOfSgpr = self.numGlobalReadOffsetsB if needFirstSgprOffset else (self.numGlobalReadOffsetsB-1)
       self.defineSgpr("ScalarGlobalReadOffsetB", numberOfSgpr)
 
+    if kernel["GlobalReadWarmup"]:
+      if kernel["ProblemType"]["TLUA"]:
+        self.defineSgpr("pagesPerLoopA",1)
+      if kernel["ProblemType"]["TLUB"]:
+        self.defineSgpr("pagesPerLoopB",1)
+
     # debug flag to allocate dummy / unused sgpr
     # useful when comparing code that adds new kernel arguments to see what
     # was actually changed
@@ -1798,6 +1804,10 @@ class KernelWriterAssembly(KernelWriter):
 
     self.startVgprAddressDbg = vgprIdx
     vgprIdx += numVgprAddressDbg
+
+    if kernel["GlobalReadWarmup"]:
+      self.startVgprWarmUp = vgprIdx
+      vgprIdx += 1
 
     self.startVgprSerial = vgprIdx
     vgprIdx += 1 # for vgpr serial id
@@ -2675,6 +2685,9 @@ class KernelWriterAssembly(KernelWriter):
         self.startVgprLocalReadAddressesA)
     kStr += self.macroRegister("vgprLocalReadAddrB", \
         self.startVgprLocalReadAddressesB)
+
+    if kernel["GlobalReadWarmup"]:
+      kStr += self.macroRegister("vgprWarmUp", self.startVgprWarmUp)
 
     # Serial is always the last register in the pool so the store
     # code doesn't have to deal with fragmentation
@@ -5356,6 +5369,9 @@ class KernelWriterAssembly(KernelWriter):
     imod = Code.Module("calculateStagger")
     tc = tP["tensorChar"]
 
+    if kernel["GlobalReadWarmup"] and not kernel["ProblemType"]["TLU%s"%(tc)]:
+      imod.addCode(self.globalReadWarmup(kernel, tP))
+
     if self.staggerU:
       assert (kernel["BufferLoad"])
 
@@ -5387,11 +5403,15 @@ class KernelWriterAssembly(KernelWriter):
 
       imod.addCode(self.incrementSrd(kernel, tP, sgpr(staggerTmp), sgpr(staggerTmp+1)))
 
-      if tP["isB"]:
-        # Convert passed in S' to S for easy loop comparison.  S=S-(PGR-1)'
-        imod.addInst("s_add_u32", sgpr("StaggerUIter"), sgpr("StaggerUIter"), \
-                  (2 if kernel["PrefetchGlobalRead"] else 1), \
-                  "Subtract (PGR-1); StaggerUIter now contains target iteration to wrap")
+    if kernel["GlobalReadWarmup"] and kernel["ProblemType"]["TLU%s"%(tc)]:
+      imod.addCode(self.globalReadWarmup(kernel, tP))
+
+    if self.staggerU and tP["isB"]:
+      # Convert passed in S' to S for easy loop comparison.  S=S-(PGR-1)'
+      imod.addInst("s_add_u32", sgpr("StaggerUIter"), sgpr("StaggerUIter"), \
+                (2 if kernel["PrefetchGlobalRead"] else 1), \
+                "Subtract (PGR-1); StaggerUIter now contains target iteration to wrap")
+
     return imod
 
   ##############################################################################
@@ -6761,6 +6781,8 @@ class KernelWriterAssembly(KernelWriter):
         else:
           incUpper = 0 # GRO is positive for loop unroll
         imod.addCode( self.incrementSrd(kernel, tP, sgpr("GlobalReadIncs%s+%u"%(tc,loopIdx)), incUpper))
+      if kernel["GlobalReadWarmup"] and kernel["ProblemType"]["TLU%s"%(tc)]:
+        imod.addCode(self.globalReadWarmup(kernel, tP, False))
     else:
       graIdx = 0
       #for perp in range(0, tP["nrp"]):
@@ -7554,6 +7576,70 @@ class KernelWriterAssembly(KernelWriter):
     if problemType["ZeroPad%s"%tc]:
       self.vgprPool.checkIn(addrV)
 
+    return imod
+
+  ##############################################################################
+  # warming up global cache
+  ##############################################################################
+  def globalReadWarmup(self, kernel, tP, first=True):
+    tc = tP["tensorChar"]
+    imod = Code.Module("glWarmup%s" % (tc))
+    imod.addComment1("warming up %s" % (tc))
+    bytePerPage = 2*1024*1024 # 2MB per page
+    wg = "WorkGroup0" if tc == "A" else "WorkGroup1"
+    if not kernel["ProblemType"]["TLU%s"%(tc)]:
+
+      elementsPerpDim = kernel[tP["mt"]]
+      stridePerpDim = "Stride%s%s"%(tc, tP['tileChar'])
+      vgprTmp1 = self.vgprPool.checkOut(1)
+      vgprTmp2 = self.vgprPool.checkOut(1)
+
+      # to get number of 2MB page to use per tile
+      imod.addInst("v_mov_b32", vgpr(vgprTmp1), elementsPerpDim, "elements per perp dim")
+
+      imod.addInst("v_mul_lo_u32", vgpr(vgprTmp2), vgpr(vgprTmp1), sgpr(wg), "")
+      imod.addInst("v_mul_lo_u32", vgpr(vgprTmp2), vgpr(vgprTmp2), sgpr(stridePerpDim), "")
+      imod.addInst("v_and_b32", vgpr(vgprTmp2), hex(bytePerPage//tP["bpe"]-1), vgpr(vgprTmp2), "")
+
+      imod.addInst("v_mul_lo_u32", vgpr(vgprTmp1), vgpr(vgprTmp1), sgpr(stridePerpDim), "elements per tile")
+      imod.addInst("v_sub_u32", vgpr(vgprTmp1), vgpr(vgprTmp1), 1, "number of 2MB-pages per tile")
+      imod.addInst("v_add_u32", vgpr(vgprTmp1), vgpr(vgprTmp1), vgpr(vgprTmp2), "")
+      imod.addInst("v_lshrrev_b32", vgpr(vgprTmp1), log2(bytePerPage//tP["bpe"]), vgpr(vgprTmp1), "number of 2MB-pages per tile")
+
+      imod.addInst("v_cmpx_le_u32", "vcc", vgpr("Serial"), vgpr(vgprTmp1), "2MB/thread, disable thread falling out of bound")
+      # imod.addInst("s_setvskip", "vccz", 0, "")
+      imod.addInst("v_lshlrev_b32", vgpr(vgprTmp1), log2(bytePerPage), vgpr("Serial"), "touch 2MB per thread")
+      imod.addInst("buffer_load_dword", vgpr(vgprTmp1), vgpr(vgprTmp1), sgpr("Srd%s"%tc, 4), "0", "offen offset:%d"%(self.srdShiftLeft[tc]*tP["bpe"]), "offset to add prepad for pointer shift")
+      # imod.addInst("s_setvskip", 0, 0, "")
+      imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
+      self.vgprPool.checkIn(vgprTmp1)
+      self.vgprPool.checkIn(vgprTmp2)
+
+    else:
+      # calculate elements need warm up
+      # memory range per tile is (DepthU-1)xStride+MT
+      # we prefetch 1 page
+      if first:
+        sTemp = self.sgprPool.checkOut(1,"check for WarmUp code", preventOverflow=0)
+        imod.addInst("s_mov_b32", sgpr("pagesPerLoop%s"%tc), (kernel["DepthU"]-1)*tP["bpe"], "(DepthUxPGR-1), in Bytes")
+        imod.addInst("s_mul_i32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), sgpr("Stride%s%s"%(tc, "L")), "(DepthUxPGR-1)xStride, in Bytes")
+        imod.addInst("s_mov_b32", sgpr(sTemp), kernel[tP["mt"]]*tP["bpe"], "MT, in Bytes")
+        imod.addInst("s_add_u32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), sgpr(sTemp), "(DepthUxPGR-1)xStride+MT")
+        imod.addInst("s_sub_u32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), tP["bpe"], "elementPerLoop - 1")
+        imod.addInst("s_lshr_b32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), log2(bytePerPage), "pages = ((elements-1) x bpe) % 2MB")
+        imod.addInst("s_add_u32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), 2, "add extra 1 prefetch page, 1 for comparing")
+        # imod.addInst("s_mov_b32", sgpr("pagesPerLoop%s"%tc), 0, "debug use")
+        self.sgprPool.checkIn(sTemp)
+
+      imod.addInst("v_lshlrev_b32", vgpr("WarmUp"), log2(bytePerPage), vgpr("Serial"), "touch 2MB per thread")
+      if not first and not self.staggerU:
+        imod.addInst("v_cmpx_gt_u32", "vcc", sgpr("LoopCounterL"), 2, "")
+      imod.addInst("v_cmpx_lt_u32", "vcc", vgpr("Serial"), sgpr("pagesPerLoop%s"%tc), "")
+      # imod.addInst("s_setvskip", "vccz", 0, "")
+      imod.addInst("buffer_load_dword", vgpr("WarmUp"), vgpr("WarmUp"), sgpr("Srd%s"%tc, 4), 0, \
+                    "offen offset:%d"%(self.srdShiftLeft[tc]*tP["bpe"]), "offset to add prepad for pointer shift")
+      # imod.addInst("s_setvskip", 0, 0, "")
+      imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
 
     return imod
 
@@ -11889,7 +11975,8 @@ class KernelWriterAssembly(KernelWriter):
       if self.archCaps["SeparateVscnt"]:
         kStr += inst("s_waitcnt_lgkmcnt", "null", "0", "extra navi wait")
       elif kernel.enabledSplitLDS or kernel["ScheduleIterAlg"] == 2 \
-        or kernel["PrefetchGlobalRead"] == 2 or self.prefetchAcrossPersistent:
+          or kernel["PrefetchGlobalRead"] == 2 or self.prefetchAcrossPersistent \
+          or kernel["GlobalReadWarmup"]:
         kStr += "// Skip force waitcnt0" + self.endLine
       elif self.archCaps["Waitcnt0Disabled"]:
         kStr += inst("s_waitcnt", "lgkmcnt(0) & vmcnt(0)", "force waitcnt0" )
