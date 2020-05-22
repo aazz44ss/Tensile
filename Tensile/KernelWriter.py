@@ -485,7 +485,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
               packAB.addCode(packB.items().pop(0))
 
         # remove s_nop for packing
-        macIterItems.pop(0)
+        if macIterItems:
+          macIterItems.pop(0)
 
         iterCode.addCode(waitLWCode)
         iterCode.addCode(syncCode)
@@ -556,8 +557,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
               iterCode.addCode(packAB.items().pop(0))
             if packAB.items():
               iterCode.addCode(packAB.items().pop(0))
-            iterCode.addInst("s_nop ","1","VALU packing writes to be consumed by matrix instruction")
-          iterCode.addCode(macIterItems.pop(0))
+            iterCode.addInst("s_nop ","1","VALU packing writes to be consumed by matrix instruction")  
+          iterCode.addCode(macIterItems.pop(0) if macIterItems else Code.Module())
     else:
       assert 0, "Unsupported scheduleIterAlg=%u"%self.scheduleIterAlg
 
