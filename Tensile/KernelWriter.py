@@ -1204,6 +1204,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
       kl.append(self.comment1("local read addresses: reset offset b"))
       kl.append(self.localReadResetOffsets(kernel, tensorParametersB))
 
+    if self.enable["executeToInitEnd"]:
+        kl.append(self.functionEnd(kernel, False))
+
     ####################################
     # prefetch: unrolled loop prefix
     ####################################
@@ -1440,6 +1443,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
           item.tempVgpr = None
       pack[luIdx] = Code.Module()
 
+    if self.enable["executeToLoopEnd"] and isOptNLL:
+      kl.append(self.functionEnd(kernel, False))
+
     kl.append(self.closeSumAtLeastUnroll(kernel, prefetch=False, isOptNLL=isOptNLL, isPap=isPap, isNGLL=isNGLL))
 
     return kl
@@ -1599,6 +1605,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
                   kl.append(self.comment("local read inc b"))
                   kl.append(self.localReadInc(kernel, iui, tensorParametersB))
       kl.append(self.closeSumAtLeastUnroll(kernel, prefetch=True, isOptNLL=False, isPap=False, isNGLL=False))
+
+    if self.enable["executeToPrefetchEnd"]:
+      kl.append(self.functionEnd(kernel,False))
 
     # open unrolled summation loop
     kl.append(self.comment3("Unrolled Loop(s) - Begin"))
@@ -2298,6 +2307,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
     # tail: close
     self.inTailLoop = False
 
+    if self.enable["executeToLoopEnd"]:
+      kl.append(self.functionEnd(kernel, False))
+
     # extra summation loops: global increment and close
     for i in reversed(range(self.otherSummationLoops)):
       kl.append(self.comment("global read inc AB"))
@@ -2518,6 +2530,11 @@ class KernelWriter(metaclass=abc.ABCMeta):
     self.enable["Sync"]           = True and not (dkp>0 and dkp >= 5) and not dkp == -5
     self.enable["MAC"]            = True and not (dkp>0 and dkp >= 6) and not dkp == -6
     self.enable["PostLoop"]       = True and not (dkp>0 and dkp >= 1) and not dkp == -1
+
+    # For performance analyze
+    self.enable["executeToInitEnd"]       = 0
+    self.enable["executeToPrefetchEnd"]   = 0
+    self.enable["executeToLoopEnd"]       = 0
 
     #if dkp:
     #  print "\nKernelWriter enable:", self.enable
