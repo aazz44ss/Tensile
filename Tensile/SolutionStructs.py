@@ -2500,6 +2500,7 @@ class Solution:
     state["_staggerStrideShift"] = staggerStrideShift
     if state["StaggerU"] == 0:
       state["StaggerUMapping"] = 0
+      state["StaggerUStride"] = 256
 
     # VectorWidth default handling
     if state["VectorWidth"] < 1:
