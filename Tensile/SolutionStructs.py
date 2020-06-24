@@ -2902,6 +2902,10 @@ class Solution:
     if state["PrefetchLocalRead"] >= 2*state["LoopIters"]:
       reject(state, "PrefetchLocalRead %u larger than 2x LoopIters %u" % (state["PrefetchLocalRead"],state["LoopIters"]))
 
+    # reject low performance
+    if state["PrefetchLocalRead"]%state["LoopIters"] > 1:
+      reject(state, "PrefetchLocalRead: %u, LoopIters: %u performance is low" % (state["PrefetchLocalRead"],state["LoopIters"]))
+
     # prefetch wider read iteration > LoopIters, no enough iterations for prefetching
     if state["EnableMatrixInstruction"]:
       if (state["PrefetchLocalRead"]%state["LoopIters"])*state["LocalReadVectorWidth"]//state["ProblemType"]["DataType"].numMIInput() >= state["LoopIters"]:
