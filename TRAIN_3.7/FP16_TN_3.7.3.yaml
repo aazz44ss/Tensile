@@ -1,9 +1,9 @@
 GlobalParameters:
   MinimumRequiredVersion: 4.14.0
   PrintLevel: 1
-  ForceRedoBenchmarkProblems: True
-  ForceRedoLibraryLogic: True
-  ForceRedoLibraryClient: True
+  # ForceRedoBenchmarkProblems: False
+  # ForceRedoLibraryLogic: False
+  # ForceRedoLibraryClient: False
   CMakeBuildType: Release
   EnqueuesPerSync: 1
   SyncsPerBenchmark: 1
