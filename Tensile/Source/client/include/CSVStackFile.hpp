@@ -62,12 +62,14 @@ namespace Tensile
             void pop();
 
             void writeCurrentRow();
+            void readCurrentRowToMap(std::unordered_map<std::string, std::string>& outMap);
 
         private:
             std::string escape(std::string const& value);
             std::string escapeQuote(std::string const& value);
 
             void writeRow(std::unordered_map<std::string, std::string> const& row);
+            void readRowToMap(std::unordered_map<std::string, std::string> const& row, std::unordered_map<std::string, std::string>& outMap);
 
             std::shared_ptr<std::ostream> m_stream;
 
