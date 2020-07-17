@@ -867,15 +867,16 @@ class KernelWriter(metaclass=abc.ABCMeta):
         kl.append(self.wait(kernel, tensorParametersA, tensorParametersB, -1, -1, \
             skipReadsIter, \
             "7wait for local read"))
+      luIdx = (u) % (self.numVgprBuffer+1) # local to use for MACs
+      pIdx = (u) % (self.numItersPLR+1) # local to use for MACs
+      if kernel["EnableMatrixInstruction"]:
+        kl.append(pack[pIdx])
+        for item in list(pack[pIdx].items()):
+          if item.tempVgpr != None:
+            self.vgprPool.checkIn(item.tempVgpr)
+            item.tempVgpr = None
       if self.enable["MAC"]:
-        luIdx = (u) % (self.numVgprBuffer+1) # local to use for MACs
-        pIdx = (u) % (self.numItersPLR+1) # local to use for MACs
         if kernel["EnableMatrixInstruction"]:
-          kl.append(pack[pIdx])
-          for item in list(pack[pIdx].items()):
-            if item.tempVgpr != None:
-              self.vgprPool.checkIn(item.tempVgpr)
-              item.tempVgpr = None
           kl.append(self.mfmaIter(kernel, luIdx, kernel["InnerUnroll"]))
         else:
           kl.append(self.macIter(kernel, luIdx, kernel["InnerUnroll"], useMacro=not isOptNLL ))
@@ -1530,13 +1531,15 @@ class KernelWriter(metaclass=abc.ABCMeta):
           kl.append(self.localReadInc(kernel, iui, tensorParametersB))
       if self.enable["Wait"]:
         kl.append(self.wait(kernel, tensorParametersA, tensorParametersB, -1, -1, 0, "4wait for local read"))
+
+      if kernel["EnableMatrixInstruction"]:
+        kl.append(pack[0])
+        for item in list(pack[0].items()):
+          if item.tempVgpr != None:
+            self.vgprPool.checkIn(item.tempVgpr)
+            item.tempVgpr = None
       if self.enable["MAC"]:
         if kernel["EnableMatrixInstruction"]:
-          kl.append(pack[0])
-          for item in list(pack[0].items()):
-            if item.tempVgpr != None:
-              self.vgprPool.checkIn(item.tempVgpr)
-              item.tempVgpr = None
           kl.append(self.mfmaIter(kernel, 0, tailLoopInnerUnroll, True))
         else:
           kl.append(self.macIter(kernel, 0, tailLoopInnerUnroll, True))
