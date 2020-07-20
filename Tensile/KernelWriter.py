@@ -205,7 +205,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
       barrier = Code.Module()
       barrier.addInst("s_waitcnt lgkmcnt(0)","")
       barrier.addInst("s_barrier","")
-      self.localWriteACode.items()[0].items().insert(0,barrier)
+      if self.localWriteACode.items():
+        self.localWriteACode.items()[0].items().insert(0,barrier)
     # Now schedule the writes:
     if not self.scheduleLocalWrite:
       # if no scheduleLocalWrite - just add writes to localWritelocalWriteEndIter
