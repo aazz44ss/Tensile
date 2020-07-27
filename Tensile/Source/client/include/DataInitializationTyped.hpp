@@ -381,6 +381,23 @@ namespace Tensile
                         std::cout << "info: allocate c " << std::setw(sizew)
                                   << TypeInfo<CType>::ElementSize * m_cMaxElements << " bytes at "
                                   << cPtr << "\n";
+                    // allocate remaining memory to prevend other user use GPU when benchmarking
+                    CType* extra = nullptr;
+                    size_t  remainingSize;
+                    hipDeviceProp_t hipProps;
+                    hipGetDeviceProperties(&hipProps, 0);
+                    remainingSize = size_t(hipProps.totalGlobalMem);
+                    while(1){
+                        if (hipSuccess == hipMalloc(&extra, remainingSize)){
+                            printf("LOCAL: GPR protect, allocate %zu Success \n",remainingSize);
+                        } else {
+                            printf("LOCAL: GPR protect, allocate %zu Fail \n",remainingSize);
+                            remainingSize = remainingSize/2;
+                        }
+                        if (remainingSize <= 1024*1024) {
+                            break;
+                        }
+                    };
                 }
                 else
                 {
