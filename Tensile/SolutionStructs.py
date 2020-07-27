@@ -2081,6 +2081,13 @@ class Solution:
 
   @staticmethod
   def parameterWrapper(state):
+    if len(state["MatrixInstruction"]) == 8:
+      state["ThreadTile"][0] = state["MatrixInstruction"][5]
+      state["ThreadTile"][1] = state["MatrixInstruction"][6] * state["MatrixInstruction"][1]
+      state["WorkGroup"][0] = state["MatrixInstruction"][4] * state["MatrixInstruction"][0] * state["MatrixInstruction"][7]
+      state["WorkGroup"][1] = 256 // state["WorkGroup"][0]
+    if state["MatrixInstruction"]:
+      state["MatrixInstruction"] = [state["MatrixInstruction"][0],state["MatrixInstruction"][1],state["MatrixInstruction"][2],state["MatrixInstruction"][3]]
     state["UnrollMajorLDSA"]     = state["TransposeLDS"] and (not state["ProblemType"]["TLUA"])
     state["UnrollMajorLDSB"]     = state["TransposeLDS"] and (not state["ProblemType"]["TLUB"])
 
@@ -2101,6 +2108,8 @@ class Solution:
         reject(state, "MatrixInstruction %s not valid for DataType %s" % (state["MatrixInstruction"], state["ProblemType"]["DataType"]))
       if (state["ThreadTile"][1] % state["MatrixInstruction"][0]) != 0:
         reject(state, "invalide ThreadTile1 %u for MatrixInstM %u" % (state["ThreadTile"][1], state["MatrixInstruction"][0]))
+      if (state["WorkGroup"][0] % state["MatrixInstruction"][0]) != 0:
+        reject(state, "invalide WorkGroup0 %u for MatrixInstM %u" % (state["WorkGroup"][0], state["MatrixInstruction"][0]))
 
       # set EnableMatrixInstruction
       state["EnableMatrixInstruction"] = True
@@ -2182,6 +2191,11 @@ class Solution:
     state["LoopIters"] = 0
     if "LoopUnroll" in state:
       state["LoopIters"] = state["LoopUnroll"]
+
+    if state["ScheduleIterAlg"] == 2:
+      state["InnerUnroll"] = state["DepthU"] // state["MatrixInstK"]
+      state["PrefetchLocalRead"] = 1
+      state["ExpandPointerSwap"] = 1
 
     if state["DisableVgprOverlapping"] is True and state["EnableMatrixInstruction"] is not True:
       reject(state, "Non-MI kernels are already non-overlapping in pre-allocated registers")
@@ -2348,6 +2362,7 @@ class Solution:
     state["_staggerStrideShift"] = staggerStrideShift
     if state["StaggerU"] == 0:
       state["StaggerUMapping"] = 0
+      state["StaggerUStride"] = 256
 
     # VectorWidth default handling
     if state["VectorWidth"] < 1:
@@ -2805,7 +2820,8 @@ class Solution:
 
 
     if state["1LDSBuffer"] == -1:
-      if ldsNumElementsAB * state["ProblemType"]["DataType"].numBytes() > globalParameters["MaxLDS"]:
+      if ldsNumElementsAB * state["ProblemType"]["DataType"].numBytes() > globalParameters["MaxLDS"] or \
+          state["ScheduleIterAlg"] == 2:
         state["1LDSBuffer"] = 1
       else:
         state["1LDSBuffer"] = 0
@@ -2813,7 +2829,7 @@ class Solution:
     if state["1LDSBuffer"]:
       if not state["PrefetchGlobalRead"]:
         reject(state, "PGR=0 already use 1 LDS buffer only")
-      if not state["LocalReadVectorWidth"] > state["ProblemType"]["DataType"].numMIInput():
+      if not state["LocalReadVectorWidth"] > state["ProblemType"]["DataType"].numMIInput() and not state["ScheduleIterAlg"] == 2:
         reject(state, "(currently) require wider localread to avoid reading and writing same LDS buffer at same time")
       state["LdsOffsetB"] = ldsNumElementsAlignedA
       ldsNumElementsAB = ldsNumElementsAlignedA + ldsNumElementsB
@@ -2917,6 +2933,10 @@ class Solution:
     if state["PrefetchLocalRead"] >= 2*state["LoopIters"]:
       reject(state, "PrefetchLocalRead %u larger than 2x LoopIters %u" % (state["PrefetchLocalRead"],state["LoopIters"]))
 
+    # reject low performance
+    if state["PrefetchLocalRead"]%state["LoopIters"] > 1:
+      reject(state, "PrefetchLocalRead: %u, LoopIters: %u performance is low" % (state["PrefetchLocalRead"],state["LoopIters"]))
+
     # prefetch wider read iteration > LoopIters, no enough iterations for prefetching
     if state["EnableMatrixInstruction"]:
       if (state["PrefetchLocalRead"]%state["LoopIters"])*state["LocalReadVectorWidth"]//state["ProblemType"]["DataType"].numMIInput() >= state["LoopIters"]:
@@ -2924,10 +2944,10 @@ class Solution:
           % (state["PrefetchLocalRead"],state["LoopIters"],state["LocalReadVectorWidth"],\
           (state["PrefetchLocalRead"]%state["LoopIters"]),state["LocalReadVectorWidth"]//state["ProblemType"]["DataType"].numMIInput()))
 
-    # reject conditions with lower performance
-    if state["ScheduleIterAlg"] == 2 and \
-    (state["ExpandPointerSwap"] != 1 or state["LoopIters"] != 1 or state["ScheduleGlobalRead"] != 1):
-      reject(state, "ScheduleIterAlg 2 only work with EPS1_SGR1, LoopIter=1")
+    # # reject conditions with lower performance
+    # if state["ScheduleIterAlg"] == 2 and \
+    # (state["ExpandPointerSwap"] != 1 or state["LoopIters"] != 1 or state["ScheduleGlobalRead"] != 1):
+    #   reject(state, "ScheduleIterAlg 2 only work with EPS1_SGR1, LoopIter=1")
 
     if state["TransposeLDS"] == 1:
       if not state["EnableMatrixInstruction"]:

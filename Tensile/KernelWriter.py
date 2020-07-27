@@ -205,7 +205,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
       barrier = Code.Module()
       barrier.addInst("s_waitcnt lgkmcnt(0)","")
       barrier.addInst("s_barrier","")
-      self.localWriteACode.items()[0].items().insert(0,barrier)
+      if self.localWriteACode.items():
+        self.localWriteACode.items()[0].items().insert(0,barrier)
     # Now schedule the writes:
     if not self.scheduleLocalWrite:
       # if no scheduleLocalWrite - just add writes to localWritelocalWriteEndIter
@@ -485,7 +486,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
               packAB.addCode(packB.items().pop(0))
 
         # remove s_nop for packing
-        macIterItems.pop(0)
+        if macIterItems:
+          macIterItems.pop(0)
 
         iterCode.addCode(waitLWCode)
         iterCode.addCode(syncCode)
@@ -556,8 +558,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
               iterCode.addCode(packAB.items().pop(0))
             if packAB.items():
               iterCode.addCode(packAB.items().pop(0))
-            iterCode.addInst("s_nop ","1","VALU packing writes to be consumed by matrix instruction")
-          iterCode.addCode(macIterItems.pop(0))
+            iterCode.addInst("s_nop ","1","VALU packing writes to be consumed by matrix instruction")  
+          iterCode.addCode(macIterItems.pop(0) if macIterItems else Code.Module())
     else:
       assert 0, "Unsupported scheduleIterAlg=%u"%self.scheduleIterAlg
 
@@ -794,6 +796,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
       kl.append(self.comment1("local read addresses: init pointers b"))
       kl.append(self.localReadInitPointers(kernel, tensorParametersB))
 
+    if self.enable["executeToInitEnd"]:
+        kl.append(self.functionEnd(kernel, False))
+
     ####################################
     # prefetch: unrolled loop prefix
     ####################################
@@ -866,18 +871,21 @@ class KernelWriter(metaclass=abc.ABCMeta):
         kl.append(self.wait(kernel, tensorParametersA, tensorParametersB, -1, -1, \
             skipReadsIter, \
             "7wait for local read"))
+      luIdx = (u) % (self.numVgprBuffer+1) # local to use for MACs
+      pIdx = (u) % (self.numItersPLR+1) # local to use for MACs
+      if kernel["EnableMatrixInstruction"]:
+        kl.append(pack[pIdx])
+        for item in list(pack[pIdx].items()):
+          if item.tempVgpr != None:
+            self.vgprPool.checkIn(item.tempVgpr)
+            item.tempVgpr = None
       if self.enable["MAC"]:
-        luIdx = (u) % (self.numVgprBuffer+1) # local to use for MACs
-        pIdx = (u) % (self.numItersPLR+1) # local to use for MACs
         if kernel["EnableMatrixInstruction"]:
-          kl.append(pack[pIdx])
-          for item in list(pack[pIdx].items()):
-            if item.tempVgpr != None:
-              self.vgprPool.checkIn(item.tempVgpr)
-              item.tempVgpr = None
           kl.append(self.mfmaIter(kernel, luIdx, kernel["InnerUnroll"]))
         else:
           kl.append(self.macIter(kernel, luIdx, kernel["InnerUnroll"], useMacro=not isOptNLL ))
+    if self.enable["executeToLoopEnd"] and isOptNLL:
+      kl.append(self.functionEnd(kernel, False))
     kl.append(self.closeSumAtLeastUnroll(kernel, prefetch=False, isOptNLL=isOptNLL))
     return kl
 
@@ -1016,6 +1024,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
                   kl.append(self.comment("local read inc b"))
                   kl.append(self.localReadInc(kernel, iui, tensorParametersB))
       kl.append(self.closeSumAtLeastUnroll(kernel, prefetch=True, isOptNLL=False))
+
+    if self.enable["executeToPrefetchEnd"]:
+      kl.append(self.functionEnd(kernel,False))
 
     # open unrolled summation loop
     kl.append(self.comment3("Unrolled Loop(s) - Begin"))
@@ -1529,19 +1540,24 @@ class KernelWriter(metaclass=abc.ABCMeta):
           kl.append(self.localReadInc(kernel, iui, tensorParametersB))
       if self.enable["Wait"]:
         kl.append(self.wait(kernel, tensorParametersA, tensorParametersB, -1, -1, 0, "4wait for local read"))
+
+      if kernel["EnableMatrixInstruction"]:
+        kl.append(pack[0])
+        for item in list(pack[0].items()):
+          if item.tempVgpr != None:
+            self.vgprPool.checkIn(item.tempVgpr)
+            item.tempVgpr = None
       if self.enable["MAC"]:
         if kernel["EnableMatrixInstruction"]:
-          kl.append(pack[0])
-          for item in list(pack[0].items()):
-            if item.tempVgpr != None:
-              self.vgprPool.checkIn(item.tempVgpr)
-              item.tempVgpr = None
           kl.append(self.mfmaIter(kernel, 0, tailLoopInnerUnroll, True))
         else:
           kl.append(self.macIter(kernel, 0, tailLoopInnerUnroll, True))
 
       # tail: close
       kl.append(self.closeLoop(kernel, -1, True))
+
+    if self.enable["executeToLoopEnd"]:
+      kl.append(self.functionEnd(kernel, False))
 
     # extra summation loops: global increment and close
     for i in reversed(range(self.otherSummationLoops)):
@@ -1757,6 +1773,11 @@ class KernelWriter(metaclass=abc.ABCMeta):
     self.enable["Sync"]           = True and not (dkp>0 and dkp >= 5) and not dkp == -5
     self.enable["MAC"]            = True and not (dkp>0 and dkp >= 6) and not dkp == -6
     self.enable["PostLoop"]       = True and not (dkp>0 and dkp >= 1) and not dkp == -1
+
+    # For performance analyze
+    self.enable["executeToInitEnd"]       = 0
+    self.enable["executeToPrefetchEnd"]   = 0
+    self.enable["executeToLoopEnd"]       = 0
 
     #if dkp:
     #  print "\nKernelWriter enable:", self.enable
