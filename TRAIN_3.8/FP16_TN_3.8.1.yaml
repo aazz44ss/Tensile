@@ -71,12 +71,21 @@ BenchmarkProblems:
           - [16, 16, 16, 1,  1,  1,1,  2] # 32x32
           - [16, 16, 16, 1,  1,  1,2,  2] # 32x64
           - [16, 16, 16, 1,  1,  2,1,  2] # 64x32
+          # Specialized MT
+          - [32, 32, 8, 1,  1,  1,9,  4]  # 128x288
+          - [16, 16, 16,1,  1,  2,9,  4]  # 128x144
+          - [16, 16, 16,1,  1,  4,9,  4]  # 256x144
+          - [16, 16, 16,1,  1,  2,5,  4]  # 128x80
+          - [32, 32, 8, 1,  1,  1,3,  4]  # 128x96
+          - [32, 32, 8, 1,  1,  1,5,  4]  # 128x160
+          - [16, 16, 16,1,  1,  1,5,  4]  # 64x80
+          - [32, 32, 8, 1,  1,  5,1,  1]  # 160x128
         - ThreadTile:
           - [ 1, 32 ]
         - WorkGroup:
           - [ 64, 4, 1 ]
         - AssertSummationElementMultiple: [1]
-        - AssertFree0ElementMultiple: [1]
+        - AssertFree0ElementMultiple: [1,4]
         - AssertFree1ElementMultiple: [1]
         - PrefetchGlobalRead: [1]
         - PrefetchLocalRead: [2,5,9,17,33]
