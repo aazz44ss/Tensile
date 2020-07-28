@@ -32,6 +32,7 @@ GlobalParameters:
   PrintTensorB: 0
   PrintTensorD: 0
   NewClient: 2
+  CSVExportWinner: 1
 
 BenchmarkProblems:
   ########################################
