@@ -5,7 +5,7 @@ GlobalParameters:
   # ForceRedoLibraryLogic: False
   # ForceRedoLibraryClient: False
   CMakeBuildType: Release
-  EnqueuesPerSync: 5
+  EnqueuesPerSync: 1
   SyncsPerBenchmark: 1
   LibraryPrintDebug: False
   NumElementsToValidate: 0
