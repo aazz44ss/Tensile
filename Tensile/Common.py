@@ -256,17 +256,7 @@ validMFMA["H"] = [[32,32,4,2], [32,32,8,1], [16,16,4,4], [16,16,16,1], [4,4,4,16
 validMFMA["S"] = [[32,32,1,2], [32,32,2,1], [16,16,1,4], [16,16,4,1], [4,4,1,16]]
 validMFMA["B"] = [[32,32,2,2], [32,32,4,1], [16,16,2,4], [16,16,8,1], [4,4,2,16]]
 validMFMA["4xi8"] = [[32,32,4,2], [32,32,8,1], [16,16,4,4], [16,16,16,1], [4,4,4,16]]
-validTT = 9
-validMFMA["_format8"] = []
-for MFMA in [validMFMA["H"], validMFMA["S"], validMFMA["B"], validMFMA["4xi8"]]:
-  for MI in MFMA:
-    for bm in range(int(math.log(MI[3],2))+1):
-      for tt0 in range(1,validTT+1):
-        for tt1 in range(1,validTT+1):
-          for wave_m in range (3):
-            validMFMA["_format8"].append([MI[0],MI[1],MI[2],MI[3],2**bm,tt0,tt1,2**wave_m])
 validMatrixInstructions = [[], [-1]] + validMFMA["H"] + validMFMA["S"] + validMFMA["B"] + validMFMA["4xi8"]
-validMatrixInstructions = validMatrixInstructions + validMFMA["_format8"]
 
 validParameters = {
     "LoopDoWhile":                [ False, True ], # Source. True=DoWhile, False=For loop
