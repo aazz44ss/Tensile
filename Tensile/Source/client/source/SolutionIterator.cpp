@@ -38,10 +38,11 @@ namespace Tensile
             po::variables_map const&                                   args)
         {
             bool bestSolution = args["best-solution"].as<bool>();
+            bool printWinnerOnly = args["PrintWinnersOnly"].as<bool>();
 
             if(bestSolution)
             {
-                return std::make_shared<BestSolutionIterator>(library, hardware);
+                return std::make_shared<BestSolutionIterator>(library, hardware, printWinnerOnly);
             }
             else
             {
@@ -49,15 +50,17 @@ namespace Tensile
                 int numSolutions     = args["num-solutions"].as<int>();
 
                 return std::make_shared<AllSolutionsIterator>(
-                    library, hardware, firstSolutionIdx, numSolutions);
+                    library, hardware, firstSolutionIdx, numSolutions, printWinnerOnly);
             }
         }
 
         SolutionIterator::SolutionIterator(
             std::shared_ptr<MasterSolutionLibrary<ContractionProblem>> library,
-            std::shared_ptr<Hardware>                                  hardware)
+            std::shared_ptr<Hardware>                                  hardware,
+            bool                                                       printWinnerOnly)
             : m_library(library)
             , m_hardware(hardware)
+            , m_printWinnerOnly(printWinnerOnly)
         {
         }
 
@@ -84,7 +87,7 @@ namespace Tensile
             if(!(*solution.problemPredicate)(m_problem))
             {
                 m_reporter->report(ResultKey::Validation, "DID_NOT_SATISFY_ASSERTS");
-                if(m_reporter->logAtLevel(LogLevel::Verbose))
+                if(m_reporter->logAtLevel(LogLevel::Verbose) && !m_printWinnerOnly)
                 {
                     std::ostringstream msg;
                     solution.problemPredicate->debugEval(m_problem, msg);
@@ -107,8 +110,9 @@ namespace Tensile
             std::shared_ptr<MasterSolutionLibrary<ContractionProblem>> library,
             std::shared_ptr<Hardware>                                  hardware,
             int                                                        firstSolutionIdx,
-            int                                                        numSolutions)
-            : SolutionIterator(library, hardware)
+            int                                                        numSolutions,
+            bool                                                       printWinnerOnly)
+            : SolutionIterator(library, hardware, printWinnerOnly)
         {
             m_firstSolutionIdx = firstSolutionIdx;
 
@@ -165,8 +169,9 @@ namespace Tensile
 
         BestSolutionIterator::BestSolutionIterator(
             std::shared_ptr<MasterSolutionLibrary<ContractionProblem>> library,
-            std::shared_ptr<Hardware>                                  hardware)
-            : SolutionIterator(library, hardware)
+            std::shared_ptr<Hardware>                                  hardware,
+            bool                                                       printWinnerOnly)
+            : SolutionIterator(library, hardware, printWinnerOnly)
         {
         }
 

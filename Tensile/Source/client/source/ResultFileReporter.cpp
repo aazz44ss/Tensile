@@ -144,6 +144,8 @@ namespace Tensile
                 m_output.setHeaderForKey(ResultKey::TotalFlops, "TotalFlops");
                 if(m_extraCol)
                 {
+                    m_output.setHeaderForKey(ResultKey::TilesPerCu, "TilesPerCu");
+                    m_output.setHeaderForKey(ResultKey::TotalGranularity, "TotalGranularity");
                     m_output.setHeaderForKey(ResultKey::FastestGFlops, "WinnerGFlops");
                     m_output.setHeaderForKey(ResultKey::TimeUS, "WinnerTimeUS");
                     m_output.setHeaderForKey(ResultKey::SolutionWinnerIdx, "WinnerIdx");

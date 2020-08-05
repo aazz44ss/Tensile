@@ -443,7 +443,7 @@ def getResults(resultsFileName, solutions, enableTileSelection, newResultsFileNa
 
   if globalParameters["CSVExportWinner"]:
     # in both old/new clients, csv files always output "GFlops" ,...., "LDD" "LDC" "LDA" "LDB" "TotalFlops" "WinnerGFlops" "WinnerTimeUS" "WinnerIdx" "WinnerName" columns
-    startIdx = numColForProblemSize + 10
+    startIdx = numColForProblemSize + 12
   else:
     # in both old/new clients, csv files always output "GFlops" ,...., "LDD" "LDC" "LDA" "LDB"columns
     # old client, non-GEMM csv files don't contain "LDD" "LDC" "LDA" "LDB", so we output an "N/A" text (in csv only) for alignment purpose (-diff.csv)
