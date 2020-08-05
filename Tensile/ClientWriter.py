@@ -638,6 +638,7 @@ def writeClientConfigIni(problemSizes, problemType, sourceDir, codeObjectFiles, 
         param("csv-merge-same-problems",  globalParameters["CSVMergeSameProblemID"])
         param("log-level",                ClientLogLevel(globalParameters["ClientLogLevel"]).name)
         param("use-gpu-precise-timer",    globalParameters["PreciseKernelTime"])
+        param("PrintWinnersOnly",         globalParameters["PrintWinnersOnly"])
 
 def writeClientConfig(forBenchmark, solutions, problemSizes, stepName, stepBaseDir, newLibrary, codeObjectFiles, tileAwareSelection = False):
     if tileAwareSelection:
