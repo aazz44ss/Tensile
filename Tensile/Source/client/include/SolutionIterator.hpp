@@ -114,13 +114,15 @@ namespace Tensile
 
         protected:
             SolutionIterator(std::shared_ptr<MasterSolutionLibrary<ContractionProblem>> library,
-                             std::shared_ptr<Hardware>                                  hardware);
+                             std::shared_ptr<Hardware>                                  hardware,
+                             bool printWinnerOnly);
 
             virtual bool checkSolution(ContractionSolution const& solution);
 
             std::shared_ptr<MasterSolutionLibrary<ContractionProblem>> m_library;
             std::shared_ptr<Hardware>                                  m_hardware;
             ContractionProblem                                         m_problem;
+            bool                                                       m_printWinnerOnly;
         };
 
         class AllSolutionsIterator : public SolutionIterator
@@ -129,7 +131,8 @@ namespace Tensile
             AllSolutionsIterator(std::shared_ptr<MasterSolutionLibrary<ContractionProblem>> library,
                                  std::shared_ptr<Hardware> hardware,
                                  int                       firstSolutionIdx,
-                                 int                       numSolutions);
+                                 int                       numSolutions,
+                                 bool                      printWinnerOnly);
 
             virtual void preProblem(ContractionProblem const& problem) override;
             virtual void postProblem() override;
@@ -151,7 +154,8 @@ namespace Tensile
         {
         public:
             BestSolutionIterator(std::shared_ptr<MasterSolutionLibrary<ContractionProblem>> library,
-                                 std::shared_ptr<Hardware> hardware);
+                                 std::shared_ptr<Hardware> hardware,
+                                 bool printWinnerOnly);
 
             virtual void preProblem(ContractionProblem const& problem) override;
             virtual void postProblem() override;
