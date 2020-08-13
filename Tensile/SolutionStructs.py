@@ -2885,6 +2885,12 @@ class Solution:
     # lds size is the greater of the two
     ldsNumElements = max(ldsNumElementsAB, ldsNumElementsReduction, ldsNumElementsOccupancy)
 
+    if state["StoreRemapVectorWidth"] == -1:
+      if not math.log(state["MacroTile0"],2).is_integer():
+        state["StoreRemapVectorWidth"] = 0
+      else:
+        state["StoreRemapVectorWidth"] = 4
+
     #check not support cases and calculate lds resources
     if state["StoreRemapVectorWidth"]:
       if not state["EnableMatrixInstruction"]:
