@@ -955,7 +955,43 @@ namespace Tensile
 
                 virtual bool operator()(ContractionProblem const& problem) const override
                 {
-                    return problem.d().totalAllocatedElements() * value <= problem.workspaceSize();
+                    if (value != 0) {
+                        return problem.d().totalAllocatedElements() * value <= problem.workspaceSize();
+                    } else {
+                        return true;
+                    }
+                }
+            };
+
+            struct GlobalSplitUCheck : public Predicate_CRTP<GlobalSplitUCheck, ContractionProblem>
+            {
+                enum
+                {
+                    HasIndex = true,
+                    HasValue = true
+                };
+                size_t index;
+                size_t value;
+
+                GlobalSplitUCheck() = default;
+                GlobalSplitUCheck(size_t index, size_t value)
+                    : index(index)
+                    , value(value)
+                {
+                }
+
+                static std::string Type()
+                {
+                    return "GlobalSplitUCheck";
+                }
+
+                virtual bool operator()(ContractionProblem const& problem) const override
+                {
+                    if (value > 1) {
+                        return problem.boundSize(0) / value >= 256;
+                    } else {
+                        return true;
+                    }
                 }
             };
 

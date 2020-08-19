@@ -458,6 +458,8 @@ int main(int argc, const char* argv[])
     size_t maxWorkspaceSize
         = getMaxWorkspace(library, hardware, args, problems, firstProblemIdx, lastProblemIdx);
 
+    maxWorkspaceSize = (maxWorkspaceSize > 1024*1024*16) ? 1024*1024*16 : maxWorkspaceSize;
+
     auto dataInit = DataInitialization::Get(args, problemFactory, maxWorkspaceSize);
 
     auto solutionIterator = SolutionIterator::Default(library, hardware, args);

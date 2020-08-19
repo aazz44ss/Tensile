@@ -292,6 +292,9 @@ class ProblemPredicate(Properties.Predicate):
         if key == "_WorkspaceSizePerElemC":
             return cls("WorkspaceCheck", index=0, value=value)
 
+        if key == "GlobalSplitU":
+            return cls("GlobalSplitUCheck", index=0, value=value)
+
         if key.startswith('Assert'):
             raise RuntimeError("Unknown assertion key: {}".format(key))
 
