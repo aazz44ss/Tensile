@@ -704,6 +704,7 @@ def writeClientConfigIni(problemSizes, problemType, sourceDir, codeObjectFiles, 
 
         param("library-update-file",      globalParameters["LibraryUpdateFile"])
         param("library-update-comment",   globalParameters["LibraryUpdateComment"])
+        param("use-gpu-precise-timer",    globalParameters["PreciseKernelTime"])
 
 def writeClientConfig(forBenchmark, solutions, problemSizes, stepName, stepBaseDir, newLibrary, codeObjectFiles, tileAwareSelection, configBase = "ClientParameters", libraryFile = None):
 
