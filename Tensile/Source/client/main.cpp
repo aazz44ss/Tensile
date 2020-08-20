@@ -162,6 +162,7 @@ namespace Tensile
                 ("num-syncs-per-benchmark",  po::value<int>()->default_value(1), "Syncs per benchmark")
                 ("min-flops-per-sync",       po::value<size_t>()->default_value(0), "Minimum number of flops per sync to increase stability for small problems.")
                 ("use-gpu-timer",            po::value<bool>()->default_value(true), "Use GPU timer")
+                ("use-gpu-precise-timer",    po::value<bool>()->default_value(true), "Use Precise timer when using GPU timer")
                 ("sleep-percent",            po::value<int>()->default_value(0), "Sleep percentage")
                 ("hardware-monitor",         po::value<bool>()->default_value(true), "Use hardware monitor.")
 
