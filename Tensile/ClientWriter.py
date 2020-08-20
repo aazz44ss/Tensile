@@ -694,6 +694,7 @@ def writeClientConfigIni(problemSizes, problemType, sourceDir, codeObjectFiles, 
         param("csv-merge-same-problems",  globalParameters["CSVMergeSameProblemID"])
         param("log-level",                ClientLogLevel(globalParameters["ClientLogLevel"]).name)
         param("max-workspace-size",       globalParameters["MaxWorkspaceSize"])
+        param("use-gpu-precise-timer",    globalParameters["PreciseKernelTime"])
         param("granularity-threshold",    globalParameters["GranularityThreshold"])
 
 def writeClientConfig(forBenchmark, solutions, problemSizes, stepName, stepBaseDir, newLibrary, codeObjectFiles, tileAwareSelection, configBase = "ClientParameters", libraryFile = None):
