@@ -171,6 +171,7 @@ namespace Tensile
         {
             if(!m_useGPUTimer)
             {
+                HIP_CHECK_EXC(hipDeviceSynchronize());
                 m_startTime = clock::now();
             }
         }
