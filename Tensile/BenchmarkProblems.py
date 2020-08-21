@@ -303,7 +303,7 @@ def benchmarkProblemType( problemTypeConfig, problemSizeGroupConfig, \
 
     if removesExist:
       print1("# Updating winners since kernelwriter removed unused hardcoded solutions.  removeHardcoded=%u winners=%u" %(len(removeHardcoded), len(winners.winners)))
-      winners.wpdUpdate( benchmarkStep.hardcodedParameters )
+      # winners.wpdUpdate( benchmarkStep.hardcodedParameters )
       numHardcoded = len(benchmarkStep.hardcodedParameters )
       # remove from solution 2D list also
       solutions = list([s for s in solutions if len(s) > 0])
@@ -357,7 +357,7 @@ def benchmarkProblemType( problemTypeConfig, problemSizeGroupConfig, \
     ############################################################################
     # Winners -> Determined Parameters
     ############################################################################
-    if not enableTileSelection:
+    if not enableTileSelection and 0:
         results = getResults(resultsFileName, solutions, enableTileSelection, newResultsFileName)
         currentTime = time.time()
         elapsedTime = currentTime - startTime
