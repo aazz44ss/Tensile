@@ -250,7 +250,7 @@ def benchmarkProblemType( problemTypeConfig, problemSizeGroupConfig, \
       for hcParm in benchmarkStep.hardcodedParameters:
         winners.winners[FrozenDictionary(hcParm)] = [{},-1]
 
-    print1("# Actual Solutions: %u / %u\n" % ( len(solutions), \
+    print1("# Actual Solutions: %u / %u after SolutionStructs\n" % ( len(solutions), \
         maxPossibleSolutions ))
 
 
@@ -307,6 +307,8 @@ def benchmarkProblemType( problemTypeConfig, problemSizeGroupConfig, \
       numHardcoded = len(benchmarkStep.hardcodedParameters )
       # remove from solution 2D list also
       solutions = list([s for s in solutions if len(s) > 0])
+      print1("# Actual Solutions: %u / %u after kernelwriter\n" \
+            % ( len(winners.winners)-len(removeHardcoded), len(winners.winners) ))
 
     if globalParameters["OldClientSourceTmp"]:
       print1("# Copying files that differ from sourceTmp -> source")
