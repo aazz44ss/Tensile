@@ -3556,7 +3556,8 @@ for codeObjectFileName in codeObjectFileNames:
       print(exc)
       return (-1, "")
     except RuntimeError as exc:
-      print(exc)
+      if globalParameters["PrintSolutionRejectionReason"]:
+        print(exc)
       return (-2, "")
 
   ##############################################################################
