@@ -275,13 +275,15 @@ def benchmarkProblemType( problemTypeConfig, problemSizeGroupConfig, \
     writeBenchmarkFiles(stepBaseDir, solutionList, benchmarkStep.problemSizes, \
         shortName, filesToCopy, benchmarkProcess.solutionSummationSizes)
 
+    solutionDict = {value: index for index, value in enumerate(solutionList)}
+
     removeSolutions = []
     for i in range(0, len(solutions)):
       solutionsForHardcoded = solutions[i]
       removeSolutions.append([])
       for j in range(0, len(solutionsForHardcoded)):
         solution = solutionsForHardcoded[j]
-        if solutionList.count(solution) == 0:
+        if solution not in solutionDict:
           removeSolutions[i].append(solution)
 
     for i in range(0, len(solutions)):
