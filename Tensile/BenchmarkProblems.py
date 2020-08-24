@@ -329,6 +329,10 @@ def benchmarkProblemType( problemTypeConfig, problemSizeGroupConfig, \
               Solution.getNameFull(solution) ))
       print2(HR)
 
+    currentTime = time.time()
+    elapsedTime = currentTime - startTime
+    print1("# Henry writeBenchmarkFiles Start - %.3fs\n" % (elapsedTime))
+
     # write benchmarkFiles
     writeBenchmarkFiles(stepBaseDir, solutionList, benchmarkStep.problemSizes, \
         shortName, filesToCopy, benchmarkProcess.solutionSummationSizes)
@@ -358,6 +362,10 @@ def benchmarkProblemType( problemTypeConfig, problemSizeGroupConfig, \
     removesExist = len(removeHardcoded) > 0
     for hardcodedParam in removeHardcoded:
       benchmarkStep.hardcodedParameters.remove(hardcodedParam)
+
+    currentTime = time.time()
+    elapsedTime = currentTime - startTime
+    print1("# Henry removeSolution End - %.3fs\n" % (elapsedTime))
 
     if removesExist:
       if "CustomKernels" not in problemSizeGroupConfig:
@@ -583,6 +591,9 @@ def writeBenchmarkFiles(stepBaseDir, solutions, problemSizes, stepName, filesToC
         kernelHelperOjbs.append(ko)
         kernelHelperNames.add(kname)
 
+  currentTime = time.time()
+  elapsedTime = currentTime - startTime
+  print1("# Henry writeBenchmarkFiles-Finding unique solutions End - %.3fs\n" % (elapsedTime))
 
   solutionSerialNaming = Solution.getSerialNaming(solutions)
   kernelSerialNaming   = Solution.getSerialNaming(kernels)
@@ -598,6 +609,10 @@ def writeBenchmarkFiles(stepBaseDir, solutions, problemSizes, stepName, filesToC
       globalParameters["WorkingPath"], globalParameters["CxxCompiler"], [problemType], solutions, kernels, kernelHelperOjbs, \
       solutionWriter, kernelWriterSource, kernelWriterAssembly, errorTolerant=True )
 
+  currentTime = time.time()
+  elapsedTime = currentTime - startTime
+  print1("# Henry writeBenchmarkFiles-writeSolutionsAndKernels End - %.3fs\n" % (elapsedTime))
+
   newLibraryDir = ensurePath(os.path.join(globalParameters["WorkingPath"], 'library'))
   newLibraryFile = os.path.join(newLibraryDir, "TensileLibrary")
   newLibrary = SolutionLibrary.MasterSolutionLibrary.BenchmarkingLibrary(solutions)
@@ -605,6 +620,10 @@ def writeBenchmarkFiles(stepBaseDir, solutions, problemSizes, stepName, filesToC
   LibraryIO.write(newLibraryFile, Utils.state(newLibrary), globalParameters["LibraryFormat"])
 
   codeObjectFiles = [os.path.relpath(f, globalParameters["WorkingPath"]) for f in codeObjectFiles]
+
+  currentTime = time.time()
+  elapsedTime = currentTime - startTime
+  print1("# Henry writeBenchmarkFiles-LibraryIO End - %.3fs\n" % (elapsedTime))
 
   writeClientConfig(True, solutions, problemSizes, stepName, stepBaseDir, newLibrary, codeObjectFiles, False)
 
@@ -632,6 +651,10 @@ def writeBenchmarkFiles(stepBaseDir, solutions, problemSizes, stepName, filesToC
     idealProblemSizes = ProblemSizes(problemType, idealSizes)
     writeClientConfig(True, solutions, idealProblemSizes, stepName, stepBaseDir, newLibrary, codeObjectFiles, True)
 
+  currentTime = time.time()
+  elapsedTime = currentTime - startTime
+  print1("# Henry writeBenchmarkFiles-writeClientConfig End - %.3fs\n" % (elapsedTime))
+
   if len(solutions) == 0:
     printExit("write solutions and kernels results 0 valid soultion.")
 
@@ -647,6 +670,10 @@ def writeBenchmarkFiles(stepBaseDir, solutions, problemSizes, stepName, filesToC
    asmLibFiles) = buildObjectFileNames(solutionWriter, kernelWriterSource, \
     kernelWriterAssembly, solutions, kernels, kernelHelperOjbs)
 
+  currentTime = time.time()
+  elapsedTime = currentTime - startTime
+  print1("# Henry writeBenchmarkFiles-buildObjectFileNames End - %.3fs\n" % (elapsedTime))
+
   writeCMake(outputPath, solutionFiles, sourceKernelFiles, filesToCopy)
 
   for fileName in filesToCopy:
@@ -657,6 +684,10 @@ def writeBenchmarkFiles(stepBaseDir, solutions, problemSizes, stepName, filesToC
       forBenchmark = True
       writeClientParameters(forBenchmark, solutions, problemSizes, stepName, \
           filesToCopy, stepBaseDir, solutionSummationSizes, solutionWriter)
+
+  currentTime = time.time()
+  elapsedTime = currentTime - startTime
+  print1("# Henry writeBenchmarkFiles-writeCMake End - %.3fs\n" % (elapsedTime))
 
 
 ################################################################################
