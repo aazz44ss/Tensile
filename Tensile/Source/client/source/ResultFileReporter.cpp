@@ -93,9 +93,19 @@ namespace Tensile
                     {
                         m_winnerSolution    = m_solutionName;
                         m_winnerSolutionIdx = m_currSolutionIdx;
-                        m_fastestGflops     = gflops;
+                        m_fastestGflops = gflops;
+                        m_winnerTilesPerCU = m_currTilesPerCU;
+                        m_winnerGranularity = m_currGranularity;
                     }
                 }
+            }
+            else if(key == ResultKey::TotalGranularity)
+            {
+                m_currGranularity = std::stod(valueStr);
+            }
+            else if(key == ResultKey::TilesPerCu)
+            {
+                m_currTilesPerCU = std::stod(valueStr);
             }
             else
             {
@@ -168,9 +178,10 @@ namespace Tensile
             {
                 const std::string& key = oldRowIter.first;
                 if(key.compare(ResultKey::ProblemIndex) == 0
-                   || key.find("Size") != std::string::npos || key.compare(ResultKey::LDD) == 0
-                   || key.compare(ResultKey::LDC) == 0 || key.compare(ResultKey::LDA) == 0
-                   || key.compare(ResultKey::LDB) == 0 || key.compare(ResultKey::TotalFlops) == 0)
+                   || key.find("Size") != std::string::npos
+                   || key.compare(ResultKey::LDD) == 0 || key.compare(ResultKey::LDC) == 0
+                   || key.compare(ResultKey::LDA) == 0 || key.compare(ResultKey::LDB) == 0
+                   || key.compare(ResultKey::TotalFlops) == 0)
                 {
                     // these data should be the same for same problem
                     assert(oldRowIter.second == newRow[key]);
@@ -187,11 +198,15 @@ namespace Tensile
                         oldRow[ResultKey::TimeUS]            = newRow[ResultKey::TimeUS];
                         oldRow[ResultKey::SolutionWinnerIdx] = newRow[ResultKey::SolutionWinnerIdx];
                         oldRow[ResultKey::SolutionWinner]    = newRow[ResultKey::SolutionWinner];
+                        oldRow[ResultKey::TilesPerCu]        = newRow[ResultKey::TilesPerCu];
+                        oldRow[ResultKey::TotalGranularity]  = newRow[ResultKey::TotalGranularity];
                     }
                 }
                 else if(key.compare(ResultKey::TimeUS) == 0
                         || key.compare(ResultKey::SolutionWinnerIdx) == 0
-                        || key.compare(ResultKey::SolutionWinner) == 0)
+                        || key.compare(ResultKey::SolutionWinner) == 0
+                        || key.compare(ResultKey::TilesPerCu) == 0
+                        || key.compare(ResultKey::TotalGranularity) == 0)
                 {
                     // skip, we update these together with FastestGFlops
                     continue;
@@ -220,13 +235,19 @@ namespace Tensile
                 m_output.setValueForKey(ResultKey::TimeUS, m_fasterTimeUS);
                 m_output.setValueForKey(ResultKey::SolutionWinnerIdx, m_winnerSolutionIdx);
                 m_output.setValueForKey(ResultKey::SolutionWinner, m_winnerSolution);
+                m_output.setValueForKey(ResultKey::TilesPerCu, m_winnerTilesPerCU);
+                m_output.setValueForKey(ResultKey::TotalGranularity, m_winnerGranularity);
             }
             // reset
             m_winnerSolution    = "";
             m_currSolutionIdx   = -1;
             m_winnerSolutionIdx = -1;
-            m_fastestGflops     = -1;
-            m_fasterTimeUS      = -1;
+            m_fastestGflops  = -1;
+            m_fasterTimeUS = -1;
+            m_currTilesPerCU = -1;
+            m_currGranularity = -1;
+            m_winnerTilesPerCU  = -1;
+            m_winnerGranularity = -1;
 
             if(!m_mergeSameProblems)
             {
