@@ -687,8 +687,7 @@ def writeClientConfigIni(problemSizes, problemType, sourceDir, codeObjectFiles, 
         param("hardware-monitor",         globalParameters["HardwareMonitor"])
         if convValidation:
             param("convolution-vs-contraction", globalParameters["ConvolutionVsContraction"])
-        if not globalParameters["KernelTime"]:
-            param("num-warmups", 1)
+        param("num-warmups",              globalParameters["numWarmups"])
         param("sleep-percent",            globalParameters["SleepPercent"])
         param("perf-l2-read-hits",        globalParameters["PerfModelL2ReadHits"])
         param("perf-l2-write-hits",       globalParameters["PerfModelL2WriteHits"])
