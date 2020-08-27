@@ -1105,6 +1105,7 @@ namespace Tensile
             NumCUs = pAMDGPU->computeUnitCount;
         }
 
+        double persistentKernel     = sizeMapping.persistentKernel;
         double GlobalSplitU         = sizeMapping.globalSplitU;
         double LocalSplitU          = sizeMapping.workGroupSize.z;
         double IdealGranularityPerf = closestKPerformance;
@@ -1112,8 +1113,11 @@ namespace Tensile
         pp.numTiles0 = M / MT0;
         pp.numTiles1 = N / MT1;
 
+        // when PK, this is "tilesPerWG"
+        if(!sizeMapping.persistentKernel)
+            persistentKernel = 1.0;
         pp.tilesPerCu = (NumBatches * ceil(pp.numTiles0) * ceil(pp.numTiles1))
-                        / (NumCUs / GlobalSplitU / LocalSplitU);
+                        / ((NumCUs * persistentKernel) / GlobalSplitU / LocalSplitU);
         pp.tile0Granularity = pp.numTiles0 / ceil(pp.numTiles0);
         pp.tile1Granularity = pp.numTiles1 / ceil(pp.numTiles1);
 
