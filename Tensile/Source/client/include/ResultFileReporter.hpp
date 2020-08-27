@@ -72,11 +72,15 @@ namespace Tensile
             bool         m_extraCol;
             bool         m_mergeSameProblems;
             // for extra columns
-            std::string m_winnerSolution;
-            int64_t     m_currSolutionIdx   = -1;
-            int64_t     m_winnerSolutionIdx = -1;
-            int64_t     m_fastestGflops     = -1;
-            double      m_fasterTimeUS      = -1;
+            std::string  m_winnerSolution;
+            int64_t      m_currSolutionIdx = -1;
+            int64_t      m_winnerSolutionIdx = -1;
+            int64_t      m_fastestGflops = -1;
+            double       m_fasterTimeUS = -1;
+            double       m_currTilesPerCU = -1;
+            double       m_currGranularity = -1;
+            double       m_winnerTilesPerCU = -1;
+            double       m_winnerGranularity = -1;
             // for merge rows
             int64_t                                                         m_currProbID = -1;
             std::map<int64_t, std::unordered_map<std::string, std::string>> m_probMap;
