@@ -1,0 +1,290 @@
+GlobalParameters:
+  numWarmup: 1
+  SleepPercent: 50
+  KernelTime: True
+  PrintWinnersOnly: True
+  NumElementsToValidate: 0
+  DataInitTypeBeta: 0
+  DataInitTypeAlpha: 1
+  NewClient: 2
+  CSVExportWinner: 1
+  CSVMergeSameProblemID: 1
+  LegacyComponents: 0
+  ShortNames: 1
+
+BenchmarkProblems:
+  ########################################
+  # NN - standard
+  ########################################
+  -
+    - # ProblemType
+      OperationType: GEMM
+      DataType: B
+      DestDataType: B
+      ComputeDataType: s
+      HighPrecisionAccumulate: True
+      TransposeA: False
+      TransposeB: False
+      UseBeta: True
+      Batched: True
+    - # BenchmarkProblemSizeGroup - Standard - All problem
+      InitialSolutionParameters:
+      BenchmarkCommonParameters:
+        - KernelLanguage: ["Assembly"]
+        - EdgeType: ["ShiftPtr"]
+      ForkParameters:
+        - MatrixInstruction:
+          - [32, 32, 4, 1,  1,  1,1,  2,2]  # 64x64
+          - [32, 32, 4, 1,  1,  1,2,  2,2]  # 64x128
+          - [32, 32, 4, 1,  1,  1,4,  2,2]  # 64x256
+          - [32, 32, 4, 1,  1,  2,1,  2,2]  # 128x64
+          - [32, 32, 4, 1,  1,  2,2,  2,2]  # 128x128
+          - [32, 32, 4, 1,  1,  2,4,  2,2]  # 128x256
+          - [32, 32, 4, 1,  1,  4,1,  2,2]  # 256x64
+          - [32, 32, 4, 1,  1,  4,2,  2,2]  # 256x128
+          # [32, 32, 4, 1,  1,  4,4,  2,2]  # 256x256
+          - [16, 16, 8, 1,  1,  1,1,  2,2] # 32x32
+          - [16, 16, 8, 1,  1,  1,2,  2,2] # 32x64
+          - [16, 16, 8, 1,  1,  2,1,  2,2] # 64x32
+
+          # Specialized MT
+          - [32, 32, 4, 1,  1,  1,3,  4,1]  # 128x96
+          - [32, 32, 4, 1,  1,  3,1,  1,4]  # 96x128
+          # [32, 32, 4, 1,  1,  1,9,  4,1]  # 128x288
+          # [32, 32, 4, 1,  1,  9,1,  1,4]  # 288x128
+          - [32, 32, 4, 1,  1,  1,5,  4,1]  # 128x160
+          - [32, 32, 4, 1,  1,  5,1,  1,4]  # 160x128
+          # [32, 32, 4, 1,  1,  2,5,  4,1]  # 256x160
+          # [32, 32, 4, 1,  1,  5,2,  1,4]  # 160x256
+
+          - [16, 16, 8, 1,  1,  3,3,  2,2] # 96x96
+          - [16, 16, 8, 1,  1,  5,5,  2,2] # 160x160
+
+          - [16, 16, 8, 1,  1,  2,9,  4,1] # 128x144
+          - [16, 16, 8, 1,  1,  9,2,  1,4] # 144x128
+          # [16, 16, 8, 1,  1,  4,9,  4,1] # 256x144
+          # [16, 16, 8, 1,  1,  9,4,  1,4] # 144x256
+        - ThreadTile:
+          - [ 1, 32 ]
+        - WorkGroup:
+          - [ 64, 4, 1 ]
+        - AssertFree0ElementMultiple: [8]
+        - PrefetchGlobalRead: [1]
+        - PrefetchLocalRead: [2,5,9,17]
+        - DepthU: [32,64]
+        - VectorWidth: [2]
+        - GlobalReadVectorWidth: [2,4,8]
+        - LocalReadVectorWidth: [4]
+        - SuppressNoLoadLoop: [0]
+        - OptNoLoadLoop: [1]
+        - ScheduleLocalWrite: [1]
+        - ScheduleGlobalRead: [1]
+        - ScheduleIterAlg: [3]
+        - InnerUnroll: [1]
+        - ExpandPointerSwap: [1]
+        - TransposeLDS: [1]
+        - LdsBlockSizePerPad: [-1]
+        - LdsPadA: [-1]
+        - LdsPadB: [-1]
+        - StoreRemapVectorWidth: [-1]
+        # - StaggerUMapping: [0,3]
+        - StaggerUStride: [128,256]
+        - StaggerU: [0,32]
+        - WorkGroupMapping: [1,2,15]
+        - WaveSeparateGlobalReadA: [1]
+        - WaveSeparateGlobalReadB: [1]
+        - 1LDSBuffer: [0,1]
+        - GlobalSplitU: [1]
+      BenchmarkJoinParameters:
+      BenchmarkFinalParameters:
+        - ProblemSizes:
+          - Exact: { sizes: [ 3136, 128, 64, 64 ], stridesA: [ -1, 3136, 200704 ], stridesB: [ -1, 64, 8192 ], stridesC: [ -1, 3136, 401408 ], stridesD: [ -1, 3136, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 256, 64, 64 ], stridesA: [ -1, 3136, 200704 ], stridesB: [ -1, 64, 16384 ], stridesC: [ -1, 3136, 802816 ], stridesD: [ -1, 3136, 802816 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 256, 64, 128 ], stridesA: [ -1, 3136, 401408 ], stridesB: [ -1, 128, 32768 ], stridesC: [ -1, 3136, 802816 ], stridesD: [ -1, 3136, 802816 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 512, 64, 256 ], stridesA: [ -1, 784, 200704 ], stridesB: [ -1, 256, 131072 ], stridesC: [ -1, 784, 401408 ], stridesD: [ -1, 784, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 128, 64, 256 ], stridesA: [ -1, 3136, 802816 ], stridesB: [ -1, 256, 32768 ], stridesC: [ -1, 3136, 401408 ], stridesD: [ -1, 3136, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 256, 64, 256 ], stridesA: [ -1, 3136, 802816 ], stridesB: [ -1, 256, 65536 ], stridesC: [ -1, 3136, 802816 ], stridesD: [ -1, 3136, 802816 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 64, 512 ], stridesA: [ -1, 196, 100352 ], stridesB: [ -1, 512, 524288 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 256, 64, 512 ], stridesA: [ -1, 784, 401408 ], stridesB: [ -1, 512, 131072 ], stridesC: [ -1, 784, 200704 ], stridesD: [ -1, 784, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 512, 64, 512 ], stridesA: [ -1, 784, 401408 ], stridesB: [ -1, 512, 262144 ], stridesC: [ -1, 784, 401408 ], stridesD: [ -1, 784, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 512, 64, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 524288 ], stridesC: [ -1, 196, 100352 ], stridesD: [ -1, 196, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 64, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 2048, 64, 1024 ], stridesA: [ -1, 49, 50176 ], stridesB: [ -1, 1024, 2097152 ], stridesC: [ -1, 49, 100352 ], stridesD: [ -1, 49, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 1024, 64, 2048 ], stridesA: [ -1, 49, 100352 ], stridesB: [ -1, 2048, 2097152 ], stridesC: [ -1, 49, 50176 ], stridesD: [ -1, 49, 50176 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 128, 32, 64 ], stridesA: [ -1, 3136, 200704 ], stridesB: [ -1, 64, 8192 ], stridesC: [ -1, 3136, 401408 ], stridesD: [ -1, 3136, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 256, 32, 64 ], stridesA: [ -1, 3136, 200704 ], stridesB: [ -1, 64, 16384 ], stridesC: [ -1, 3136, 802816 ], stridesD: [ -1, 3136, 802816 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 256, 32, 128 ], stridesA: [ -1, 3136, 401408 ], stridesB: [ -1, 128, 32768 ], stridesC: [ -1, 3136, 802816 ], stridesD: [ -1, 3136, 802816 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 512, 32, 256 ], stridesA: [ -1, 784, 200704 ], stridesB: [ -1, 256, 131072 ], stridesC: [ -1, 784, 401408 ], stridesD: [ -1, 784, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 128, 32, 256 ], stridesA: [ -1, 3136, 802816 ], stridesB: [ -1, 256, 32768 ], stridesC: [ -1, 3136, 401408 ], stridesD: [ -1, 3136, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 256, 32, 256 ], stridesA: [ -1, 3136, 802816 ], stridesB: [ -1, 256, 65536 ], stridesC: [ -1, 3136, 802816 ], stridesD: [ -1, 3136, 802816 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 32, 512 ], stridesA: [ -1, 196, 100352 ], stridesB: [ -1, 512, 524288 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 256, 32, 512 ], stridesA: [ -1, 784, 401408 ], stridesB: [ -1, 512, 131072 ], stridesC: [ -1, 784, 200704 ], stridesD: [ -1, 784, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 512, 32, 512 ], stridesA: [ -1, 784, 401408 ], stridesB: [ -1, 512, 262144 ], stridesC: [ -1, 784, 401408 ], stridesD: [ -1, 784, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 512, 32, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 524288 ], stridesC: [ -1, 196, 100352 ], stridesD: [ -1, 196, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 32, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 2048, 32, 1024 ], stridesA: [ -1, 49, 50176 ], stridesB: [ -1, 1024, 2097152 ], stridesC: [ -1, 49, 100352 ], stridesD: [ -1, 49, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 1024, 32, 2048 ], stridesA: [ -1, 49, 100352 ], stridesB: [ -1, 2048, 2097152 ], stridesC: [ -1, 49, 50176 ], stridesD: [ -1, 49, 50176 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 64, 64, 64 ], stridesA: [ -1, 3136, 200704 ], stridesB: [ -1, 64, 4096 ], stridesC: [ -1, 3136, 200704 ], stridesD: [ -1, 3136, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 3136, 64, 64, 256 ], stridesA: [ -1, 3136, 802816 ], stridesB: [ -1, 256, 16384 ], stridesC: [ -1, 3136, 200704 ], stridesD: [ -1, 3136, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 512, 64, 128 ], stridesA: [ -1, 784, 100352 ], stridesB: [ -1, 128, 65536 ], stridesC: [ -1, 784, 401408 ], stridesD: [ -1, 784, 401408 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 784, 128, 64, 512 ], stridesA: [ -1, 784, 401408 ], stridesB: [ -1, 512, 65536 ], stridesC: [ -1, 784, 100352 ], stridesD: [ -1, 784, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 64, 256 ], stridesA: [ -1, 196, 50176 ], stridesB: [ -1, 256, 262144 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 256, 64, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 262144 ], stridesC: [ -1, 196, 50176 ], stridesD: [ -1, 196, 50176 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 2048, 64, 512 ], stridesA: [ -1, 49, 25088 ], stridesB: [ -1, 512, 1048576 ], stridesC: [ -1, 49, 100352 ], stridesD: [ -1, 49, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 512, 64, 2048 ], stridesA: [ -1, 49, 100352 ], stridesB: [ -1, 2048, 1048576 ], stridesC: [ -1, 49, 25088 ], stridesD: [ -1, 49, 25088 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 192, 64, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 245760 ], stridesC: [ -1, 64, 12288 ], stridesD: [ -1, 64, 12288 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 320, 64, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 409600 ], stridesC: [ -1, 64, 20480 ], stridesD: [ -1, 64, 20480 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 384, 64, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 491520 ], stridesC: [ -1, 64, 24576 ], stridesD: [ -1, 64, 24576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 448, 64, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 573440 ], stridesC: [ -1, 64, 28672 ], stridesD: [ -1, 64, 28672 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 192, 64, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 393216 ], stridesC: [ -1, 64, 12288 ], stridesD: [ -1, 64, 12288 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 320, 64, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 655360 ], stridesC: [ -1, 64, 20480 ], stridesD: [ -1, 64, 20480 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 384, 64, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 786432 ], stridesC: [ -1, 64, 24576 ], stridesD: [ -1, 64, 24576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 448, 64, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 917504 ], stridesC: [ -1, 64, 28672 ], stridesD: [ -1, 64, 28672 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 32, 64, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 6144 ], stridesC: [ -1, 1225, 39200 ], stridesD: [ -1, 1225, 39200 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 64, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 9216 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 64, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 12288 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 64, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 12288 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 64, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 16384 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 64, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 13824 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 64, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 18432 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 5329, 80, 64, 64 ], stridesA: [ -1, 5329, 341056 ], stridesB: [ -1, 64, 5120 ], stridesC: [ -1, 5329, 426320 ], stridesD: [ -1, 5329, 426320 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 128, 64, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 98304 ], stridesC: [ -1, 289, 36992 ], stridesD: [ -1, 289, 36992 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 160, 64, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 122880 ], stridesC: [ -1, 289, 46240 ], stridesD: [ -1, 289, 46240 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 192, 64, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 147456 ], stridesC: [ -1, 289, 55488 ], stridesD: [ -1, 289, 55488 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 192, 32, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 245760 ], stridesC: [ -1, 64, 12288 ], stridesD: [ -1, 64, 12288 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 320, 32, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 409600 ], stridesC: [ -1, 64, 20480 ], stridesD: [ -1, 64, 20480 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 384, 32, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 491520 ], stridesC: [ -1, 64, 24576 ], stridesD: [ -1, 64, 24576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 448, 32, 1280 ], stridesA: [ -1, 64, 81920 ], stridesB: [ -1, 1280, 573440 ], stridesC: [ -1, 64, 28672 ], stridesD: [ -1, 64, 28672 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 192, 32, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 393216 ], stridesC: [ -1, 64, 12288 ], stridesD: [ -1, 64, 12288 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 320, 32, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 655360 ], stridesC: [ -1, 64, 20480 ], stridesD: [ -1, 64, 20480 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 384, 32, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 786432 ], stridesC: [ -1, 64, 24576 ], stridesD: [ -1, 64, 24576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 448, 32, 2048 ], stridesA: [ -1, 64, 131072 ], stridesB: [ -1, 2048, 917504 ], stridesC: [ -1, 64, 28672 ], stridesD: [ -1, 64, 28672 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 32, 32, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 6144 ], stridesC: [ -1, 1225, 39200 ], stridesD: [ -1, 1225, 39200 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 32, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 9216 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 32, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 12288 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 32, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 12288 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 32, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 16384 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 32, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 13824 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 32, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 18432 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 5329, 80, 32, 64 ], stridesA: [ -1, 5329, 341056 ], stridesB: [ -1, 64, 5120 ], stridesC: [ -1, 5329, 426320 ], stridesD: [ -1, 5329, 426320 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 128, 32, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 98304 ], stridesC: [ -1, 289, 36992 ], stridesD: [ -1, 289, 36992 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 160, 32, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 122880 ], stridesC: [ -1, 289, 46240 ], stridesD: [ -1, 289, 46240 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 192, 32, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 147456 ], stridesC: [ -1, 289, 55488 ], stridesD: [ -1, 289, 55488 ] } # gemm_strided_batched
+
+
+    - # BenchmarkProblemSizeGroup - Standard - non-multiple of 8 M,N
+      InitialSolutionParameters:
+      BenchmarkCommonParameters:
+        - KernelLanguage: ["Assembly"]
+        - EdgeType: ["ShiftPtr"]
+      ForkParameters:
+        - MatrixInstruction:
+          - [32, 32, 4, 1,  1,  1,1,  2,2]  # 64x64
+          - [32, 32, 4, 1,  1,  1,2,  2,2]  # 64x128
+          - [32, 32, 4, 1,  1,  1,4,  2,2]  # 64x256
+          - [32, 32, 4, 1,  1,  2,1,  2,2]  # 128x64
+          - [32, 32, 4, 1,  1,  2,2,  2,2]  # 128x128
+          - [32, 32, 4, 1,  1,  2,4,  2,2]  # 128x256
+          - [32, 32, 4, 1,  1,  4,1,  2,2]  # 256x64
+          - [32, 32, 4, 1,  1,  4,2,  2,2]  # 256x128
+          # [32, 32, 4, 1,  1,  4,4,  2,2]  # 256x256
+          - [16, 16, 8, 1,  1,  1,1,  2,2] # 32x32
+          - [16, 16, 8, 1,  1,  1,2,  2,2] # 32x64
+          - [16, 16, 8, 1,  1,  2,1,  2,2] # 64x32
+
+          # Specialized MT
+          - [32, 32, 4, 1,  1,  1,3,  4,1]  # 128x96
+          - [32, 32, 4, 1,  1,  3,1,  1,4]  # 96x128
+          # [32, 32, 4, 1,  1,  1,9,  4,1]  # 128x288
+          # [32, 32, 4, 1,  1,  9,1,  1,4]  # 288x128
+          - [32, 32, 4, 1,  1,  1,5,  4,1]  # 128x160
+          - [32, 32, 4, 1,  1,  5,1,  1,4]  # 160x128
+          # [32, 32, 4, 1,  1,  2,5,  4,1]  # 256x160
+          # [32, 32, 4, 1,  1,  5,2,  1,4]  # 160x256
+
+          - [16, 16, 8, 1,  1,  3,3,  2,2] # 96x96
+          - [16, 16, 8, 1,  1,  5,5,  2,2] # 160x160
+
+          - [16, 16, 8, 1,  1,  2,9,  4,1] # 128x144
+          - [16, 16, 8, 1,  1,  9,2,  1,4] # 144x128
+          # [16, 16, 8, 1,  1,  4,9,  4,1] # 256x144
+          # [16, 16, 8, 1,  1,  9,4,  1,4] # 144x256
+        - ThreadTile:
+          - [ 1, 32 ]
+        - WorkGroup:
+          - [ 64, 4, 1 ]
+        - AssertFree0ElementMultiple: [1]
+        - PrefetchGlobalRead: [1]
+        - PrefetchLocalRead: [2,5,9,17]
+        - DepthU: [32,64]
+        - VectorWidth: [2]
+        - GlobalReadVectorWidth: [2,4,8]
+        - LocalReadVectorWidth: [4]
+        - SuppressNoLoadLoop: [0]
+        - OptNoLoadLoop: [1]
+        - ScheduleLocalWrite: [1]
+        - ScheduleGlobalRead: [1]
+        - ScheduleIterAlg: [3]
+        - InnerUnroll: [1]
+        - ExpandPointerSwap: [1]
+        - TransposeLDS: [1]
+        - LdsBlockSizePerPad: [-1]
+        - LdsPadA: [-1]
+        - LdsPadB: [-1]
+        - StoreRemapVectorWidth: [-1]
+        # - StaggerUMapping: [0,3]
+        - StaggerUStride: [128,256]
+        - StaggerU: [0,32]
+        - WorkGroupMapping: [1,2,15]
+        - WaveSeparateGlobalReadA: [1]
+        - WaveSeparateGlobalReadB: [1]
+        - 1LDSBuffer: [0,1]
+        - GlobalSplitU: [1]
+      BenchmarkJoinParameters:
+      BenchmarkFinalParameters:
+        - ProblemSizes:
+          - Exact: { sizes: [ 196, 1024, 64, 512 ], stridesA: [ -1, 196, 100352 ], stridesB: [ -1, 512, 524288 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 512, 64, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 524288 ], stridesC: [ -1, 196, 100352 ], stridesD: [ -1, 196, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 64, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 2048, 64, 1024 ], stridesA: [ -1, 49, 50176 ], stridesB: [ -1, 1024, 2097152 ], stridesC: [ -1, 49, 100352 ], stridesD: [ -1, 49, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 1024, 64, 2048 ], stridesA: [ -1, 49, 100352 ], stridesB: [ -1, 2048, 2097152 ], stridesC: [ -1, 49, 50176 ], stridesD: [ -1, 49, 50176 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 32, 512 ], stridesA: [ -1, 196, 100352 ], stridesB: [ -1, 512, 524288 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 512, 32, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 524288 ], stridesC: [ -1, 196, 100352 ], stridesD: [ -1, 196, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 32, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 2048, 32, 1024 ], stridesA: [ -1, 49, 50176 ], stridesB: [ -1, 1024, 2097152 ], stridesC: [ -1, 49, 100352 ], stridesD: [ -1, 49, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 1024, 32, 2048 ], stridesA: [ -1, 49, 100352 ], stridesB: [ -1, 2048, 2097152 ], stridesC: [ -1, 49, 50176 ], stridesD: [ -1, 49, 50176 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 1024, 64, 256 ], stridesA: [ -1, 196, 50176 ], stridesB: [ -1, 256, 262144 ], stridesC: [ -1, 196, 200704 ], stridesD: [ -1, 196, 200704 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 196, 256, 64, 1024 ], stridesA: [ -1, 196, 200704 ], stridesB: [ -1, 1024, 262144 ], stridesC: [ -1, 196, 50176 ], stridesD: [ -1, 196, 50176 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 2048, 64, 512 ], stridesA: [ -1, 49, 25088 ], stridesB: [ -1, 512, 1048576 ], stridesC: [ -1, 49, 100352 ], stridesD: [ -1, 49, 100352 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 49, 512, 64, 2048 ], stridesA: [ -1, 49, 100352 ], stridesB: [ -1, 2048, 1048576 ], stridesC: [ -1, 49, 25088 ], stridesD: [ -1, 49, 25088 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 32, 64, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 6144 ], stridesC: [ -1, 1225, 39200 ], stridesD: [ -1, 1225, 39200 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 64, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 9216 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 64, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 12288 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 64, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 12288 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 64, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 16384 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 64, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 13824 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 64, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 18432 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 5329, 80, 64, 64 ], stridesA: [ -1, 5329, 341056 ], stridesB: [ -1, 64, 5120 ], stridesC: [ -1, 5329, 426320 ], stridesD: [ -1, 5329, 426320 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 128, 64, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 98304 ], stridesC: [ -1, 289, 36992 ], stridesD: [ -1, 289, 36992 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 160, 64, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 122880 ], stridesC: [ -1, 289, 46240 ], stridesD: [ -1, 289, 46240 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 192, 64, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 147456 ], stridesC: [ -1, 289, 55488 ], stridesD: [ -1, 289, 55488 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 32, 32, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 6144 ], stridesC: [ -1, 1225, 39200 ], stridesD: [ -1, 1225, 39200 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 32, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 9216 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 32, 192 ], stridesA: [ -1, 1225, 235200 ], stridesB: [ -1, 192, 12288 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 32, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 12288 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 32, 256 ], stridesA: [ -1, 1225, 313600 ], stridesB: [ -1, 256, 16384 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 48, 32, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 13824 ], stridesC: [ -1, 1225, 58800 ], stridesD: [ -1, 1225, 58800 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 1225, 64, 32, 288 ], stridesA: [ -1, 1225, 352800 ], stridesB: [ -1, 288, 18432 ], stridesC: [ -1, 1225, 78400 ], stridesD: [ -1, 1225, 78400 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 5329, 80, 32, 64 ], stridesA: [ -1, 5329, 341056 ], stridesB: [ -1, 64, 5120 ], stridesC: [ -1, 5329, 426320 ], stridesD: [ -1, 5329, 426320 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 128, 32, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 98304 ], stridesC: [ -1, 289, 36992 ], stridesD: [ -1, 289, 36992 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 160, 32, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 122880 ], stridesC: [ -1, 289, 46240 ], stridesD: [ -1, 289, 46240 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 289, 192, 32, 768 ], stridesA: [ -1, 289, 221952 ], stridesB: [ -1, 768, 147456 ], stridesC: [ -1, 289, 55488 ], stridesD: [ -1, 289, 55488 ] } # gemm_strided_batched
+
+
+
+LibraryLogic:
+    ScheduleName: "arcturus"
+    DeviceNames: ["Device 7380", "Device 7388", "Device 738c", "Device 7390"]
+    ArchitectureName: "gfx908"
+
+#LibraryClient:
