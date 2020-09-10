@@ -1835,11 +1835,9 @@ class Solution:
           validDepthU = False
     else:
       pv = 1 # no partial vector required
-      if totalVectors % state["NumThreads"] != 0:
-        if not state["FractionalLoad"]:
-          reject(None, "totalVectors %u %% NumThreads %u != 0" \
-              % (totalVectors, state["NumThreads"]))
-          validDepthU = False
+      while totalVectors % state["NumThreads"] != 0:
+        totalVectors *= 2
+        grvw //= 2
 
     state["GlobalLoadVectorWidth%s"%tc] = grvw//pv
 
