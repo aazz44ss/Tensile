@@ -1981,9 +1981,10 @@ class Solution:
       pv = 1 # no partial vector required
       if totalVectors % state["NumThreads"] != 0:
         if not state["FractionalLoad"]:
-          reject(None, "totalVectors %u %% NumThreads %u != 0" \
-              % (totalVectors, state["NumThreads"]))
-          validDepthU = False
+          # lower globalread width
+          while totalVectors % state["NumThreads"] != 0:
+            totalVectors *= 2
+            grvw //= 2
 
     state["GlobalLoadVectorWidth%s"%tc] = grvw//pv
 
@@ -2938,6 +2939,10 @@ class Solution:
               if not Solution.setGlobalLoadVectorWidth(state, "B", tvb, glvwBlimit):
                 validDepthU = False
 
+      if state["GlobalReadVectorWidth"] != state["GlobalLoadVectorWidthA"] and \
+          state["GlobalReadVectorWidth"] != state["GlobalLoadVectorWidthB"]:
+        reject(state,"GLVWA%d or GLVWB%d != GRVW%d" % (state["GlobalLoadVectorWidthA"],state["GlobalLoadVectorWidthB"],state["GlobalReadVectorWidth"]))
+
       if validDepthU and state["KernelLanguage"] == "Assembly" \
         and (state["ProblemType"]["DataType"].isHalf() \
               or state["ProblemType"]["DataType"].isBFloat16()):
@@ -3174,7 +3179,7 @@ class Solution:
         state["LdsPadA"] = 0
       else:
         if state["EnableMatrixInstruction"] and state["TransposeLDS"]:
-          state["LdsPadA"] = max(state["GlobalReadVectorWidth"],optPad)
+          state["LdsPadA"] = max(state["GlobalLoadVectorWidthA"],optPad)
         else:
           state["LdsPadA"] = state["VectorWidth"]
       assert(state["LdsPadA"] >= 0)
@@ -3183,7 +3188,7 @@ class Solution:
         state["LdsPadB"] = 0
       else:
         if state["EnableMatrixInstruction"] and state["TransposeLDS"]:
-          state["LdsPadB"] = max(state["GlobalReadVectorWidth"],optPad)
+          state["LdsPadB"] = max(state["GlobalLoadVectorWidthB"],optPad)
         else:
           state["LdsPadB"] = state["VectorWidth"]
       assert(state["LdsPadB"] >= 0)
