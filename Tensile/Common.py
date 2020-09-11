@@ -408,6 +408,9 @@ validParameters = {
     # followed by local writes, followed by MACs
     "ScheduleIterAlg":             [0, 1, 2, 3],
 
+    "StaggerGlobalReadIns":         [1,2,3,4],
+    "StaggerLocalWriteIns":         [1,2,3,4],
+
     # LDD Support
     # Allow LDD and StrideD to != LDC and StrideC for LDD <= LDC and LDD == M
     "LdcEqualsLdd":               [ False, True ],
@@ -978,6 +981,8 @@ defaultBenchmarkCommonParameters = [
     {"ScheduleGlobalRead":        [ 1 ] },
     {"ScheduleLocalWrite":        [ 1 ] },
     {"ScheduleIterAlg":           [ 1 ] },
+    {"StaggerGlobalReadIns":      [ 1 ] },
+    {"StaggerLocalWriteIns":      [ 1 ] },
 
     {"LdcEqualsLdd":              [ True ] },
     {"InterleaveAlpha":           [ 0 ] },

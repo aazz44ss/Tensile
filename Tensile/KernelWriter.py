@@ -220,6 +220,16 @@ class KernelWriter(metaclass=abc.ABCMeta):
                         list(self.globalReadBCode.middle.items())
         itemsGRToSchedLater = []
 
+      staggerGR = kernel["StaggerGlobalReadIns"]
+      staggerLW = kernel["StaggerLocalWriteIns"]
+      readCnt = readCnt*staggerGR
+      itemsGRToSchedTemp = []
+      for i in range(len(itemsGRToSched)):
+        itemsGRToSchedTemp.append(itemsGRToSched.pop(0))
+        for j in range(1,staggerGR):
+          itemsGRToSchedTemp.append(Code.Module())
+      itemsGRToSched = itemsGRToSchedTemp
+
       itemsGRToSched.append(globalReadIncACode)
       for i in range(numEmptyGlobalReadIncCode):
         itemsGRToSched.append(Code.Module())
@@ -314,11 +324,22 @@ class KernelWriter(metaclass=abc.ABCMeta):
     else:
       # create a plan:
       itemsLWToSched = list(self.localWriteACode.items()) + list(self.localWriteBCode.items())
+      itemsLWToSchedTemp = []
+      for i in range(len(itemsLWToSched)-1):
+        itemsLWToSchedTemp.append(itemsLWToSched.pop(0))
+        for j in range(1,staggerLW):
+          itemsLWToSchedTemp.append(Code.Module())
+      if itemsLWToSched:
+        itemsLWToSchedTemp.append(itemsLWToSched.pop(0))
+        if staggerLW > 1:
+          itemsLWToSchedTemp.append(Code.Module())
+      itemsLWToSched = itemsLWToSchedTemp
       if 1:
         # This counts the number of modules which contain a ds_write
         # Scheduler below keeps all writes in the same module in same iteration
         # so this is better match to what it is trying to do
-        writesToSched = sum(1 for item in itemsLWToSched if item.countType(Code.LocalWriteInst))
+        # writesToSched = sum(1 for item in itemsLWToSched if item.countType(Code.LocalWriteInst))
+        writesToSched = len(itemsLWToSched)
       else:
         # count the number of writes, this doesn't match how they are
         # scheduled so pushes writes up too far
@@ -360,6 +381,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
             if not kernel["DirectToLdsB"]:
               assert self.globalReadBCode.middle.countType(Code.GlobalReadInst) == \
                   len(list(self.localWriteBCode.items()))
+
+      localwriteCnt = 0
       for u in range(startIter, localWriteEndIter+1):
         if u==(localWriteEndIter):
           itemPerIter = len(itemsLWToSched) # schedule all remaining activity
@@ -397,11 +420,20 @@ class KernelWriter(metaclass=abc.ABCMeta):
             else:
               print("warning - scheduleLocalWrite adding conservative vmcnt(0)")
               imod.addCode(Code.WaitCnt(self.version, -1, 0, "conservative waitcnt"))
+
           imod.addCode(item)
-          if kernel["PrefetchGlobalRead"] == 2:
+          schedGR = 0
+          if staggerLW == 1:
+            if writesPerItem:
+              schedGR = 1
+          else:
+            if localwriteCnt % staggerLW == 1:
+              schedGR = 1
+          localwriteCnt += 1
+          if kernel["PrefetchGlobalRead"] == 2 and schedGR:
             imod.addCode(itemsGRToSchedLater.pop(0))
             readsToWait = readsToWait + 1
-          self.perIterLocalWriteCode[u].addCode(imod) 
+          self.perIterLocalWriteCode[u].addCode(imod)
           imodNGLL.addCode(copy.deepcopy(item))
           self.perIterLocalWriteCodeNGLL[u].addCode(imodNGLL)
         itemsLWToSched = itemsLWToSched[itemPerIter:]

@@ -2468,6 +2468,14 @@ class Solution:
       if state["PrefetchAcrossPersistent"]:
         state["ExpandPointerSwap"] = 0
 
+    if state["PrefetchGlobalRead"] == 2:
+      if not state["StaggerGlobalReadIns"] == 1:
+        reject(state, "StaggerGlobalReadIns > 1 should not work with PGR2")
+
+    if state["PrefetchGlobalRead"] == 1 or state["PrefetchGlobalRead"] == 0:
+      if not state["StaggerLocalWriteIns"] == 1:
+        reject(state, "StaggerLocalWriteIns > 1 should not work with PGR1 or PGR0")
+
     #print("PackedC0IdxChars", state["PackedC0IdxChars"])
     #print("PackedC1IdxChars", state["PackedC1IdxChars"])
 
