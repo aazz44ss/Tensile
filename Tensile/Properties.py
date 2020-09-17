@@ -22,10 +22,11 @@
 from .Utils import hash_objs, state
 
 class Property:
-    def __init__(self, tag=None, index=None, value=None):
+    def __init__(self, tag=None, index=None, value=None, value2=None):
         self._tag = tag
         self._index = index
         self._value = value
+        self._value2 = value2
 
     @property
     def tag(self):   return self._tag
@@ -33,22 +34,26 @@ class Property:
     def index(self): return self._index
     @property
     def value(self): return self._value
+    @property
+    def value2(self): return self._value2
 
     def state(self):
         rv = {'type': self.tag}
-        if self.index is not None: rv['index'] = state(self.index)
-        if self.value is not None: rv['value'] = state(self.value)
+        if self.index  is not None: rv['index']  = state(self.index)
+        if self.value  is not None: rv['value']  = state(self.value)
+        if self.value2 is not None: rv['value2'] = state(self.value2)
         return rv
 
     def __eq__(self, other):
         return self.__class__ == other.__class__ and \
-               self.tag   == other.tag   and \
-               self.value == other.value and \
-               self.index == other.index
+               self.tag       == other.tag   and \
+               self.value     == other.value and \
+               self.value2    == other.value2 and \
+               self.index     == other.index
 
     def __hash__(self):
         #return hash(self.tag) ^ hash(self.value) ^ hash(self.index)
-        return hash_objs(self.tag, self.value, self.index)
+        return hash_objs(self.tag, self.value, self.value2, self.index)
 
 
 class Predicate(Property):
@@ -86,5 +91,5 @@ class Predicate(Property):
             return False
 
         # If neither is a TruePred then just use the default comparison.
-        return (self.tag, self.index, self.value) < (other.tag, other.index, other.value)
+        return (self.tag, self.index, self.value, self.value2) < (other.tag, other.index, other.value, other.value2)
 

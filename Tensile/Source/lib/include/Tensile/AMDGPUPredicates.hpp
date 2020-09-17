@@ -48,8 +48,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 AMDGPU::Processor value;
 
@@ -74,8 +74,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 int value;
 
@@ -100,8 +100,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 AMDGPU::Processor value;
 

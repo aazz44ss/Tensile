@@ -79,8 +79,7 @@ namespace Tensile
         struct EmptyMappingTraits
         {
             using iot = IOTraits<IO>;
-            static_assert(Object::HasValue == false,
-                          "Object has a value.  Use the value base class.");
+            static_assert(Object::HasValue == 0, "Object has a value.  Use the value base class.");
             static void mapping(IO& io, Object& obj) {}
 
             const static bool flow = true;
@@ -90,8 +89,7 @@ namespace Tensile
         struct ValueMappingTraits
         {
             using iot = IOTraits<IO>;
-            static_assert(Object::HasValue == true,
-                          "Object has no value.  Use the empty base class.");
+            static_assert(Object::HasValue == 1, "Object has no value.  Use the empty base class.");
             static void mapping(IO& io, Object& obj)
             {
                 iot::mapRequired(io, "value", obj.value);
@@ -101,10 +99,25 @@ namespace Tensile
         };
 
         template <typename Object, typename IO>
+        struct TwoValuesMappingTraits
+        {
+            using iot = IOTraits<IO>;
+            static_assert(Object::HasValue == 2,
+                          "Object has no 2 values.  Use the empty base class.");
+            static void mapping(IO& io, Object& obj)
+            {
+                iot::mapRequired(io, "value", obj.value);
+                iot::mapRequired(io, "value2", obj.value2);
+            }
+
+            const static bool flow = true;
+        };
+
+        template <typename Object, typename IO>
         struct IndexMappingTraits
         {
             using iot = IOTraits<IO>;
-            static_assert(Object::HasIndex == true,
+            static_assert(Object::HasIndex == 1,
                           "Object doesn't have index/value.  Use the empty base class.");
             static void mapping(IO& io, Object& obj)
             {
@@ -118,7 +131,7 @@ namespace Tensile
         struct IndexValueMappingTraits
         {
             using iot = IOTraits<IO>;
-            static_assert(Object::HasIndex == true && Object::HasValue == true,
+            static_assert(Object::HasIndex == 1 && Object::HasValue == 1,
                           "Object doesn't have index/value.  Use the empty base class.");
             static void mapping(IO& io, Object& obj)
             {
@@ -131,30 +144,34 @@ namespace Tensile
 
         template <typename Object,
                   typename IO,
-                  bool HasIndex = Object::HasIndex,
-                  bool HasValue = Object::HasValue>
+                  size_t HasIndex = Object::HasIndex,
+                  size_t HasValue = Object::HasValue>
         struct AutoMappingTraits
         {
         };
 
         template <typename Object, typename IO>
-        struct AutoMappingTraits<Object, IO, false, false> : public EmptyMappingTraits<Object, IO>
+        struct AutoMappingTraits<Object, IO, 0, 0> : public EmptyMappingTraits<Object, IO>
         {
         };
 
         template <typename Object, typename IO>
-        struct AutoMappingTraits<Object, IO, false, true> : public ValueMappingTraits<Object, IO>
+        struct AutoMappingTraits<Object, IO, 0, 1> : public ValueMappingTraits<Object, IO>
         {
         };
 
         template <typename Object, typename IO>
-        struct AutoMappingTraits<Object, IO, true, false> : public IndexMappingTraits<Object, IO>
+        struct AutoMappingTraits<Object, IO, 0, 2> : public TwoValuesMappingTraits<Object, IO>
         {
         };
 
         template <typename Object, typename IO>
-        struct AutoMappingTraits<Object, IO, true, true>
-            : public IndexValueMappingTraits<Object, IO>
+        struct AutoMappingTraits<Object, IO, 1, 0> : public IndexMappingTraits<Object, IO>
+        {
+        };
+
+        template <typename Object, typename IO>
+        struct AutoMappingTraits<Object, IO, 1, 1> : public IndexValueMappingTraits<Object, IO>
         {
         };
 

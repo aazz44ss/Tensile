@@ -49,13 +49,13 @@ namespace Tensile
  * @brief Simplifies implementation of `ToString()` for Property subclasses
  * which may have `index` and/or `value` members.
  */
-    template <typename Class, bool HasIndex = Class::HasIndex, bool HasValue = Class::HasValue>
+    template <typename Class, size_t HasIndex = Class::HasIndex, size_t HasValue = Class::HasValue>
     struct PropertyHelper
     {
     };
 
     template <typename Class>
-    struct PropertyHelper<Class, false, false>
+    struct PropertyHelper<Class, 0, 0>
     {
         static std::string ToString(Class const& obj)
         {
@@ -64,7 +64,7 @@ namespace Tensile
     };
 
     template <typename Class>
-    struct PropertyHelper<Class, false, true>
+    struct PropertyHelper<Class, 0, 1>
     {
         static std::string ToString(Class const& obj)
         {
@@ -73,7 +73,16 @@ namespace Tensile
     };
 
     template <typename Class>
-    struct PropertyHelper<Class, true, false>
+    struct PropertyHelper<Class, 0, 2>
+    {
+        static std::string ToString(Class const& obj)
+        {
+            return concatenate(obj.type(), "(", obj.value, ",", obj.value2, ")");
+        }
+    };
+
+    template <typename Class>
+    struct PropertyHelper<Class, 1, 0>
     {
         static std::string ToString(Class const& obj)
         {
@@ -82,7 +91,7 @@ namespace Tensile
     };
 
     template <typename Class>
-    struct PropertyHelper<Class, true, true>
+    struct PropertyHelper<Class, 1, 1>
     {
         static std::string ToString(Class const& obj)
         {

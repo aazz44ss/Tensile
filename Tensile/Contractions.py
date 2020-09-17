@@ -26,6 +26,7 @@ from .SolutionStructs import Solution as OriginalSolution
 from .Utils import state, state_key_ordering
 
 from . import Common
+from . Common import globalParameters
 
 @state_key_ordering
 class FreeIndex:
@@ -352,6 +353,10 @@ class ProblemPredicate(Properties.Predicate):
         # it should be StrideA*MT1, so we need to output MT1 and use the StrideA of problem in host-side for predication
         if 'BufferStore' in state and state['BufferStore'] == True:
             rv += [cls('BufferStoreOffsetLimitCheck', value=state['MacroTile1'])]
+
+        if ('_GlobalAccumulation' in state) and state['_GlobalAccumulation']:
+            subrv={}
+            rv += [cls('GlobalSplitUCheckK', value=state['GlobalSplitU'], value2=globalParameters['MinKForGSU'])]
 
         return rv
 

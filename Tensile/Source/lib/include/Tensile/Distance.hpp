@@ -72,8 +72,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = false,
-                HasValue = false
+                HasIndex = 0,
+                HasValue = 0
             };
             static std::string Type()
             {
@@ -109,8 +109,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = false,
-                HasValue = false
+                HasIndex = 0,
+                HasValue = 0
             };
             static std::string Type()
             {
@@ -146,8 +146,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = false,
-                HasValue = false
+                HasIndex = 0,
+                HasValue = 0
             };
 
             static std::string Type()
@@ -186,8 +186,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = false,
-                HasValue = false
+                HasIndex = 0,
+                HasValue = 0
             };
 
             static std::string Type()

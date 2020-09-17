@@ -39,8 +39,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -59,8 +59,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -79,8 +79,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -99,8 +99,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -119,8 +119,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -139,8 +139,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -159,8 +159,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -179,8 +179,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = true,
-                HasValue = false
+                HasIndex = 1,
+                HasValue = 0
             };
             size_t index;
 
@@ -200,8 +200,8 @@ namespace Tensile
         {
             enum
             {
-                HasIndex = false,
-                HasValue = false
+                HasIndex = 0,
+                HasValue = 0
             };
 
             static std::string Type()

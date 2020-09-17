@@ -79,8 +79,8 @@ namespace Tensile
         public:
             enum
             {
-                HasIndex = false,
-                HasValue = false
+                HasIndex = 0,
+                HasValue = 0
             };
             static std::string Type()
             {
@@ -99,8 +99,8 @@ namespace Tensile
         public:
             enum
             {
-                HasIndex = false,
-                HasValue = false
+                HasIndex = 0,
+                HasValue = 0
             };
             static std::string Type()
             {
@@ -119,8 +119,8 @@ namespace Tensile
         public:
             enum
             {
-                HasIndex = false,
-                HasValue = true
+                HasIndex = 0,
+                HasValue = 1
             };
             std::vector<std::shared_ptr<Predicate<Object>>> value;
 
@@ -177,8 +177,8 @@ namespace Tensile
         public:
             enum
             {
-                HasIndex = false,
-                HasValue = true
+                HasIndex = 0,
+                HasValue = 1
             };
             std::vector<std::shared_ptr<Predicate<Object>>> value;
 
@@ -232,8 +232,8 @@ namespace Tensile
         public:
             enum
             {
-                HasIndex = false,
-                HasValue = true
+                HasIndex = 0,
+                HasValue = 1
             };
             std::shared_ptr<Predicate<Object>> value;
             Not() = default;
@@ -276,8 +276,8 @@ namespace Tensile
         public:
             enum
             {
-                HasIndex = false,
-                HasValue = true
+                HasIndex = 0,
+                HasValue = 1
             };
             static_assert(std::is_base_of<Object, Subclass>::value,
                           "Subclass must be derived from Object.");

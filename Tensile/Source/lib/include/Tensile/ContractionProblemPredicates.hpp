@@ -53,8 +53,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -81,8 +81,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -109,8 +109,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -137,8 +137,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -165,8 +165,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 int64_t index;
                 size_t  value;
@@ -197,8 +197,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -226,8 +226,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 size_t value;
 
@@ -266,8 +266,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 size_t value;
 
@@ -313,8 +313,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 size_t value;
 
@@ -359,8 +359,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -398,8 +398,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -437,8 +437,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -476,8 +476,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -515,8 +515,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -554,8 +554,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
 
                 bool value;
@@ -581,8 +581,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = false
+                    HasIndex = 0,
+                    HasValue = 0
                 };
                 static std::string Type()
                 {
@@ -599,8 +599,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = false
+                    HasIndex = 0,
+                    HasValue = 0
                 };
                 BetaZero() = default;
 
@@ -619,8 +619,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = false
+                    HasIndex = 0,
+                    HasValue = 0
                 };
                 BetaOne() = default;
 
@@ -640,8 +640,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 bool value;
 
@@ -667,8 +667,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 KernelLanguage value;
 
@@ -695,8 +695,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 bool value;
 
@@ -722,8 +722,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
 
                 ArithmeticUnit value;
@@ -750,8 +750,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 TypesEqual() = default;
 
@@ -803,8 +803,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 OperationIdentifierEqual() = default;
 
@@ -826,8 +826,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 BufferLoadCheckPacket value;
 
@@ -890,8 +890,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = false,
-                    HasValue = true
+                    HasIndex = 0,
+                    HasValue = 1
                 };
                 size_t value;
 
@@ -935,8 +935,8 @@ namespace Tensile
             {
                 enum
                 {
-                    HasIndex = true,
-                    HasValue = true
+                    HasIndex = 1,
+                    HasValue = 1
                 };
                 size_t index;
                 size_t value;
@@ -985,6 +985,53 @@ namespace Tensile
                     return problem.getPersistentKernelEligibility();
                 }
             };
+
+            struct GlobalSplitUCheckK
+                : public Predicate_CRTP<GlobalSplitUCheckK, ContractionProblem>
+            {
+                enum
+                {
+                    HasIndex = 0,
+                    HasValue = 2
+                };
+
+                size_t value;
+                size_t value2;
+
+                GlobalSplitUCheckK() = default;
+                GlobalSplitUCheckK(size_t value, size_t value2)
+                    : value(value)
+                    , value2(value2)
+                {
+                }
+
+                static std::string Type()
+                {
+                    return "GlobalSplitUCheckK";
+                }
+
+                virtual bool operator()(ContractionProblem const& problem) const override
+                {
+                    return (problem.boundSize(0) / value) >= value2;
+                }
+
+                virtual std::string toString() const override
+                {
+                    return concatenate(this->type(), "(GlobalSplitK:", value, "K:", value2, ")");
+                }
+
+                virtual bool debugEval(ContractionProblem const& problem,
+                                       std::ostream&             stream) const override
+                {
+                    bool rv = (*this)(problem);
+
+                    stream << *this << ": ((" << problem.boundSize(0) << "/" << value
+                           << ") >= " << value2 << ") == " << rv;
+
+                    return rv;
+                }
+            };
+
 
         } // namespace Contraction
 
