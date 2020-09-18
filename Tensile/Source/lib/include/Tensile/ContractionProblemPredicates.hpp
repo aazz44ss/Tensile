@@ -1032,7 +1032,6 @@ namespace Tensile
                 }
             };
 
-
         } // namespace Contraction
 
         /**
