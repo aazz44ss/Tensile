@@ -2862,12 +2862,17 @@ class Solution:
         if state["LocalReadVectorWidth"] != state["VectorWidth"]:
           reject(state, "not support LRVW != VW with nonMI kernel")
 
+    optPad = state["LocalReadVectorWidth"]
+    readWidth = state["LocalReadVectorWidth"]*state["ProblemType"]["DataType"].numBytes()//4
+    if state["MatrixInstB"] == 1 and state["MatrixInstM"] == 16 and \
+        (readWidth == 4 or readWidth == 1):
+      optPad *= 2
     if state["LdsPadA"] == -1:
       if state["ProblemType"]["TLUA"]:
         state["LdsPadA"] = 0
       else:
         if state["EnableMatrixInstruction"] and state["TransposeLDS"]:
-          state["LdsPadA"] = max(state["GlobalReadVectorWidth"],state["LocalReadVectorWidth"])
+          state["LdsPadA"] = max(state["GlobalReadVectorWidth"],optPad)
         else:
           state["LdsPadA"] = state["VectorWidth"]
       assert(state["LdsPadA"] >= 0)
@@ -2876,7 +2881,7 @@ class Solution:
         state["LdsPadB"] = 0
       else:
         if state["EnableMatrixInstruction"] and state["TransposeLDS"]:
-          state["LdsPadB"] = max(state["GlobalReadVectorWidth"],state["LocalReadVectorWidth"])
+          state["LdsPadB"] = max(state["GlobalReadVectorWidth"],optPad)
         else:
           state["LdsPadB"] = state["VectorWidth"]
       assert(state["LdsPadB"] >= 0)
