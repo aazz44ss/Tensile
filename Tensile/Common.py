@@ -871,8 +871,8 @@ validParameters = {
     # performance so this has been deprecated and probably doesn't work
     # -1 means use same padding as the VectorWidth if TLU=0 else 0.  (Padding only helps when transpose is required)
     # With MatrixInstruciton: -1 means max(GRVW,MIInput) if TLU=0
-    "LdsPadA":                     [ -1, 0, 1, 2, 3, 4, 8],
-    "LdsPadB":                     [ -1, 0, 1, 2, 3, 4, 8],
+    "LdsPadA":                     [ -1, 0, 1, 2, 3, 4, 8, 16],
+    "LdsPadB":                     [ -1, 0, 1, 2, 3, 4, 8, 16],
 
     # Padding boundary for LDS. defines block-size for pad insertion. for every 'LdsBlockSizePerPad' bytes, LDS padding (pad value from LdsPad parameter)
     # is added (readOffset aware of the pad and adjusts offset value based on this parameter value).
