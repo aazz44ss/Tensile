@@ -2864,9 +2864,10 @@ class Solution:
 
     optPad = state["LocalReadVectorWidth"]
     readWidth = state["LocalReadVectorWidth"]*state["ProblemType"]["DataType"].numBytes()//4
-    if state["MatrixInstB"] == 1 and state["MatrixInstM"] == 16 and \
-        (readWidth == 4 or readWidth == 1):
-      optPad *= 2
+    if state["EnableMatrixInstruction"]:
+      if state["MatrixInstB"] == 1 and state["MatrixInstM"] == 16 and \
+          (readWidth == 4 or readWidth == 1):
+        optPad *= 2
     if state["LdsPadA"] == -1:
       if state["ProblemType"]["TLUA"]:
         state["LdsPadA"] = 0
