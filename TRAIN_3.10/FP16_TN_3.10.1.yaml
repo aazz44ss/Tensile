@@ -691,6 +691,17 @@ BenchmarkProblems:
           - Exact: [ 4096, 4608, 1, 1024, 4096, 4096, 1024, 1024 ] #gemm
           - Exact: [ 1024, 4608, 1, 4096, 1024, 1024, 4096, 4096 ] #gemm
           - Exact: [ 2, 4608, 1, 1024, 2, 2, 1024, 1024 ] #gemm
+          - Exact: [2880, 3072, 1, 3072] #gemm
+          - Exact: [3072, 3072, 1, 3072] #gemm
+          - Exact: [3072, 512, 1, 3072] #gemm
+          - Exact: [4096, 512, 1, 4096] #gemm
+          - Exact: [512, 1024, 1, 1024] #gemm
+          - Exact: [512, 2048, 1, 2048] #gemm
+          - Exact: [512, 3072, 1, 3072] #gemm
+          - Exact: [512, 4096, 1, 4096] #gemm
+          - Exact: [512, 8192, 1, 8192] #gemm
+          - Exact: [64, 1024, 1, 1024] #gemm
+          - Exact: [8192, 512, 1, 8192] #gemm
 
     - # BenchmarkProblemSizeGroup - Standard - non-multiple of 8 M,N
       InitialSolutionParameters:
