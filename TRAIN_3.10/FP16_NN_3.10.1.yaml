@@ -730,8 +730,6 @@ BenchmarkProblems:
           - Exact: [ 1024, 4608, 1, 1024, 1024, 1024, 1024, 1024 ] #gemm
           - Exact: [ 8192, 1024, 1, 1024, 8192, 8192, 8192, 1024 ] #gemm
           - Exact: [ 8192, 4096, 1, 1024, 8192, 8192, 8192, 1024 ] #gemm
-          - Exact: [ 16384, 16384, 1, 16384, 16384, 16384, 16384, 16384 ] #gemm
-
 
     - # BenchmarkProblemSizeGroup - Standard - non-multiple of 8 M,N
       InitialSolutionParameters:
@@ -939,8 +937,6 @@ BenchmarkProblems:
           - Exact: [ 2560, 4, 1, 2560, 2560, 2560, 2560, 2560 ] #gemm
           - Exact: [ 1024, 12, 1, 1024, 1024, 1024, 1024, 1024 ] #gemm
           - Exact: [ 1024, 12, 1, 2, 1024, 1024, 1024, 2 ] #gemm
-
-
 
 LibraryLogic:
     ScheduleName: "arcturus"
