@@ -133,7 +133,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
       readsLatencyA = self.numReadsPerIterA/numMfmaPerIter if self.numReadsIterCoalescedA == 1 else 0
       readsLatencyB = self.numReadsPerIterB/numMfmaPerIter if self.numReadsIterCoalescedB == 1 else 0
       readsLatency = roundUp(readsLatencyA+readsLatencyB)*2
-      self.numLocalWriteModPerMfma = max((self.miLatency - readsLatency)//(self.tPA["localWriteInstruction"].IssueLatency*2+1),1)
+      self.numLocalWriteModPerMfma = max((self.miLatencyLeft - readsLatency)//(self.tPA["localWriteInstruction"].IssueLatency*2+1),1)
       ##################################
       numGlobalReadInsPerIter = numMfmaPerIter * self.numGlobalReadInsPerMfma
       numLocalWriteModPerIter = numMfmaPerIter * self.numLocalWriteModPerMfma
@@ -148,38 +148,38 @@ class KernelWriter(metaclass=abc.ABCMeta):
       # localReads followed following sequence to be scheduled
       # ds_read[A][0], ds_read[B][0], ds_read[A][1:], ds_read[B][1:]
       self.numMfmaForNextLoopLR = 1
-      latencyLeft = self.miLatency
+      latencyLeft = self.miLatencyLeft
       # ds_read[A][0]
       for i in range(self.numReadPerVectorA):
         latencyLeft -= tensorParametersA["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatency - tensorParametersA["localReadInstruction"].IssueLatency*2
+          latencyLeft = self.miLatencyLeft - tensorParametersA["localReadInstruction"].IssueLatency*2
       # ds_read[B][0]
       for i in range(self.numReadPerVectorB):
         latencyLeft -= tensorParametersB["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatency - tensorParametersB["localReadInstruction"].IssueLatency*2
+          latencyLeft = self.miLatencyLeft - tensorParametersB["localReadInstruction"].IssueLatency*2
       # ds_read[A][1:]
       for i in range(self.numReadsPerIterA-self.numReadPerVectorA):
         latencyLeft -= tensorParametersA["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatency - tensorParametersA["localReadInstruction"].IssueLatency*2
+          latencyLeft = self.miLatencyLeft - tensorParametersA["localReadInstruction"].IssueLatency*2
       # ds_read[B][1:]
       for i in range(self.numReadsPerIterB-self.numReadPerVectorB):
         latencyLeft -= tensorParametersB["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatency - tensorParametersB["localReadInstruction"].IssueLatency*2
+          latencyLeft = self.miLatencyLeft - tensorParametersB["localReadInstruction"].IssueLatency*2
       # to calculate number of mfma we need to wait before data arrive from lds to vgpr.
       # TODO: latency: 40 quad-cycle for 4 word, 22 quad-cycle for 2 word, 10 quad-cycle for 1 word
       latencyForLR = tensorParametersB["localReadInstruction"].IssueLatency*18
       latencyForLR -= latencyLeft # remaining latency in mfma
-      latencyForLR -= (self.miLatency+self.miLatencyBuffer+2) # last LR will have 1 mfma latency
+      latencyForLR -= self.miLatency # last LR will have 1 mfma latency
       while latencyForLR > 0:
-        latencyForLR -= (self.miLatency+self.miLatencyBuffer+2)
+        latencyForLR -= self.miLatency
         self.numMfmaForNextLoopLR += 1
       # final index definition
       self.numMfmaForNextLoopLR = min(self.numMfmaForNextLoopLR,numMfmaPerIter-1)
@@ -756,7 +756,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
         readLeft = readsPerIter
         # with PrefetchLocalRead, localreads can interleave with mfma
         if self.numItersPLR:
-          latencyLeft = self.miLatency
+          latencyLeft = self.miLatencyLeft
           # take ds_write into account to schedule ds_read, assume A and B localwrite have same width (TLDS=1)
           if (mfmaIndex >= self.lwStartMfmaIndex) and not globalReadCode.countType(Code.GlobalReadInst):
             for j in range(len(writeItems)):
@@ -2613,7 +2613,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
     vwb = kernel["GlobalLoadVectorWidthB"]
 
     self.numItersPLR = kernel["PrefetchLocalRead"]%kernel["LoopIters"]
-    self.numVgprBuffer = kernel["PrefetchLocalRead"]
+    self.numVgprBuffer = kernel["LoopIters"] if kernel["PrefetchLocalRead"] > kernel["LoopIters"] else kernel["PrefetchLocalRead"]
     # merge N iteration's read into 1 iteration if can't coalesce read
     # ex, A can coalesce read, B can't
     # MergeRead 0: ds_readAx1 ds_readBx1 mfma | ds_readAx1 ds_readBx1 mfma | => ds_readAx2 ds_readBx1 mfma | ds_readBx1 mfma |
