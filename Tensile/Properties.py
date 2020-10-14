@@ -22,10 +22,11 @@
 from .Utils import hash_objs, state
 
 class Property:
-    def __init__(self, tag=None, index=None, value=None):
+    def __init__(self, tag=None, index=None, value=None, minKInGSU=None):
         self._tag = tag
         self._index = index
         self._value = value
+        self._minKInGSU = minKInGSU
 
     @property
     def tag(self):   return self._tag
@@ -33,22 +34,26 @@ class Property:
     def index(self): return self._index
     @property
     def value(self): return self._value
+    @property
+    def minKInGSU(self): return self._minKInGSU
 
     def state(self):
         rv = {'type': self.tag}
-        if self.index is not None: rv['index'] = state(self.index)
-        if self.value is not None: rv['value'] = state(self.value)
+        if self.index     is not None: rv['index']     = state(self.index)
+        if self.value     is not None: rv['value']     = state(self.value)
+        if self.minKInGSU is not None: rv['minKInGSU'] = state(self.minKInGSU)
         return rv
 
     def __eq__(self, other):
         return self.__class__ == other.__class__ and \
-               self.tag   == other.tag   and \
-               self.value == other.value and \
-               self.index == other.index
+               self.tag       == other.tag   and \
+               self.value     == other.value and \
+               self.index     == other.index and \
+               self.minKInGSU == other.minKInGSU
 
     def __hash__(self):
         #return hash(self.tag) ^ hash(self.value) ^ hash(self.index)
-        return hash_objs(self.tag, self.value, self.index)
+        return hash_objs(self.tag, self.value, self.index, self.minKInGSU)
 
 
 class Predicate(Property):

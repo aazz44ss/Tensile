@@ -986,6 +986,54 @@ namespace Tensile
                 }
             };
 
+            struct GlobalSplitUCheckK
+                : public Predicate_CRTP<GlobalSplitUCheckK, ContractionProblem>
+            {
+                enum
+                {
+                    HasIndex = false,
+                    HasValue = false
+                };
+
+                int globalSplitU;
+                int minKInGSU;
+
+                GlobalSplitUCheckK() = default;
+                GlobalSplitUCheckK(int gsu, int minK)
+                    : globalSplitU(gsu)
+                    , minKInGSU(minK)
+                {
+                }
+
+                static std::string Type()
+                {
+                    return "GlobalSplitUCheckK";
+                }
+
+                virtual bool operator()(ContractionProblem const& problem) const override
+                {
+                    return (globalSplitU == 1)
+                           || ((problem.boundSize(0) / globalSplitU) >= minKInGSU);
+                }
+
+                virtual std::string toString() const override
+                {
+                    return concatenate(
+                        this->type(), "(GlobalSplitK:", globalSplitU, "minKInGSU:", minKInGSU, ")");
+                }
+
+                virtual bool debugEval(ContractionProblem const& problem,
+                                       std::ostream&             stream) const override
+                {
+                    bool rv = (*this)(problem);
+
+                    stream << *this << ": ((" << problem.boundSize(0) << "/" << globalSplitU
+                           << ") >= " << minKInGSU << ") == " << rv;
+
+                    return rv;
+                }
+            };
+
         } // namespace Contraction
 
         /**

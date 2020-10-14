@@ -83,6 +83,7 @@ namespace Tensile
                     Base::template Pair<Predicates::Contraction::BufferStoreOffsetLimitCheck>(),
                     Base::template Pair<Predicates::Contraction::WorkspaceCheck>(),
                     Base::template Pair<Predicates::Contraction::PersistentKernelCheck>(),
+                    Base::template Pair<Predicates::Contraction::GlobalSplitUCheckK>(),
                 });
 
                 auto gmap = Generic::GetSubclasses();
@@ -262,5 +263,19 @@ namespace Tensile
             : public AutoMappingTraits<Predicates::Contraction::PersistentKernelCheck, IO>
         {
         };
+
+        template <typename IO>
+        struct MappingTraits<Predicates::Contraction::GlobalSplitUCheckK, IO>
+        {
+            using Predicate = Predicates::Contraction::GlobalSplitUCheckK;
+            using iot       = IOTraits<IO>;
+
+            static void mapping(IO& io, Predicate& pred)
+            {
+                iot::mapRequired(io, "value", pred.globalSplitU);
+                iot::mapRequired(io, "minKInGSU", pred.minKInGSU);
+            }
+        };
+
     } // namespace Serialization
 } // namespace Tensile
