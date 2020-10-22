@@ -163,11 +163,28 @@ namespace Tensile
             {
                 double distance = 0.0;
 
-                for(int i = 0; i < p1.size(); i++)
-                {
-                    double di = p1[i] - p2[i];
-                    distance += di * di;
-                }
+                double M = p2[0];
+                double N = p2[1];
+                double K = p2[2];
+                int stepM = 1;
+                int stepN = 1;
+
+                stepM = std::ceil(p1[0]/M);
+                stepN = std::ceil(p1[1]/N);
+
+                // algo1
+                // distance = 10 * stepM * stepN;
+                // distance += (10 * (std::abs(stepM*M-p1[0]) + std::abs(stepN*N-p1[1])) / 256);
+                // distance += (std::abs(K-p1[2])/(K+p1[2]*8));
+
+                // algo2
+                distance = std::round(100 * stepM * stepN / std::pow((p1[0]*p1[1])/(stepM*M*stepN*N),2) );
+                distance += (std::abs(K-p1[2])/(K+p1[2]*8));
+
+                // algo3
+                // distance = std::round( 100 * stepM * stepN + 1000 * ( 1 - (p1[0]*p1[1])/(stepM*M*stepN*N) ) );
+                // distance += (std::abs(K-p1[2])/(K+p1[2]*8));
+
                 return distance;
             }
 
@@ -177,7 +194,7 @@ namespace Tensile
                                             double     bestDistance) const
             {
                 double d0 = p1[idx] - p2[idx];
-                return ((d0 * d0) < bestDistance) || (p1 == p2);
+                return 1;
             }
         };
 
