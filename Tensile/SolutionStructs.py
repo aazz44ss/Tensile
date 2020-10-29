@@ -2391,7 +2391,10 @@ class Solution:
     elif state["_GlobalAccumulation"] == 'MultipleBuffer':
       state["_WorkspaceSizePerElemC"] = 4 * state["GlobalSplitU"]
     else:
-      state["_WorkspaceSizePerElemC"] = 0
+      if state["GlobalSplitU"] == 1:
+        state["_WorkspaceSizePerElemC"] = 0
+      else:
+        state["_WorkspaceSizePerElemC"] = 4 * state["GlobalSplitU"]
 
     if state["VectorStore"] == -1:
         state["_VectorStore"] = 1 # default, may be changed if needed to generate a valid kernel
