@@ -5224,25 +5224,15 @@ class KernelWriterAssembly(KernelWriter):
   # we must use a longer 32 bit version.
   # Use when erroring out "invalid operand due to label > SIMM16"
   ##############################################################################
-  def longBranch(self, label):
+  def longBranch(self, label, comment=""):
     kStr = ""
-    tmpSgpr = self.getTmpSgpr(3).idx()
-    positiveLabel = self.getNamedLabelUnique("Positive")
+    tmpSgpr = self.getTmpSgpr(4).idx()
+    kStr += inst("//%s"%(comment), "ProgramCounter(U64) + InstructionOffset(I64)")
     kStr += inst("s_getpc_B64", sgpr(tmpSgpr,2), "addr of next instr")
-    kStr += inst("s_add_i32",  sgpr(tmpSgpr+2), "%s"%label, hex(4), "target branch offset")
-    kStr += inst("s_cmp_ge_i32", sgpr(tmpSgpr+2), hex(0), "check positive or negative")
-    kStr += inst("s_cbranch_scc1 label_%s" % positiveLabel, "jump when positive")
-
-    # negative offset
-    kStr += inst("s_abs_i32",  sgpr(tmpSgpr+2), sgpr(tmpSgpr+2), "abs offset")
-    kStr += inst("s_sub_u32",  sgpr(tmpSgpr),   sgpr(tmpSgpr),   sgpr(tmpSgpr+2), "sub target branch offset")
-    kStr += inst("s_subb_u32", sgpr(tmpSgpr+1), sgpr(tmpSgpr+1), 0, "sub high and carry")
-    kStr += inst("s_setpc_b64", sgpr(tmpSgpr,2), "branch to %s"%label)
-
-    # positive offset
-    kStr += "label_%s:%s"%(positiveLabel, self.endLine)
-    kStr += inst("s_add_u32",  sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+2), "add target branch offset")
-    kStr += inst("s_addc_u32", sgpr(tmpSgpr+1), sgpr(tmpSgpr+1), 0, "add high and carry")
+    kStr += inst("s_add_u32", sgpr(tmpSgpr+2), "%s"%label, hex(4), "target branch offset")
+    kStr += inst("s_bfe_i32", sgpr(tmpSgpr+3), sgpr(tmpSgpr+2), "0x0001001f", "target branch offset, convert I32(%s) to I64(%s)"%(label,sgpr(tmpSgpr+2,2)))
+    kStr += inst("s_add_u32", sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+2), "add target branch offset")
+    kStr += inst("s_addc_u32", sgpr(tmpSgpr+1), sgpr(tmpSgpr+3), sgpr(tmpSgpr+1), "add high and carry")
     kStr += inst("s_setpc_b64", sgpr(tmpSgpr,2), "branch to %s"%label)
     return kStr
 
@@ -5251,11 +5241,11 @@ class KernelWriterAssembly(KernelWriter):
   # Conditional branch to label when SCC == 0
   # Use when erroring out "invalid operand due to label > SIMM16"
   ##############################################################################
-  def longBranchScc0(self, label):
+  def longBranchScc0(self, label, comment=""):
     kStr = ""
     noBranchLabel = self.getNamedLabelUnique("NoBranch")
     kStr += inst("s_cbranch_scc1 label_%s" % noBranchLabel, "Only branch on scc0")
-    kStr += self.longBranch(label)
+    kStr += self.longBranch(label, comment)
     kStr += "label_%s:%s"%(noBranchLabel, self.endLine)
     return kStr
 
@@ -5264,11 +5254,11 @@ class KernelWriterAssembly(KernelWriter):
   # Conditional branch to label when SCC == 1
   # Use when erroring out "invalid operand due to label > SIMM16"
   ##############################################################################
-  def longBranchScc1(self, label):
+  def longBranchScc1(self, label, comment=""):
     kStr = ""
     noBranchLabel = self.getNamedLabelUnique("NoBranch")
     kStr += inst("s_cbranch_scc0 label_%s" % noBranchLabel, "Only branch on scc1")
-    kStr += self.longBranch(label)
+    kStr += self.longBranch(label, comment)
     kStr += "label_%s:%s"%(noBranchLabel, self.endLine)
     return kStr
 
@@ -9150,11 +9140,10 @@ class KernelWriterAssembly(KernelWriter):
       coord0 = tmpVgpr
       coord1 = coord0+1
       lrVw = kernel["StoreRemapVectorWidth"]
-      edgeVw = min(kernel["AssertFree0ElementMultiple"],kernel["StoreRemapVectorWidth"])
-      bps = self.bpeCexternal * edgeVw
-      rpv = self.bpeCexternal / self.bpr * edgeVw
+      bps = self.bpeCexternal * self.edgeVW
+      rpv = self.bpeCexternal / self.bpr * self.edgeVW
       for rIdx, i in enumerate(range(0, nElements, lrVw)):
-        for vi in range (0, lrVw, edgeVw):
+        for vi in range (0, lrVw, self.edgeVW):
 
           if vi == 0:
             lgkmcnt = min((nElements-i)//lrVw - 1, 15)
@@ -10682,25 +10671,65 @@ class KernelWriterAssembly(KernelWriter):
 
         elementSgprs = tmpSgpr + self.ss.cfg.numTempSgprPerBatch
 
-        codeAccVgprRead = deepcopy(self.codeAccVgprRead) if self.serializedStore else None
-        for batchIdx in range(0, numBatches):
-          elementStartIdx = batchIdx * numElementsPerBatch
-          elementStopIdx = min( elementStartIdx + numElementsPerBatch, len(elements[edgeI]) )
-          elementsThisBatch = elements[edgeI][elementStartIdx:elementStopIdx]
-          #print("BATCH[%u/%u]: elements[edgeI][%u:%u] VGPRs=%u" % (batchIdx, numBatches, elementStartIdx, elementStopIdx,numVgprsPerElement ))
-          # elementVgprs can be large and should be perfectly tuned to the number of available
-          # VGPRS.  We do not want to accidentally overflow and grow the pool here:
+        if edge and kernel["StoreRemapVectorWidth"]:
+          label = {}
+          tempS = self.sgprPool.checkOut(1,"check for F0EM",preventOverflow=0)
+          for F0EM in [8,4,2,1]:
+            if F0EM > kernel["StoreRemapVectorWidth"]:
+              continue
+            label["GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM)] = self.getNamedLabelUnique("GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM))
+            kStr += inst("s_and_b32", sgpr(tempS), F0EM-1, sgpr("SizeI"), "")
+            kStr += inst("s_cmp_eq_u32", sgpr(tempS), "0x0", "")
+            kStr += inst("s_cbranch_scc1", label["GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM)], "")
+          self.sgprPool.checkIn(tempS)
+          for F0EM in [8,4,2,1]:
+            if F0EM > kernel["StoreRemapVectorWidth"]:
+              continue
+            self.edgeVW = F0EM
+            codeAccVgprRead = deepcopy(self.codeAccVgprRead) if self.serializedStore else None
+            kStr += "%s:\n"%(label["GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM)])
+            for batchIdx in range(0, numBatches):
+              self.ss.firstBatch = 1 if batchIdx == 0 else self.ss.firstBatch
+              self.ss.lastCoordOffset1 = 0 if batchIdx == 0 else self.ss.lastCoordOffset1
+              elementStartIdx = batchIdx * numElementsPerBatch
+              elementStopIdx = min( elementStartIdx + numElementsPerBatch, len(elements[edgeI]) )
+              elementsThisBatch = elements[edgeI][elementStartIdx:elementStopIdx]
+              #print("BATCH[%u/%u]: elements[edgeI][%u:%u] VGPRs=%u" % (batchIdx, numBatches, elementStartIdx, elementStopIdx,numVgprsPerElement ))
+              # elementVgprs can be large and should be perfectly tuned to the number of available
+              # VGPRS.  We do not want to accidentally overflow and grow the pool here:
 
-          if kernel["StoreRemapVectorWidth"]:
-            #Indication if this batch is last batch for this column block shape
-            self.StoreRemapLastBatch = 1 if (batchIdx+1) % nBatchesPerRow == 0 else 0
+              if kernel["StoreRemapVectorWidth"]:
+                #Indication if this batch is last batch for this column block shape
+                self.StoreRemapLastBatch = 1 if (batchIdx+1) % nBatchesPerRow == 0 else 0
 
-          kStr += self.globalWriteBatch(kernel, self.ss, batchIdx, applyAlpha, beta, edge, atomic, gwvw, atomicW, \
-              elementsThisBatch, self.coord0, self.coord1, self.addrD, self.addrC, \
-              tmpVgpr, \
-              elementSgprs, tmpSgpr, codeAccVgprRead)
-        # TODO - if this is the last tile, don't need to jump to next instruction
-        kStr += inst("s_branch", "label_%s"%endLabel, "jump to end")
+              kStr += self.globalWriteBatch(kernel, self.ss, batchIdx, applyAlpha, beta, edge, atomic, gwvw, atomicW, \
+                  elementsThisBatch, self.coord0, self.coord1, self.addrD, self.addrC, \
+                  tmpVgpr, \
+                  elementSgprs, tmpSgpr, codeAccVgprRead)
+            # TODO - if this is the last tile, don't need to jump to next instruction
+            kStr += self.longBranch("label_%s"%endLabel, "longBranch to end")
+        else:
+          codeAccVgprRead = deepcopy(self.codeAccVgprRead) if self.serializedStore else None
+          for batchIdx in range(0, numBatches):
+            self.ss.firstBatch = 1 if batchIdx == 0 else self.ss.firstBatch
+            self.ss.lastCoordOffset1 = 0 if batchIdx == 0 else self.ss.lastCoordOffset1
+            elementStartIdx = batchIdx * numElementsPerBatch
+            elementStopIdx = min( elementStartIdx + numElementsPerBatch, len(elements[edgeI]) )
+            elementsThisBatch = elements[edgeI][elementStartIdx:elementStopIdx]
+            #print("BATCH[%u/%u]: elements[edgeI][%u:%u] VGPRs=%u" % (batchIdx, numBatches, elementStartIdx, elementStopIdx,numVgprsPerElement ))
+            # elementVgprs can be large and should be perfectly tuned to the number of available
+            # VGPRS.  We do not want to accidentally overflow and grow the pool here:
+
+            if kernel["StoreRemapVectorWidth"]:
+              #Indication if this batch is last batch for this column block shape
+              self.StoreRemapLastBatch = 1 if (batchIdx+1) % nBatchesPerRow == 0 else 0
+
+            kStr += self.globalWriteBatch(kernel, self.ss, batchIdx, applyAlpha, beta, edge, atomic, gwvw, atomicW, \
+                elementsThisBatch, self.coord0, self.coord1, self.addrD, self.addrC, \
+                tmpVgpr, \
+                elementSgprs, tmpSgpr, codeAccVgprRead)
+          # TODO - if this is the last tile, don't need to jump to next instruction
+          kStr += self.longBranch("label_%s"%endLabel, "longBranch to end")
         del self.ss
 
         # Finish one write path, reset currPreLoopVmcntCase to Undefined
@@ -11917,7 +11946,7 @@ class KernelWriterAssembly(KernelWriter):
       if kernel["PersistentKernelAlongBatch"]:
         imod.addInst("s_mul_i32", sgpr(stmp), sgpr(stmp), sgpr("NumWorkGroups2"), "Total WG-0 x 1 x 2")
       imod.addInst("s_cmp_ge_u32", sgpr("SerialWorkGroupIter"), sgpr(stmp), "outside legal WG?")
-      imod.addCode(self.longBranchScc0(self.getLabelTarget("PersistentLoopStart")))
+      imod.addText(self.longBranchScc0(self.getLabelTarget("PersistentLoopStart"),"persistent loop back"))
     if addLabel:
       imod.addCode(Code.Label(self.getLabelNum("KernelEnd"), "KernelEnd"))
     imod.addInst("s_endpgm", "Kernel End")
