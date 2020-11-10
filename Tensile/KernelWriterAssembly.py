@@ -9125,45 +9125,68 @@ class KernelWriterAssembly(KernelWriter):
       coord0 = tmpVgpr
       coord1 = coord0+1
       lrVw = kernel["StoreRemapVectorWidth"]
-      edgeVw = min(kernel["AssertFree0ElementMultiple"],kernel["StoreRemapVectorWidth"])
-      bps = self.bpeDexternal * edgeVw
-      rpv = self.bpeDexternal / self.bpr * edgeVw
-      for rIdx, i in enumerate(range(0, nElements, lrVw)):
-        for vi in range (0, lrVw, edgeVw):
 
-          if vi == 0:
-            lgkmcnt = min((nElements-i)//lrVw - 1, 15)
-            kStr += inst("s_waitcnt", "lgkmcnt(%u)"% lgkmcnt, "wait for LDS read" )
+      labelEnd = self.getNamedLabelUnique("AF0EM_End")
+      label = {}
+      for edgeVw in [8,4,2,1]:
+        if edgeVw > kernel["StoreRemapVectorWidth"]:
+          continue
+        label["AF0EM_%d"%(edgeVw)] = self.getNamedLabelUnique("AF0EM_%d"%(edgeVw))
 
-          sizeBoundary = [0,0]
-          sizeBoundary[0] = \
-              sgpr("PackedSize0") if len(kernel["PackedC0IndicesX"]) > 1 \
-              else self.sizeRef(kernel["ProblemType"]["Index0"])
-          sizeBoundary[1] = \
-              sgpr("PackedSize1") if len(kernel["PackedC1IndicesX"]) > 1 \
-              else self.sizeRef(kernel["ProblemType"]["Index1"])
+      tempS = self.sgprPool.checkOut(1,"check for AF0EM",preventOverflow=0)
+      for edgeVw in [8,4,2,1]:
+        if edgeVw > kernel["StoreRemapVectorWidth"]:
+          continue
+        kStr += inst("s_and_b32", sgpr(tempS), edgeVw-1, sgpr("SizeI"), "")
+        kStr += inst("s_cmp_eq_u32", sgpr(tempS), "0x0", "")
+        kStr += inst("s_cbranch_scc1", label["AF0EM_%d"%(edgeVw)], "")
 
-          currentStep = i//lrVw
+      for edgeVw in [8,4,2,1]:
+        if edgeVw > kernel["StoreRemapVectorWidth"]:
+          continue
+        kStr += "%s:\n"%(label["AF0EM_%d"%(edgeVw)])
+        bps = self.bpeDexternal * edgeVw
+        rpv = self.bpeDexternal / self.bpr * edgeVw
+        for rIdx, i in enumerate(range(0, nElements, lrVw)):
+          for vi in range (0, lrVw, edgeVw):
 
-          # calculate global coordination
-          kStr += inst("v_add_u32", vgpr(coord1), vgpr(self.storeRemapCoord1), self.storeRemapNCPL * currentStep , "coord1 += nColPerLoad")
-          kStr += inst("v_add_u32",vgpr(coord0), vgpr(self.storeRemapCoord0), vi , "coord0 += element index of load vector")
-          kStr += inst("v_add_u32", addr0, vgpr(self.storeRemapOffsetCoord1), self.storeRemapNCPL * currentStep , \
-                        "offset coord1 += nColPerLoad")
+            if vi == 0:
+              lgkmcnt = min((nElements-i)//lrVw - 1, 15)
+              kStr += inst("s_waitcnt", "lgkmcnt(%u)"% lgkmcnt, "wait for LDS read" )
 
-          kStr += inst("v_cmp_lt_u32",  sgpr(tmpS01,2), vgpr(coord0), sizeBoundary[0], "coord0 < size0" )
-          kStr += inst("v_cmp_lt_u32",  sgpr(tmpS23,2), vgpr(coord1), sizeBoundary[1], "coord1 < size1" )
-          kStr += inst("s_and_b64",  sgpr(tmpS23,2), sgpr(tmpS01,2), sgpr(tmpS23,2), "in0 && in1" )
+            sizeBoundary = [0,0]
+            sizeBoundary[0] = \
+                sgpr("PackedSize0") if len(kernel["PackedC0IndicesX"]) > 1 \
+                else self.sizeRef(kernel["ProblemType"]["Index0"])
+            sizeBoundary[1] = \
+                sgpr("PackedSize1") if len(kernel["PackedC1IndicesX"]) > 1 \
+                else self.sizeRef(kernel["ProblemType"]["Index1"])
 
-          kStr += inst("v_mul_lo_u32", addr0, addr0, sgpr(strideC1), "coord1 element offset =  coord1 * StrideC")
-          kStr += inst("_v_add_lshl_u32", addr0, addr0,  vgpr(coord0), hex(log2(bpe)), "scale to BPE")
-          kStr += inst("v_cndmask_b32", addr0, -1, addr0, sgpr(tmpS23,2), "clip if OOB. offset" )
+            currentStep = i//lrVw
 
-          sumIdx = storeRegs[rIdx] + int(vi*rpe)
-          if bps == 2:
-            kStr += self.chooseGlobalWrite(True, bpe, sumIdx, rpe, addr0, addr1, 0, ntStr, hi16=vi%2)
-          else:
-            kStr += self.chooseGlobalWrite(True, bps, sumIdx, rpv, addr0, addr1, 0, ntStr)
+            # calculate global coordination
+            kStr += inst("v_add_u32", vgpr(coord1), vgpr(self.storeRemapCoord1), self.storeRemapNCPL * currentStep , "coord1 += nColPerLoad")
+            kStr += inst("v_add_u32",vgpr(coord0), vgpr(self.storeRemapCoord0), vi , "coord0 += element index of load vector")
+            kStr += inst("v_add_u32", addr0, vgpr(self.storeRemapOffsetCoord1), self.storeRemapNCPL * currentStep , \
+                          "offset coord1 += nColPerLoad")
+
+            kStr += inst("v_cmp_lt_u32",  sgpr(tmpS01,2), vgpr(coord0), sizeBoundary[0], "coord0 < size0" )
+            kStr += inst("v_cmp_lt_u32",  sgpr(tmpS23,2), vgpr(coord1), sizeBoundary[1], "coord1 < size1" )
+            kStr += inst("s_and_b64",  sgpr(tmpS23,2), sgpr(tmpS01,2), sgpr(tmpS23,2), "in0 && in1" )
+
+            kStr += inst("v_mul_lo_u32", addr0, addr0, sgpr(strideC1), "coord1 element offset =  coord1 * StrideC")
+            kStr += inst("_v_add_lshl_u32", addr0, addr0,  vgpr(coord0), hex(log2(bpe)), "scale to BPE")
+            kStr += inst("v_cndmask_b32", addr0, -1, addr0, sgpr(tmpS23,2), "clip if OOB. offset" )
+
+            sumIdx = storeRegs[rIdx] + int(vi*rpe)
+            if bps == 2:
+              kStr += self.chooseGlobalWrite(True, bpe, sumIdx, rpe, addr0, addr1, 0, ntStr, hi16=vi%2)
+            else:
+              kStr += self.chooseGlobalWrite(True, bps, sumIdx, rpv, addr0, addr1, 0, ntStr)
+        kStr += inst("s_branch", labelEnd, "AF0EM_End")
+
+      kStr += "%s:\n"%(labelEnd)
+      self.sgprPool.checkIn(tempS)
 
     kStr += "\n"
     self.vgprPool.checkIn(vTmp)
