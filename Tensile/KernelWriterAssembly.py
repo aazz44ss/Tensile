@@ -6374,7 +6374,7 @@ class KernelWriterAssembly(KernelWriter):
         return ""
 
       skipOptNLL = self.getNamedLabel("OptNLL_End")
-      tmpSgpr = self.getTmpSgpr(2).idx()
+      tmpSgpr = self.getTmpSgpr(6).idx()
 
       kStr += self.checkIsBetaZero(kernel, tmpSgpr, skipOptNLL)
 
