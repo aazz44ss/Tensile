@@ -9126,67 +9126,44 @@ class KernelWriterAssembly(KernelWriter):
       coord1 = coord0+1
       lrVw = kernel["StoreRemapVectorWidth"]
 
-      labelEnd = self.getNamedLabelUnique("AF0EM_End")
-      label = {}
-      for edgeVw in [8,4,2,1]:
-        if edgeVw > kernel["StoreRemapVectorWidth"]:
-          continue
-        label["AF0EM_%d"%(edgeVw)] = self.getNamedLabelUnique("AF0EM_%d"%(edgeVw))
+      bps = self.bpeDexternal * self.edgeVW
+      rpv = self.bpeDexternal / self.bpr * self.edgeVW
+      for rIdx, i in enumerate(range(0, nElements, lrVw)):
+        for vi in range (0, lrVw, self.edgeVW):
 
-      tempS = self.sgprPool.checkOut(1,"check for AF0EM",preventOverflow=0)
-      for edgeVw in [8,4,2,1]:
-        if edgeVw > kernel["StoreRemapVectorWidth"]:
-          continue
-        kStr += inst("s_and_b32", sgpr(tempS), edgeVw-1, sgpr("SizeI"), "")
-        kStr += inst("s_cmp_eq_u32", sgpr(tempS), "0x0", "")
-        kStr += inst("s_cbranch_scc1", label["AF0EM_%d"%(edgeVw)], "")
+          if vi == 0:
+            lgkmcnt = min((nElements-i)//lrVw - 1, 15)
+            kStr += inst("s_waitcnt", "lgkmcnt(%u)"% lgkmcnt, "wait for LDS read" )
 
-      for edgeVw in [8,4,2,1]:
-        if edgeVw > kernel["StoreRemapVectorWidth"]:
-          continue
-        kStr += "%s:\n"%(label["AF0EM_%d"%(edgeVw)])
-        bps = self.bpeDexternal * edgeVw
-        rpv = self.bpeDexternal / self.bpr * edgeVw
-        for rIdx, i in enumerate(range(0, nElements, lrVw)):
-          for vi in range (0, lrVw, edgeVw):
+          sizeBoundary = [0,0]
+          sizeBoundary[0] = \
+              sgpr("PackedSize0") if len(kernel["PackedC0IndicesX"]) > 1 \
+              else self.sizeRef(kernel["ProblemType"]["Index0"])
+          sizeBoundary[1] = \
+              sgpr("PackedSize1") if len(kernel["PackedC1IndicesX"]) > 1 \
+              else self.sizeRef(kernel["ProblemType"]["Index1"])
 
-            if vi == 0:
-              lgkmcnt = min((nElements-i)//lrVw - 1, 15)
-              kStr += inst("s_waitcnt", "lgkmcnt(%u)"% lgkmcnt, "wait for LDS read" )
+          currentStep = i//lrVw
 
-            sizeBoundary = [0,0]
-            sizeBoundary[0] = \
-                sgpr("PackedSize0") if len(kernel["PackedC0IndicesX"]) > 1 \
-                else self.sizeRef(kernel["ProblemType"]["Index0"])
-            sizeBoundary[1] = \
-                sgpr("PackedSize1") if len(kernel["PackedC1IndicesX"]) > 1 \
-                else self.sizeRef(kernel["ProblemType"]["Index1"])
+          # calculate global coordination
+          kStr += inst("v_add_u32", vgpr(coord1), vgpr(self.storeRemapCoord1), self.storeRemapNCPL * currentStep , "coord1 += nColPerLoad")
+          kStr += inst("v_add_u32",vgpr(coord0), vgpr(self.storeRemapCoord0), vi , "coord0 += element index of load vector")
+          kStr += inst("v_add_u32", addr0, vgpr(self.storeRemapOffsetCoord1), self.storeRemapNCPL * currentStep , \
+                        "offset coord1 += nColPerLoad")
 
-            currentStep = i//lrVw
+          kStr += inst("v_cmp_lt_u32",  sgpr(tmpS01,2), vgpr(coord0), sizeBoundary[0], "coord0 < size0" )
+          kStr += inst("v_cmp_lt_u32",  sgpr(tmpS23,2), vgpr(coord1), sizeBoundary[1], "coord1 < size1" )
+          kStr += inst("s_and_b64",  sgpr(tmpS23,2), sgpr(tmpS01,2), sgpr(tmpS23,2), "in0 && in1" )
 
-            # calculate global coordination
-            kStr += inst("v_add_u32", vgpr(coord1), vgpr(self.storeRemapCoord1), self.storeRemapNCPL * currentStep , "coord1 += nColPerLoad")
-            kStr += inst("v_add_u32",vgpr(coord0), vgpr(self.storeRemapCoord0), vi , "coord0 += element index of load vector")
-            kStr += inst("v_add_u32", addr0, vgpr(self.storeRemapOffsetCoord1), self.storeRemapNCPL * currentStep , \
-                          "offset coord1 += nColPerLoad")
+          kStr += inst("v_mul_lo_u32", addr0, addr0, sgpr(strideC1), "coord1 element offset =  coord1 * StrideC")
+          kStr += inst("_v_add_lshl_u32", addr0, addr0,  vgpr(coord0), hex(log2(bpe)), "scale to BPE")
+          kStr += inst("v_cndmask_b32", addr0, -1, addr0, sgpr(tmpS23,2), "clip if OOB. offset" )
 
-            kStr += inst("v_cmp_lt_u32",  sgpr(tmpS01,2), vgpr(coord0), sizeBoundary[0], "coord0 < size0" )
-            kStr += inst("v_cmp_lt_u32",  sgpr(tmpS23,2), vgpr(coord1), sizeBoundary[1], "coord1 < size1" )
-            kStr += inst("s_and_b64",  sgpr(tmpS23,2), sgpr(tmpS01,2), sgpr(tmpS23,2), "in0 && in1" )
-
-            kStr += inst("v_mul_lo_u32", addr0, addr0, sgpr(strideC1), "coord1 element offset =  coord1 * StrideC")
-            kStr += inst("_v_add_lshl_u32", addr0, addr0,  vgpr(coord0), hex(log2(bpe)), "scale to BPE")
-            kStr += inst("v_cndmask_b32", addr0, -1, addr0, sgpr(tmpS23,2), "clip if OOB. offset" )
-
-            sumIdx = storeRegs[rIdx] + int(vi*rpe)
-            if bps == 2:
-              kStr += self.chooseGlobalWrite(True, bpe, sumIdx, rpe, addr0, addr1, 0, ntStr, hi16=vi%2)
-            else:
-              kStr += self.chooseGlobalWrite(True, bps, sumIdx, rpv, addr0, addr1, 0, ntStr)
-        kStr += inst("s_branch", labelEnd, "AF0EM_End")
-
-      kStr += "%s:\n"%(labelEnd)
-      self.sgprPool.checkIn(tempS)
+          sumIdx = storeRegs[rIdx] + int(vi*rpe)
+          if bps == 2:
+            kStr += self.chooseGlobalWrite(True, bpe, sumIdx, rpe, addr0, addr1, 0, ntStr, hi16=vi%2)
+          else:
+            kStr += self.chooseGlobalWrite(True, bps, sumIdx, rpv, addr0, addr1, 0, ntStr)
 
     kStr += "\n"
     self.vgprPool.checkIn(vTmp)
@@ -10591,25 +10568,67 @@ class KernelWriterAssembly(KernelWriter):
 
         elementSgprs = tmpSgpr + self.ss.cfg.fixedSgprsPerBatch
 
-        codeAccVgprRead = deepcopy(self.codeAccVgprRead) if self.serializedStore else None
-        for batchIdx in range(0, numBatches):
-          elementStartIdx = batchIdx * numElementsPerBatch
-          elementStopIdx = min( elementStartIdx + numElementsPerBatch, len(elements[edgeI]) )
-          elementsThisBatch = elements[edgeI][elementStartIdx:elementStopIdx]
-          #print("BATCH[%u/%u]: elements[edgeI][%u:%u] VGPRs=%u" % (batchIdx, numBatches, elementStartIdx, elementStopIdx,numVgprsPerElement ))
-          # elementVgprs can be large and should be perfectly tuned to the number of available
-          # VGPRS.  We do not want to accidentally overflow and grow the pool here:
+        if edge and kernel["StoreRemapVectorWidth"]:
+          label = {}
+          tempS = self.sgprPool.checkOut(1,"check for F0EM",preventOverflow=0)
+          for F0EM in [8,4,2,1]:
+            if F0EM > kernel["StoreRemapVectorWidth"]:
+              continue
+            label["GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM)] = self.getNamedLabelUnique("GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM))
+            kStr += inst("s_and_b32", sgpr(tempS), F0EM-1, sgpr("SizeI"), "")
+            kStr += inst("s_cmp_eq_u32", sgpr(tempS), "0x0", "")
+            kStr += inst("s_cbranch_scc1", label["GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM)], "")
+          self.sgprPool.checkIn(tempS)
+          for F0EM in [8,4,2,1]:
+            if F0EM > kernel["StoreRemapVectorWidth"]:
+              continue
+            self.edgeVW = F0EM
+            codeAccVgprRead = deepcopy(self.codeAccVgprRead) if self.serializedStore else None
+            kStr += "%s:\n"%(label["GW_B%u_E%u_F0EM%d"%(beta, edge, F0EM)])
+            for batchIdx in range(0, numBatches):
+              self.ss.firstBatch = 1 if batchIdx == 0 else self.ss.firstBatch
+              self.ss.lastCoordOffset1 = 0 if batchIdx == 0 else self.ss.lastCoordOffset1
+              elementStartIdx = batchIdx * numElementsPerBatch
+              elementStopIdx = min( elementStartIdx + numElementsPerBatch, len(elements[edgeI]) )
+              elementsThisBatch = elements[edgeI][elementStartIdx:elementStopIdx]
+              #print("BATCH[%u/%u]: elements[edgeI][%u:%u] VGPRs=%u" % (batchIdx, numBatches, elementStartIdx, elementStopIdx,numVgprsPerElement ))
+              # elementVgprs can be large and should be perfectly tuned to the number of available
+              # VGPRS.  We do not want to accidentally overflow and grow the pool here:
 
-          if kernel["StoreRemapVectorWidth"]:
-            #Indication if this batch is last batch for this column block shape
-            self.StoreRemapLastBatch = 1 if (batchIdx+1) % nBatchesPerRow == 0 else 0
+              if kernel["StoreRemapVectorWidth"]:
+                #Indication if this batch is last batch for this column block shape
+                self.StoreRemapLastBatch = 1 if (batchIdx+1) % nBatchesPerRow == 0 else 0
 
-          kStr += self.globalWriteBatch(kernel, self.ss, batchIdx, applyAlpha, beta, edge, atomic, gwvw, atomicW, \
-              elementsThisBatch, self.coord0, self.coord1, self.addrD, self.addrC, \
-              tmpVgpr, \
-              elementSgprs, tmpSgpr, codeAccVgprRead)
-        # TODO - if this is the last tile, don't need to jump to next instruction
-        kStr += inst("s_branch", "label_%s"%endLabel, "jump to end")
+              kStr += self.globalWriteBatch(kernel, self.ss, batchIdx, applyAlpha, beta, edge, atomic, gwvw, atomicW, \
+                  elementsThisBatch, self.coord0, self.coord1, self.addrD, self.addrC, \
+                  tmpVgpr, \
+                  elementSgprs, tmpSgpr, codeAccVgprRead)
+            # TODO - if this is the last tile, don't need to jump to next instruction
+            kStr += self.longBranch("label_%s"%endLabel)
+            # kStr += inst("s_branch", "label_%s"%endLabel, "jump to end")
+        else:
+          codeAccVgprRead = deepcopy(self.codeAccVgprRead) if self.serializedStore else None
+          for batchIdx in range(0, numBatches):
+            self.ss.firstBatch = 1 if batchIdx == 0 else self.ss.firstBatch
+            self.ss.lastCoordOffset1 = 0 if batchIdx == 0 else self.ss.lastCoordOffset1
+            elementStartIdx = batchIdx * numElementsPerBatch
+            elementStopIdx = min( elementStartIdx + numElementsPerBatch, len(elements[edgeI]) )
+            elementsThisBatch = elements[edgeI][elementStartIdx:elementStopIdx]
+            #print("BATCH[%u/%u]: elements[edgeI][%u:%u] VGPRs=%u" % (batchIdx, numBatches, elementStartIdx, elementStopIdx,numVgprsPerElement ))
+            # elementVgprs can be large and should be perfectly tuned to the number of available
+            # VGPRS.  We do not want to accidentally overflow and grow the pool here:
+
+            if kernel["StoreRemapVectorWidth"]:
+              #Indication if this batch is last batch for this column block shape
+              self.StoreRemapLastBatch = 1 if (batchIdx+1) % nBatchesPerRow == 0 else 0
+
+            kStr += self.globalWriteBatch(kernel, self.ss, batchIdx, applyAlpha, beta, edge, atomic, gwvw, atomicW, \
+                elementsThisBatch, self.coord0, self.coord1, self.addrD, self.addrC, \
+                tmpVgpr, \
+                elementSgprs, tmpSgpr, codeAccVgprRead)
+          # TODO - if this is the last tile, don't need to jump to next instruction
+          kStr += self.longBranch("label_%s"%endLabel)
+          # kStr += inst("s_branch", "label_%s"%endLabel, "jump to end")
         del self.ss
 
     # End label
