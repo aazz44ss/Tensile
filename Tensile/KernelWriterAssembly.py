@@ -2137,7 +2137,7 @@ class KernelWriterAssembly(KernelWriter):
       miIssueLatency = 2
       # give 1 quad-cycle buffer to prevend bubble from sync
       miLatencyBuffer = 1
-      self.miLatencyLeft = self.miLatency - miLatencyBuffer - miIssueLatency
+      self.miLatencyLeft = max(self.miLatency - miLatencyBuffer - miIssueLatency,0)
 
     # pre-determine labels in order
     unrollChar = self.indexChars[ \

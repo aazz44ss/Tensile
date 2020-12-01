@@ -155,29 +155,29 @@ class KernelWriter(metaclass=abc.ABCMeta):
         latencyLeft -= tensorParametersA["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatencyLeft - tensorParametersA["localReadInstruction"].IssueLatency*2
+          latencyLeft = max(self.miLatencyLeft - tensorParametersA["localReadInstruction"].IssueLatency*2,0)
       # ds_read[B][0]
       for i in range(self.numReadPerVectorB):
         latencyLeft -= tensorParametersB["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatencyLeft - tensorParametersB["localReadInstruction"].IssueLatency*2
+          latencyLeft = max(self.miLatencyLeft - tensorParametersB["localReadInstruction"].IssueLatency*2,0)
       # ds_read[A][1:]
       for i in range(self.numReadsPerIterA-self.numReadPerVectorA):
         latencyLeft -= tensorParametersA["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatencyLeft - tensorParametersA["localReadInstruction"].IssueLatency*2
+          latencyLeft = max(self.miLatencyLeft - tensorParametersA["localReadInstruction"].IssueLatency*2,0)
       # ds_read[B][1:]
       for i in range(self.numReadsPerIterB-self.numReadPerVectorB):
         latencyLeft -= tensorParametersB["localReadInstruction"].IssueLatency*2
         if latencyLeft < 0:
           self.numMfmaForNextLoopLR += 1
-          latencyLeft = self.miLatencyLeft - tensorParametersB["localReadInstruction"].IssueLatency*2
+          latencyLeft = max(self.miLatencyLeft - tensorParametersB["localReadInstruction"].IssueLatency*2,0)
       # to calculate number of mfma we need to wait before data arrive from lds to vgpr.
       # latency: 40 quad-cycle for 4 word, 20 quad-cycle for 2 word, 10 quad-cycle for 1 word / half word
       latencyForLR = roundUp(tensorParametersB["localReadInstruction"].blockWidth)*10
-      latencyForLR -= latencyLeft # remaining latency in mfma
+      latencyForLR -= max(latencyLeft,0) # remaining latency in mfma
       latencyForLR -= self.miLatency # last LR will have 1 mfma latency
       while latencyForLR > 0:
         latencyForLR -= self.miLatency
@@ -796,7 +796,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
         readLeft = readsThisIter
         latencyLeft = self.miLatencyLeft
         # with PrefetchLocalRead, localreads can interleave with mfma
-        if self.numItersPLR:
+        if self.numItersPLR and iteration < isBarrier:
           # take ds_write into account to schedule ds_read, assume A and B localwrite have same width (TLDS=1)
           if (mfmaIndex >= self.lwStartMfmaIndex) and not globalReadCode.countType(Code.GlobalReadInst):
             for j in range(len(writeItems)):
@@ -805,6 +805,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
           for j in range(len(localReadItemsThisLoop)):
             latencyLeft -= localReadItemsThisLoop[j].IssueLatency*2
             readLeftLROPT += 1 if latencyLeft >= 0 else 0
+          # at least 1 instruction
+          readLeftLROPT = max(readLeftLROPT,1)
           # evenly schedule localread with each mfma
           readLeftLREven = readsThisIter // numMfmaPerIter
           if (readsThisIter % (numMfmaPerIter)) > i:
@@ -904,11 +906,13 @@ class KernelWriter(metaclass=abc.ABCMeta):
         # localReads for next loop should after barrier
         ####
         latencyLeft = self.miLatencyLeft
-        if self.numItersPLR:
+        if self.numItersPLR and iteration >= isBarrier:
           readLeftLROPT = 0
           for j in range(len(localReadItemsNextLoop)):
             latencyLeft -= localReadItemsNextLoop[j].IssueLatency*2
             readLeftLROPT += 1 if latencyLeft >= 0 else 0
+          # at least 1 instruction
+          readLeftLROPT = max(readLeftLROPT,1)
           # evenly schedule localread with each mfma
           readLeftLREven = readsThisIter // numMfmaPerIter
           if (readsThisIter % (numMfmaPerIter)) > i:
