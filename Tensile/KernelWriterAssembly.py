@@ -4891,6 +4891,22 @@ class KernelWriterAssembly(KernelWriter):
 
     return kStr
 
+  ##############################################################################
+  # longBranch - 32 bit offset
+  # s_branch class instructions take a label operand which is truncated to 16 bit
+  # If the target label address offset is greater than 16 bits, then
+  # we must use a longer 32 bit version.
+  # Use when erroring out "invalid operand due to label > SIMM16"
+  ##############################################################################
+  def longBranch(self, label):
+    kStr = ""
+    tmpSgpr = self.getTmpSgpr(3).idx()
+    kStr += inst("s_getpc_B64", sgpr(tmpSgpr,2), "addr of next instr")
+    kStr += inst("s_add_u32", sgpr(tmpSgpr+2), "%s"%label, hex(4), "target branch offset")
+    kStr += inst("s_add_u32", sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+2), "add target branch offset")
+    kStr += inst("s_addc_u32", sgpr(tmpSgpr+1), 0, sgpr(tmpSgpr+1), "add high and carry")
+    kStr += inst("s_setpc_b64", sgpr(tmpSgpr,2), "branch to %s"%label)
+    return kStr
 
   ##############################################################################
   # Initialize C
