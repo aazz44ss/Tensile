@@ -3515,7 +3515,11 @@ class KernelWriter(metaclass=abc.ABCMeta):
   # get kernel name
   ##############################################################################
   def getKernelFileBase(self, kernel):
-    return self.shortenFileBase(kernel)
+    if globalParameters["ShortNames"]:
+      fileBase = Solution.getNameSerial(kernel, self.kernelSerialNaming)
+    else:
+      fileBase = self.shortenFileBase(kernel)
+    return fileBase
 
   def getKernelName(self, kernel):
     kernelName = Solution.getNameMin(kernel, self.kernelMinNaming)
@@ -3626,8 +3630,6 @@ for codeObjectFileName in codeObjectFileNames:
 
   def shortenFileBase(self, kernel):
     base = self.getKernelName(kernel)
-    if globalParameters["ShortNames"]:
-      return Solution.getNameSerial(kernel, self.kernelSerialNaming)
     if len(base) <= globalParameters["MaxFileName"]:
       return base
 
