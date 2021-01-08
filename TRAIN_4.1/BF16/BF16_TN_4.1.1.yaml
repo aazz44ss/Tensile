@@ -1,0 +1,460 @@
+GlobalParameters:
+  MinimumRequiredVersion: 4.14.0
+  # ForceRedoBenchmarkProblems: False
+  # ForceRedoLibraryLogic: False
+  # ForceRedoLibraryClient: False
+  # MergeFiles: False
+  # CMakeBuildType: Debug
+  EnqueuesPerSync: 1
+  SyncsPerBenchmark: 1
+  NumBenchmarks: 1
+  numWarmups: 1
+  KernelTime: True
+  SleepPercent: 50
+  # PrintSolutionRejectionReason: True
+  PrintWinnersOnly: True
+  # ForceGenerateKernel: True
+  NumElementsToValidate: 0
+  # DataInitTypeA: 0
+  # DataInitTypeB: 0
+  # DataInitTypeC: 0
+  # DataInitTypeD: 3
+  DataInitTypeBeta: 0
+  DataInitTypeAlpha: 1
+  NewClient: 2
+  CSVExportWinner: 1
+  CSVMergeSameProblemID: 1
+  # CpuThreads: 1
+  # PreciseKernelTime: 0
+  LegacyComponents: 0
+  ShortNames: 1
+  # MaxFileName: 1
+  # MinKForGSU: 512
+  MaxWorkspaceSize: 33554432
+
+BenchmarkProblems:
+  ########################################
+  # TN - standard
+  ########################################
+  -
+    - # ProblemType
+      OperationType: GEMM
+      DataType: b
+      DestDataType: B
+      ComputeDataType: s
+      HighPrecisionAccumulate: True
+      TransposeA: True
+      TransposeB: False
+      UseBeta: True
+      Batched: True
+    - # BenchmarkProblemSizeGroup - Standard - All problem
+      InitialSolutionParameters:
+      BenchmarkCommonParameters:
+        - KernelLanguage: ["Assembly"]
+        - EdgeType: ["ShiftPtr"]
+      ForkParameters:
+        - MatrixInstruction:
+          - [16, 16, 8, 1,  1,  1,1,  2,2] # 32x32
+          - [16, 16, 8, 1,  1,  1,2,  2,2] # 32x64
+          - [16, 16, 8, 1,  1,  2,1,  2,2] # 64x32
+          - [32, 32, 4, 1,  1,  1,1,  2,2]  # 64x64
+          - [32, 32, 4, 1,  1,  1,2,  2,2]  # 64x128
+          - [32, 32, 4, 1,  1,  2,1,  2,2]  # 128x64
+          - [32, 32, 4, 1,  1,  2,2,  2,2]  # 128x128
+          - [32, 32, 4, 1,  1,  1,4,  2,2]  # 64x256
+          - [32, 32, 4, 1,  1,  4,1,  2,2]  # 256x64
+          - [32, 32, 4, 1,  1,  2,4,  2,2]  # 128x256
+          - [32, 32, 4, 1,  1,  4,2,  2,2]  # 256x128
+          # - [32, 32, 4, 1,  1,  4,4,  2,2]  # 256x256
+          
+
+          # Specialized MT
+          - [16, 16, 8, 1,  1,  3,3,  2,2] # 96x96
+          - [32, 32, 4, 1,  1,  3,1,  1,4]  # 96x128
+          - [32, 32, 4, 1,  1,  1,3,  4,1]  # 128x96
+          - [16, 16, 8, 1,  1,  1,9,  4,1] # 64x144
+          - [16, 16, 8, 1,  1,  9,1,  1,4] # 144x64
+          - [16, 16, 8, 1,  1,  2,9,  4,1] # 128x144
+          - [16, 16, 8, 1,  1,  9,2,  1,4] # 144x128
+          - [32, 32, 4, 1,  1,  1,5,  4,1]  # 128x160
+          - [32, 32, 4, 1,  1,  5,1,  1,4]  # 160x128
+          - [16, 16, 8, 1,  1,  5,5,  2,2] # 160x160
+          - [32, 32, 4, 1,  1,  1,9,  4,1]  # 128x288
+          - [32, 32, 4, 1,  1,  9,1,  1,4]  # 288x128
+          # - [16, 16, 8, 1,  1,  4,9,  4,1] # 256x144
+          # - [16, 16, 8, 1,  1,  9,4,  1,4] # 144x256
+          - [32, 32, 4, 1,  1,  2,5,  4,1]  # 256x160
+          - [32, 32, 4, 1,  1,  5,2,  1,4]  # 160x256
+          
+
+          - [32, 32, 4, 1,  1,  1,3,  2,2]  # 64x192
+          - [32, 32, 4, 1,  1,  3,1,  2,2]  # 192x64
+          - [32, 32, 4, 1,  1,  2,3,  2,2]  # 128x192
+          - [32, 32, 4, 1,  1,  3,2,  2,2]  # 192x128
+          - [32, 32, 4, 1,  1,  3,3,  2,2]  # 192x192
+          # - [32, 32, 4, 1,  1,  4,3,  2,2]  # 256x192
+          # - [32, 32, 4, 1,  1,  3,4,  2,2]  # 192x256
+        - ThreadTile:
+          - [ 1, 32 ]
+        - WorkGroup:
+          - [ 64, 4, 1 ]
+        - AssertFree0ElementMultiple: [8]
+        - PrefetchGlobalRead: [1,2]
+        - PrefetchLocalRead: [5,9,17]
+        - DepthU: [32,64]
+        - VectorWidth: [2]
+        - GlobalReadVectorWidth: [2,4,8]
+        - LocalReadVectorWidth: [4]
+        - SuppressNoLoadLoop: [0]
+        - OptNoLoadLoop: [1]
+        - ScheduleLocalWrite: [1]
+        - ScheduleGlobalRead: [1]
+        - ScheduleIterAlg: [3]
+        - InnerUnroll: [1]
+        - ExpandPointerSwap: [1]
+        - TransposeLDS: [1]
+        - LdsBlockSizePerPad: [-1]
+        - LdsPadA: [-1]
+        - LdsPadB: [-1]
+        - StoreRemapVectorWidth: [-1]
+        # - StaggerUMapping: [0,3]
+        - StaggerUStride: [128,256]
+        - StaggerU: [0,32]
+        - WorkGroupMapping: [1,2,15]
+        - WaveSeparateGlobalReadA: [1]
+        - WaveSeparateGlobalReadB: [1]
+        - 1LDSBuffer: [0,1]
+        - GlobalSplitU: [1,2,3,5,7,15]
+      BenchmarkJoinParameters:
+      BenchmarkFinalParameters:
+        - ProblemSizes:
+          - Exact: { sizes: [ 1024, 1024, 160, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 160, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 2880, 16384, 1, 1920, 2880, 2880, 1920, 1920 ] #gemm
+          - Exact: [ 1920, 16384, 1, 960, 1920, 1920, 960, 960 ] #gemm
+          - Exact: [ 3840, 16384, 1, 1920, 3840, 3840, 1920, 1920 ] #gemm
+          - Exact: [ 1920, 16384, 1, 3840, 1920, 1920, 3840, 3840 ] #gemm
+          - Exact: [ 25216, 16384, 1, 1920, 25216, 25216, 1920, 1920 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 40, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 40, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 2880, 4096, 1, 1920, 2880, 2880, 1920, 1920 ] #gemm
+          - Exact: [ 1920, 4096, 1, 960, 1920, 1920, 960, 960 ] #gemm
+          - Exact: [ 3840, 4096, 1, 1920, 3840, 3840, 1920, 1920 ] #gemm
+          - Exact: [ 1920, 4096, 1, 3840, 1920, 1920, 3840, 3840 ] #gemm
+          - Exact: [ 25216, 4096, 1, 1920, 25216, 25216, 1920, 1920 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 80, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 80, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 2880, 8192, 1, 1920, 2880, 2880, 1920, 1920 ] #gemm
+          - Exact: [ 1920, 8192, 1, 960, 1920, 1920, 960, 960 ] #gemm
+          - Exact: [ 3840, 8192, 1, 1920, 3840, 3840, 1920, 1920 ] #gemm
+          - Exact: [ 1920, 8192, 1, 3840, 1920, 1920, 3840, 3840 ] #gemm
+          - Exact: [ 25216, 8192, 1, 1920, 25216, 25216, 1920, 1920 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 96, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 96, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 1728, 16384, 1, 2304, 1728, 1728, 2304, 2304 ] #gemm
+          - Exact: [ 2304, 16384, 1, 576, 2304, 2304, 576, 576 ] #gemm
+          - Exact: [ 2304, 16384, 1, 2304, 2304, 2304, 2304, 2304 ] #gemm
+          - Exact: [ 12672, 16384, 1, 2304, 12672, 12672, 2304, 2304 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 24, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 24, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 1728, 4096, 1, 2304, 1728, 1728, 2304, 2304 ] #gemm
+          - Exact: [ 2304, 4096, 1, 576, 2304, 2304, 576, 576 ] #gemm
+          - Exact: [ 2304, 4096, 1, 2304, 2304, 2304, 2304, 2304 ] #gemm
+          - Exact: [ 12672, 4096, 1, 2304, 12672, 12672, 2304, 2304 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 48, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 48, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 1728, 8192, 1, 2304, 1728, 1728, 2304, 2304 ] #gemm
+          - Exact: [ 2304, 8192, 1, 576, 2304, 2304, 576, 576 ] #gemm
+          - Exact: [ 2304, 8192, 1, 2304, 2304, 2304, 2304, 2304 ] #gemm
+          - Exact: [ 12672, 8192, 1, 2304, 12672, 12672, 2304, 2304 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 16, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 16, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 1152, 4096, 1, 3072, 1152, 1152, 3072, 3072 ] #gemm
+          - Exact: [ 3072, 4096, 1, 384, 3072, 3072, 384, 384 ] #gemm
+          - Exact: [ 1536, 4096, 1, 3072, 1536, 1536, 3072, 3072 ] #gemm
+          - Exact: [ 3072, 4096, 1, 1536, 3072, 3072, 1536, 1536 ] #gemm
+          - Exact: [ 6400, 4096, 1, 3072, 6400, 6400, 3072, 3072 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 32, 96 ], stridesA: [ -1, 96, 98304 ], stridesB: [ -1, 96, 98304 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 96, 1024, 32, 1024 ], stridesA: [ -1, 1024, 98304 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 96, 98304 ], stridesD: [ -1, 96, 98304 ] } # gemm_strided_batched
+          - Exact: [ 1152, 8192, 1, 3072, 1152, 1152, 3072, 3072 ] #gemm
+          - Exact: [ 3072, 8192, 1, 384, 3072, 3072, 384, 384 ] #gemm
+          - Exact: [ 1536, 8192, 1, 3072, 1536, 1536, 3072, 3072 ] #gemm
+          - Exact: [ 3072, 8192, 1, 1536, 3072, 3072, 1536, 1536 ] #gemm
+          - Exact: [ 6400, 8192, 1, 3072, 6400, 6400, 3072, 3072 ] #gemm
+          - Exact: [ 40, 40, 1, 1909283, 40, 40, 1909283, 1909283 ] #gemm
+          - Exact: [ 40, 40, 1, 3818566, 40, 40, 3818566, 3818566 ] #gemm
+          - Exact: [ 11, 11, 1, 1909283, 11, 11, 1909283, 1909283 ] #gemm
+          - Exact: [ 11, 11, 1, 3818566, 11, 11, 3818566, 3818566 ] #gemm
+          - Exact: [ 2, 8, 1, 2048, 2, 2, 2048, 2048 ] #gemm
+          - Exact: [ 2048, 4096, 1, 2048, 2048, 2048, 2048, 2048 ] #gemm
+          - Exact: [ 2048, 4096, 1, 4096, 2048, 2048, 4096, 4096 ] #gemm
+          - Exact: [ 2048, 8, 1, 2048, 2048, 2048, 2048, 1048576 ] #gemm
+          - Exact: [ 29000, 199, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 221, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 224, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 229, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 234, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 242, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 246, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 247, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 256, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 262, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 264, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 265, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 274, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 277, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 279, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 288, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 296, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 315, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 29000, 335, 1, 2048, 29000, 29000, 2048, 2048 ] #gemm
+          - Exact: [ 4096, 4096, 1, 2048, 4096, 4096, 2048, 2048 ] #gemm
+          - Exact: [ 1024, 128, 1, 1024, 1024, 1024, 1024, 131072 ] #gemm
+          - Exact: [ 29000, 2283, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2296, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2306, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2309, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2318, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2320, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2324, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2325, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2329, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2338, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2345, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2350, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2362, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2366, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2368, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2374, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 2390, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: { sizes: [ 512, 512, 320, 64 ], stridesA: [ -1, 64, 32768 ], stridesB: [ -1, 64, 32768 ], stridesC: [ -1, 512, 262144 ], stridesD: [ -1, 512, 262144 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 512, 320, 512 ], stridesA: [ -1, 512, 32768 ], stridesB: [ -1, 512, 262144 ], stridesC: [ -1, 64, 32768 ], stridesD: [ -1, 64, 32768 ] } # gemm_strided_batched
+          - Exact: [ 1024, 20, 1, 1024, 1024, 1024, 1024, 524288 ] #gemm
+          - Exact: [ 2, 20, 1, 1024, 2, 2, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 561, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 574, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 600, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 608, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 615, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 622, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 625, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 626, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 628, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 636, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 651, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 658, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 669, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 670, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 672, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 684, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 716, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: [ 29000, 730, 1, 1024, 29000, 29000, 1024, 1024 ] #gemm
+          - Exact: { sizes: [ 64, 512, 80, 512 ], stridesA: [ -1, 512, 32768 ], stridesB: [ -1, 512, 262144 ], stridesC: [ -1, 64, 32768 ], stridesD: [ -1, 64, 32768 ] } # gemm_strided_batched
+          - Exact: [ 2, 2, 1, 2560, 2, 2, 2560, 2560 ] #gemm
+          - Exact: [ 2560, 1024, 1, 2560, 2560, 2560, 2560, 2560 ] #gemm
+          - Exact: [ 2560, 1024, 1, 4096, 2560, 2560, 4096, 4096 ] #gemm
+          - Exact: [ 2560, 2, 1, 2560, 2560, 2560, 2560, 1310720 ] #gemm
+          - Exact: [ 29000, 109, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 121, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 27, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 35, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 36, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 39, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 40, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 42, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 43, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 44, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 46, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 48, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 49, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 50, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 51, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 53, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 54, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 55, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 56, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 57, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 58, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 59, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 61, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 63, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 65, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 66, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 67, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 69, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 70, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 71, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 73, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 74, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 75, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 77, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 78, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 80, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 81, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 82, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 83, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 84, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 88, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 89, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 90, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 92, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 95, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 29000, 98, 1, 2560, 29000, 29000, 2560, 2560 ] #gemm
+          - Exact: [ 4096, 1024, 1, 2560, 4096, 4096, 2560, 2560 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 512, 64 ], stridesA: [ -1, 64, 65536 ], stridesB: [ -1, 64, 65536 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 64, 1024, 512, 1024 ], stridesA: [ -1, 1024, 65536 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 64, 65536 ], stridesD: [ -1, 64, 65536 ] } # gemm_strided_batched
+          - Exact: [ 1024, 32768, 1, 4096, 1024, 1024, 4096, 4096 ] #gemm
+          - Exact: [ 3072, 32768, 1, 1024, 3072, 3072, 1024, 1024 ] #gemm
+          - Exact: [ 4096, 32768, 1, 1024, 4096, 4096, 1024, 1024 ] #gemm
+          - Exact: [ 50304, 32768, 1, 1024, 50304, 50304, 1024, 1024 ] #gemm
+          - Exact: { sizes: [ 1024, 1024, 24, 128 ], stridesA: [ -1, 128, 131072 ], stridesB: [ -1, 128, 131072 ], stridesC: [ -1, 1024, 1048576 ], stridesD: [ -1, 1024, 1048576 ] } # gemm_strided_batched
+          - Exact: { sizes: [ 128, 1024, 24, 1024 ], stridesA: [ -1, 1024, 131072 ], stridesB: [ -1, 1024, 1048576 ], stridesC: [ -1, 128, 131072 ], stridesD: [ -1, 128, 131072 ] } # gemm_strided_batched
+
+    - # BenchmarkProblemSizeGroup - Standard - non-multiple of 8 M,N
+      InitialSolutionParameters:
+      BenchmarkCommonParameters:
+        - KernelLanguage: ["Assembly"]
+        - EdgeType: ["ShiftPtr"]
+      ForkParameters:
+        - MatrixInstruction:
+          - [16, 16, 8, 1,  1,  1,1,  2,2] # 32x32
+          - [16, 16, 8, 1,  1,  1,2,  2,2] # 32x64
+          - [16, 16, 8, 1,  1,  2,1,  2,2] # 64x32
+          - [32, 32, 4, 1,  1,  1,1,  2,2]  # 64x64
+          - [32, 32, 4, 1,  1,  1,2,  2,2]  # 64x128
+          - [32, 32, 4, 1,  1,  2,1,  2,2]  # 128x64
+          - [32, 32, 4, 1,  1,  2,2,  2,2]  # 128x128
+          - [32, 32, 4, 1,  1,  1,4,  2,2]  # 64x256
+          - [32, 32, 4, 1,  1,  4,1,  2,2]  # 256x64
+          - [32, 32, 4, 1,  1,  2,4,  2,2]  # 128x256
+          - [32, 32, 4, 1,  1,  4,2,  2,2]  # 256x128
+          # - [32, 32, 4, 1,  1,  4,4,  2,2]  # 256x256
+          
+
+          # Specialized MT
+          - [16, 16, 8, 1,  1,  3,3,  2,2] # 96x96
+          - [32, 32, 4, 1,  1,  3,1,  1,4]  # 96x128
+          - [32, 32, 4, 1,  1,  1,3,  4,1]  # 128x96
+          - [16, 16, 8, 1,  1,  1,9,  4,1] # 64x144
+          - [16, 16, 8, 1,  1,  9,1,  1,4] # 144x64
+          - [16, 16, 8, 1,  1,  2,9,  4,1] # 128x144
+          - [16, 16, 8, 1,  1,  9,2,  1,4] # 144x128
+          - [32, 32, 4, 1,  1,  1,5,  4,1]  # 128x160
+          - [32, 32, 4, 1,  1,  5,1,  1,4]  # 160x128
+          - [16, 16, 8, 1,  1,  5,5,  2,2] # 160x160
+          - [32, 32, 4, 1,  1,  1,9,  4,1]  # 128x288
+          - [32, 32, 4, 1,  1,  9,1,  1,4]  # 288x128
+          # - [16, 16, 8, 1,  1,  4,9,  4,1] # 256x144
+          # - [16, 16, 8, 1,  1,  9,4,  1,4] # 144x256
+          - [32, 32, 4, 1,  1,  2,5,  4,1]  # 256x160
+          - [32, 32, 4, 1,  1,  5,2,  1,4]  # 160x256
+          
+
+          - [32, 32, 4, 1,  1,  1,3,  2,2]  # 64x192
+          - [32, 32, 4, 1,  1,  3,1,  2,2]  # 192x64
+          - [32, 32, 4, 1,  1,  2,3,  2,2]  # 128x192
+          - [32, 32, 4, 1,  1,  3,2,  2,2]  # 192x128
+          - [32, 32, 4, 1,  1,  3,3,  2,2]  # 192x192
+          # - [32, 32, 4, 1,  1,  4,3,  2,2]  # 256x192
+          # - [32, 32, 4, 1,  1,  3,4,  2,2]  # 192x256
+        - ThreadTile:
+          - [ 1, 32 ]
+        - WorkGroup:
+          - [ 64, 4, 1 ]
+        - AssertFree0ElementMultiple: [1]
+        - PrefetchGlobalRead: [1,2]
+        - PrefetchLocalRead: [5,9,17]
+        - DepthU: [32,64]
+        - VectorWidth: [2]
+        - GlobalReadVectorWidth: [2,4,8]
+        - LocalReadVectorWidth: [4]
+        - SuppressNoLoadLoop: [0]
+        - OptNoLoadLoop: [1]
+        - ScheduleLocalWrite: [1]
+        - ScheduleGlobalRead: [1]
+        - ScheduleIterAlg: [3]
+        - InnerUnroll: [1]
+        - ExpandPointerSwap: [1]
+        - TransposeLDS: [1]
+        - LdsBlockSizePerPad: [-1]
+        - LdsPadA: [-1]
+        - LdsPadB: [-1]
+        - StoreRemapVectorWidth: [-1]
+        # - StaggerUMapping: [0,3]
+        - StaggerUStride: [128,256]
+        - StaggerU: [0,32]
+        - WorkGroupMapping: [1,2,15]
+        - WaveSeparateGlobalReadA: [1]
+        - WaveSeparateGlobalReadB: [1]
+        - 1LDSBuffer: [0,1]
+        - GlobalSplitU: [1,2,3,5,7,15]
+      BenchmarkJoinParameters:
+      BenchmarkFinalParameters:
+        - ProblemSizes:
+          - Exact: [ 11, 11, 1, 1909283, 11, 11, 1909283, 1909283 ] #gemm
+          - Exact: [ 11, 11, 1, 3818566, 11, 11, 3818566, 3818566 ] #gemm
+          - Exact: [ 2, 8, 1, 2048, 2, 2, 2048, 2048 ] #gemm
+          - Exact: [ 2, 20, 1, 1024, 2, 2, 1024, 1024 ] #gemm
+          - Exact: [ 2, 2, 1, 2560, 2, 2, 2560, 2560 ] #gemm
+
+    - # BenchmarkProblemSizeGroup - Small  m/n sizes
+      InitialSolutionParameters:
+      BenchmarkCommonParameters:
+        - KernelLanguage: ["Assembly"]
+        - EdgeType: ["ShiftPtr"]
+      ForkParameters:
+        - MatrixInstruction:
+          - [16, 16, 8, 1,  1,  1,1,  2,2] # 32x32
+          - [16, 16, 8, 1,  1,  1,1,  4,1] # 64x16
+          - [16, 16, 8, 1,  1,  1,1,  1,4] # 16x64
+          - [16, 16, 8, 1,  1,  1,1,  1,1] # 16x16
+          - [ 4,  4, 2,16,  1,  1,1,  1,1] # 4x64
+          - [ 4,  4, 2,16, 16,  1,1,  1,1] # 64x4
+        - ThreadTile:
+          - [ 1, 32 ]
+        - WorkGroup:
+          - [ 64, 4, 1 ]
+        - AssertFree0ElementMultiple: [1,8]
+        - PrefetchGlobalRead: [1,2]
+        - PrefetchLocalRead: [5,9,17,33]
+        - DepthU: [32,64,128]
+        - VectorWidth: [2]
+        - GlobalReadVectorWidth: [2,4,8]
+        - LocalReadVectorWidth: [8]
+        - SuppressNoLoadLoop: [0]
+        - OptNoLoadLoop: [1]
+        - ScheduleLocalWrite: [1]
+        - ScheduleGlobalRead: [1]
+        - ScheduleIterAlg: [3]
+        - InnerUnroll: [1]
+        - ExpandPointerSwap: [1]
+        - TransposeLDS: [1]
+        - LdsBlockSizePerPad: [-1]
+        - LdsPadA: [-1]
+        - LdsPadB: [-1]
+        - StoreRemapVectorWidth: [0,4]
+        # - StaggerUMapping: [0,3]
+        - StaggerUStride: [256]
+        - StaggerU: [32]
+        - WorkGroupMapping: [1,2,15]
+        - WaveSeparateGlobalReadA: [1]
+        - WaveSeparateGlobalReadB: [1]
+        - 1LDSBuffer: [0,1]
+        - GlobalSplitU: [1,120]
+      BenchmarkJoinParameters:
+      BenchmarkFinalParameters:
+        - ProblemSizes:
+          - Exact: [ 11, 11, 1, 1909283, 11, 11, 1909283, 1909283 ] #gemm
+          - Exact: [ 11, 11, 1, 3818566, 11, 11, 3818566, 3818566 ] #gemm
+          - Exact: [ 2, 8, 1, 2048, 2, 2, 2048, 2048 ] #gemm
+          - Exact: [ 2048, 8, 1, 2048, 2048, 2048, 2048, 1048576 ] #gemm
+          - Exact: [ 2, 20, 1, 1024, 2, 2, 1024, 1024 ] #gemm
+          - Exact: [ 2, 2, 1, 2560, 2, 2, 2560, 2560 ] #gemm
+          - Exact: [ 2560, 2, 1, 2560, 2560, 2560, 2560, 1310720 ] #gemm
+
+LibraryLogic:
+    ScheduleName: "arcturus"
+    DeviceNames: ["Device 7380", "Device 7388", "Device 738c", "Device 7390"]
+    ArchitectureName: "gfx908"
+
+LibraryClient:
