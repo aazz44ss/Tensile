@@ -3197,7 +3197,7 @@ class Solution:
 
     if state["StoreRemapVectorWidth"] == -1:
       # use de_read_b64 as default in storeRemap to avoid bank conflict
-      defaultRemap = 8 // state["ProblemType"]["DataType"].numBytes()
+      defaultRemap = 8 // state["ProblemType"]["DestDataType"].numBytes()
       ldsRemapPad = max(defaultRemap,state["MIOutputVectorWidth"])
       ldsNumElementsRemapC = (state["MacroTile0"]+ldsRemapPad)* state["MatrixInstN"] * state["MIWaveGroup"][1]
       ldsNumElementsRemapC *= (2 if state["_GlobalAccumulation"] else 1) # FP32 output FP16 Data
