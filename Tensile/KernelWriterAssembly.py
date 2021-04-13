@@ -1035,6 +1035,8 @@ class KernelWriterAssembly(KernelWriter):
     super(KernelWriterAssembly, self).initKernel(kernel, tPA, tPB)
     problemType = kernel["ProblemType"]
 
+    self.occupancy = 1
+
     dkp = kernel["DisableKernelPieces"]
     self.do["NullKernel"]  = dkp >= 9 or dkp == -9
 
@@ -3415,10 +3417,6 @@ class KernelWriterAssembly(KernelWriter):
                      sgpr("PadEnd%s%s%s"%(tc, freeDimChar, sumDimChar)), \
                      "Bpe%sLog2"%tc, "")
 
-    if kernel["PersistentKernel"]:
-      kStr += inst("s_mov_b32", sgpr("SerialWorkGroupIter"), sgpr("WorkGroup0"), "init SerialWorkGroupIter")
-      # kStr += inst("s_mov_b32", sgpr("PersistentLoopIter"), 0, "init PersistentKernelLoop Iter")  # Back-up: not needed now
-
     if self.canOptimizePreLoopLWVmcnt:
       kStr += inst("s_mov_b32", sgpr("PreLoopLWVmcntCase"), hex(1), "init PreLoopLWVmcntCase to 1")
 
@@ -3486,6 +3484,10 @@ class KernelWriterAssembly(KernelWriter):
 
     return kStr
 
+  def pkInit(self,kernel):
+    imod = Code.Module()
+    self.pkInitCode = imod
+    return imod
 
   ##############################################################################
   # Perform a magic division (mul by magic number and shift)
@@ -11798,6 +11800,34 @@ class KernelWriterAssembly(KernelWriter):
     if kernel["ScheduleIterAlg"] == 2 and \
         self.getOccupancy(kernel["NumThreads"], self.vgprPool.size(), self.getLdsSize(kernel), self.agprPool.size()) < 2:
       self.overflowedResources = 6
+
+    if kernel["PersistentKernel"]:
+      if kernel["PersistentKernelRemap"]:
+        # remap wg to physical CU
+        tmpSgpr = self.getTmpSgpr(4).idx()
+        # get physical cu id
+        self.pkInitCode.addInst("s_getreg_b32", sgpr(tmpSgpr), "hwreg(HW_REG_HW_ID,8,4)", "get cu id")
+        self.pkInitCode.addInst("s_getreg_b32", sgpr(tmpSgpr+1), "hwreg(HW_REG_HW_ID,13,3)", "get se id")
+        self.pkInitCode.addInst("s_mul_i32", sgpr(tmpSgpr+1), sgpr(tmpSgpr+1), 14, "SE x 14")
+        self.pkInitCode.addInst("s_add_u32", sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+1),"serial = SE x 14 + CU")
+        # SE_1 CU_13 and SE_5 CU_3 not enable
+        self.pkInitCode.addInst("s_cmp_gt_u32", sgpr(tmpSgpr), 26,"if serial > 26, serial -= 1")
+        self.pkInitCode.addInst("s_cselect_b32", sgpr(tmpSgpr+1), 1, 0, "")
+        self.pkInitCode.addInst("s_sub_u32", sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+1),"")
+        self.pkInitCode.addInst("s_cmp_gt_u32", sgpr(tmpSgpr), 72,"if serial > 72, serial -= 1")
+        self.pkInitCode.addInst("s_cselect_b32", sgpr(tmpSgpr+1), 1, 0, "")
+        self.pkInitCode.addInst("s_sub_u32", sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+1),"")
+        # remap near tiles to same CU
+        self.pkInitCode.addInst(scalarStaticDivideAndRemainder(tmpSgpr+1, "", sgpr("GridNumWorkGroups0"), 110, tmpSgpr+2, 0), "")
+        self.pkInitCode.addInst("s_mul_i32", sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+1), "")
+        self.pkInitCode.addInst("s_getreg_b32", sgpr(tmpSgpr+2), "hwreg(HW_REG_HW_ID,0,4)", "get wave id")
+        self.pkInitCode.addInst("s_add_u32", sgpr(tmpSgpr), sgpr(tmpSgpr), sgpr(tmpSgpr+2), "")
+        # remap only support wg <= occupancy
+        occupancy = self.getOccupancy(kernel["NumThreads"], self.vgprPool.size(), self.getLdsSize(kernel), self.agprPool.size())
+        self.pkInitCode.addInst("s_cmp_le_u32", sgpr(tmpSgpr+1), occupancy, "")
+        self.pkInitCode.addInst("s_cmov_b32", sgpr("WorkGroup0"), sgpr(tmpSgpr), "")
+      # init SerialWorkGroupIter
+      self.pkInitCode.addInst("s_mov_b32", sgpr("SerialWorkGroupIter"), sgpr("WorkGroup0"), "init SerialWorkGroupIter")
 
     vgprPerCU = 65536
     vgprPerThreadPerOccupancy = vgprPerCU // kernel["NumThreads"]

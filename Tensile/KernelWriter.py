@@ -1567,6 +1567,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
 
     kl.append(self.comment3("Allocate Resources"))
     kl.append(self.allocateResources(kernel))
+    kl.append(self.pkInit(kernel))
 
     if self.enable["PreLoop"]:
       ####################################
@@ -3034,6 +3035,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
   def allocateResources(self, kernel):
     return ""
 
+  @abc.abstractmethod
+  def pkInit(self, kernel):
+    return ""
 
   ##############################################################################
   # Open Persistent Loop
