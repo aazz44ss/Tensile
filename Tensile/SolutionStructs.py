@@ -1875,8 +1875,8 @@ class Solution:
       state["MatrixInstBN"]        = state["MIBlock"][5]
 
       state["LocalSplitU"]         = 1
-      state["MIOutputVectorWidth"] = 1 if (state["MatrixInstM"] == 4 and state["ProblemType"]["DataType"].isDouble()) else 4
-      state["MIRegPerOut"]         = 2 if state["ProblemType"]["DataType"].isDouble() else 1
+      state["MIOutputVectorWidth"] = 4 if not state["ProblemType"]["DataType"].isDouble() else 1
+      state["MIRegPerOut"]         = 1 if not state["ProblemType"]["DataType"].isDouble() else 2
 
       if state["ProblemType"]["DataType"].isDouble() and state["StoreVectorWidth"] != 1:
           reject(state, "DGEMM MFMA currently requires StoreVectorWidth=1")
@@ -3198,13 +3198,15 @@ class Solution:
     if state["StoreRemapVectorWidth"] == -1:
       # use de_read_b64 as default in storeRemap to avoid bank conflict
       defaultRemap = 8 // state["ProblemType"]["DestDataType"].numBytes()
+      defaultRemap = max(defaultRemap,state["MacroTile0"]//state["WavefrontSize"])
       ldsRemapPad = max(defaultRemap,state["MIOutputVectorWidth"])
       ldsNumElementsRemapC = (state["MacroTile0"]+ldsRemapPad)* state["MatrixInstN"] * state["MIWaveGroup"][1]
       ldsNumElementsRemapC *= (2 if state["_GlobalAccumulation"] else 1) # FP32 output FP16 Data
       ldsSize = ldsNumElementsRemapC * state["ProblemType"]["DataType"].numBytes()
       if not math.log(state["MacroTile0"],2).is_integer() or \
           ldsSize > globalParameters["MaxLDS"] or \
-          (state["GlobalSplitU"] > 1) and (state["_GlobalAccumulation"] != 'MultipleBuffer') or\
+          state["SourceSwap"] or \
+          (state["GlobalSplitU"] > 1) and (state["_GlobalAccumulation"] != 'MultipleBuffer') or \
           state["MatrixInstBN"] > 1 and state["MatrixInstN"] == 4:
         state["StoreRemapVectorWidth"] = 0
       else:

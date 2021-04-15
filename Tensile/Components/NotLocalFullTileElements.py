@@ -113,6 +113,7 @@ class NotLocalFullTileElementsMFMASwap(NotLocalFullTileElements):
         MFMAcontinoutsOuptut = kernel["MIOutputVectorWidth"]
 
         if kernel["MatrixInstM"] == 4:
+            outputsPerThread    = MFMAcontinoutsOuptut
             totalTT0            = kernel["MIWaveTile"][0] * MFMAcontinoutsOuptut
             totalTT1            = kernel["MIWaveTile"][1]
         else:
@@ -122,8 +123,8 @@ class NotLocalFullTileElementsMFMASwap(NotLocalFullTileElements):
 
         for tt1 in range(0, totalTT1):
             for vc1 in range(0, 1):
-                for vc0 in range(0, MFMAcontinoutsOuptut, vectorwidth): # note step by vectorwidth
-                    for tt0 in range(0, totalTT0 // MFMAcontinoutsOuptut):
+                for vc0 in range(0, outputsPerThread, vectorwidth): # note step by vectorwidth
+                    for tt0 in range(0, totalTT0 // outputsPerThread):
                         element = (tt1, tt0, vc1, vc0)
                         elements.append(element)
 

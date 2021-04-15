@@ -9150,8 +9150,9 @@ class KernelWriterAssembly(KernelWriter):
                 hex(log2(kernel["MatrixInstN"])), vgpr(tid0), \
                 "tid / matrixInstN")
 
-    kStr += inst("v_lshlrev_b32", vgpr(coord0), hex(log2(kernel["MIOutputVectorWidth"])), vgpr(coord0), \
-                  "lds coord0 offset *= 4 (each thread hold 4 element)")
+    if kernel["MIOutputVectorWidth"] > 1:
+      kStr += inst("v_lshlrev_b32", vgpr(coord0), hex(log2(kernel["MIOutputVectorWidth"])), vgpr(coord0), \
+                    "lds coord0 offset *= 4 (each thread hold 4 element)")
 
     kStr += inst("v_mad_u32_u24", vgpr(coord0), kernel["MatrixInstM"]*kernel["MatrixInstBM"], vgpr(waveCoord0), vgpr(coord0), \
                   "coord0 += waveCoord0 * wave M shape(blockM*MiM)")
@@ -9524,7 +9525,8 @@ class KernelWriterAssembly(KernelWriter):
             coordOffset1  = bIdx1 * kernel["MatrixInstN"]
             coordOffset1 += wtIdex * kernel["MatrixInstN"] *  kernel["MatrixInstBN"] * kernel["MIWaveGroup"][1]
             if kernel["SourceSwap"]:
-              coordOffset1 += vc0 * 4
+              nextMIOutput  = self.kernel["WavefrontSize"]//kernel["MatrixInstN"]*kernel["MIOutputVectorWidth"]
+              coordOffset1 += vc0 * nextMIOutput
             else:
               coordOffset1 += vc1
         else:
@@ -9544,6 +9546,9 @@ class KernelWriterAssembly(KernelWriter):
           else:
             MFMAContinuousOutputs = kernel["MIOutputVectorWidth"]
             OutputsPerMIMN        = kernel["MatrixInstM"] * kernel["MatrixInstN"] // self.kernel["WavefrontSize"]
+            nextMIMOutput         = self.kernel["WavefrontSize"]//kernel["MatrixInstN"]*kernel["MIOutputVectorWidth"]
+            if kernel["SourceSwap"]:
+              MFMAContinuousOutputs = OutputsPerMIMN
 
             eIdx0        = d0 % (OutputsPerMIMN // MFMAContinuousOutputs)
             remain_d0    = d0 // (OutputsPerMIMN // MFMAContinuousOutputs)
@@ -9557,7 +9562,7 @@ class KernelWriterAssembly(KernelWriter):
             if kernel["SourceSwap"]:
               coordOffset0 += vc1
             else:
-              coordOffset0 += vc0    * (4 if kernel["ProblemType"]["DataType"].isDouble() else 1)
+              coordOffset0 += vc0
         else:
           coordOffset0 = d0 * kernel["SubGroup0"]*kernel["VectorWidth"] + vc0
 
