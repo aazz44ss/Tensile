@@ -833,8 +833,11 @@ validParameters = {
 
     # SourceSwap: Optimizes MatrixInstruction store pattern by swapping mfma input order.
     "SourceSwap":                 [False, True],
-
     "PersistentKernelRemap":      [False, True],
+    "GlobalWritePerBatch":        list(range(0, 128)),
+    "StoreSyncOpt":               list(range(0, 256)),
+    "InterleaveStoreVmcnt":       [False, True],
+    "StorePriorityOpt":           [False, True],
 
     # Disable overlapping AB-tile vgpr and read/write addr vgprs with C-tile vgprs
     # Valid only for MatrixInstruction enabled kernels, which by default overlaps
@@ -1191,6 +1194,10 @@ defaultBenchmarkCommonParameters = [
     {"StoreRemapVectorWidth":     [ 0 ] },
     {"SourceSwap":                [ False ] },
     {"PersistentKernelRemap":     [ 0 ] },
+    {"GlobalWritePerBatch":       [ 0 ] },
+    {"StoreSyncOpt":              [ 0 ] },
+    {"InterleaveStoreVmcnt":      [ 1 ] },
+    {"StorePriorityOpt":          [ 0 ] },
     ]
 # benchmark these solution independently
 defaultForkParameters = []

@@ -1097,7 +1097,7 @@ class KernelWriterAssembly(KernelWriter):
     # For Beta:
     # Rather than waiting for all loads to finish with s_waitcnt vmcnt(0), interleave
     # appropriate vmwnts into the stores so they issue as loads become available
-    self.interleaveStoreVmcnt = 1 and kernel["BufferStore"]
+    self.interleaveStoreVmcnt = kernel["InterleaveStoreVmcnt"] and kernel["BufferStore"]
 
 
     # if >0, shift the start of the SRD left by specified #elements (not bytes)
@@ -3248,6 +3248,10 @@ class KernelWriterAssembly(KernelWriter):
   ##############################################################################
   def allocateResources(self, kernel):
     kStr = ""
+
+    if kernel["StorePriorityOpt"]:
+      kStr += inst("s_setprio 3", "henry")
+
     if self.do["NullKernel"]:
       kStr += inst("s_endpgm", "Skip the whole kernel")
 
@@ -5944,6 +5948,9 @@ class KernelWriterAssembly(KernelWriter):
     kStr = ""
 
     kStr += "%s:\n" % (self.getNamedLabelUnique("Summation_End") if label is None else label)
+
+    if kernel["StorePriorityOpt"]:
+      kStr += inst("s_setprio 0", "henry")
 
     if self.overlapVgprC:
       # After summation loop, valuC is due for Acc->Arch read and is thus locked out.
@@ -10471,6 +10478,8 @@ class KernelWriterAssembly(KernelWriter):
 
         assert(self.numVgprValuC % gwvw == 0) # sanity check
 
+        numElementsPerBatch = numElementsPerBatch if not kernel["GlobalWritePerBatch"] else min(kernel["GlobalWritePerBatch"],numElementsPerBatch)
+
         if shrinkDb:
           print("NumElementsPerBatch=", numElementsPerBatch, "LimitedBySgprs=", self.ss.cfg.numElementsPerBatchLimitedBySgprs, \
               "WARNING" if self.ss.cfg.numElementsPerBatchLimitedBySgprs < numElementsPerBatch else "okay")
@@ -10975,6 +10984,10 @@ class KernelWriterAssembly(KernelWriter):
       tmpVgpr, batchElementSgprs, tmpSgpr, codeAccVgprRead):
     kStr = ""
 
+    if kernel["StoreSyncOpt"]:
+      kStr += "s_barrier\n"
+      kStr += "s_sleep %d // henry\n" %(kernel["StoreSyncOpt"]-1)
+
     kStr += self.comment1("optSingleColVgpr=%u optSharedColVgpr=%u optSharedMask=%u optSrdIncForRow=%u" % \
               (ss.optSingleColVgpr, ss.optSharedColVgpr, ss.optSharedMask, ss.optSrdIncForRow))
     if atomic:
@@ -11027,6 +11040,7 @@ class KernelWriterAssembly(KernelWriter):
     if edge and self.db["AssertNoEdge"]:
       kStr += self.bomb() # should not get here
 
+    loadBetaCodeHenry = ""
     for elementIdx in range(0, len(batchElements)):
       element = batchElements[elementIdx]
       addr = ss.elementAddr[elementIdx].addrVgpr
@@ -11046,7 +11060,7 @@ class KernelWriterAssembly(KernelWriter):
 
       if beta:
         kStr += addrCalc.emitLdChange(kernel, ss, 'C', edge, beta, mask, (elementIdx == 0), tmpVgpr, addr, addrC)
-        kStr += self.readCInput(kernel, ss, addrCalc, vc0, data, gwvw, addr, tmpS01)
+        loadBetaCodeHenry += self.readCInput(kernel, ss, addrCalc, vc0, data, gwvw, addr, tmpS01)
         loadsIssued += 1
 
       kStr += addrCalc.emitLdChange(kernel, ss, 'D', edge, beta, mask, (elementIdx == len(batchElements)-1), tmpVgpr, addr, addrD)
@@ -11089,6 +11103,11 @@ class KernelWriterAssembly(KernelWriter):
         # restore full exec mask for calculating addr of next element
         if edge and (beta or atomic):
           kStr += inst("s_mov_b{}".format(kernel["WavefrontSize"]), self.exec, -1, "full mask -1 -> exec" )
+
+    kStr += loadBetaCodeHenry
+    if beta and kernel["StoreSyncOpt"]:
+      kStr += "s_barrier\n"
+      kStr += "s_sleep %d // henry\n" %(kernel["StoreSyncOpt"]-1)
 
     ########################################
     # AccVgpr read
@@ -11468,6 +11487,7 @@ class KernelWriterAssembly(KernelWriter):
         kStr += inst("v_mov_b32", vgpr(vgprFp32Nan), "0x7fff0000", "fp32 Nan" )
         kStr += inst("v_mov_b32", vgpr(vgprBf16Inc), "0x7fff", "rounding bias for bfloat16" )
 
+      storeCodeHenry = ""
       for elementIdx in range(0, len(batchElements)):
         element = batchElements[elementIdx]
         addr = ss.elementAddr[elementIdx].addrVgpr
@@ -11617,7 +11637,7 @@ class KernelWriterAssembly(KernelWriter):
                 kStr += inst("v_and_or_b32", vgpr(d), vgpr("ValuC+%u"%sumIdxV), vgpr(vgprBf16Mask), vgpr("ValuC+%u"%(sumIdxV-1)), "pack two bf16 to dword")
 
         if not kernel["StoreRemapVectorWidth"]:
-          kStr += self.addStore(kernel, ss, addrCalc, sumIdx, tmpS01, edge)
+          storeCodeHenry += self.addStore(kernel, ss, addrCalc, sumIdx, tmpS01, edge)
           storesIssued += 1
 
         else:
@@ -11625,6 +11645,8 @@ class KernelWriterAssembly(KernelWriter):
           kStr += self.storeRemapAddLocalWrite(kernel, ss, addrCalc, sumIdx*rpe)
           # Column Block Shape has been written to LDS
           # Now read back and write out to global memory
+
+      kStr += storeCodeHenry
 
       if kernel["ProblemType"]["DestDataType"].isBFloat16() and kernel["ProblemType"]["HighPrecisionAccumulate"]:
         self.vgprPool.checkIn(vgprBf16Temp)
