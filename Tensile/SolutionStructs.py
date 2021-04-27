@@ -3419,6 +3419,8 @@ class Solution:
         numReadsPerIterB = state["InnerUnroll"]*(state["MIWaveTile"][1] * numReadPerVectorB)
 
         numMfmaBetweenLWandBarrier = 2 if state["MatrixInstM"] == 32 else 3
+        if state["PrefetchGlobalRead"] == 2:
+          numMfmaBetweenLWandBarrier -= 1
         numItersPLR = state["PrefetchLocalRead"]%state["LoopIters"]
         numVgprBuffer = state["LoopIters"] if state["PrefetchLocalRead"] > state["LoopIters"] else state["PrefetchLocalRead"]
         issueLatencyA = 2 if state["TransposeLDS"] and not state["ProblemType"]["TLUA"] and state["LocalReadVectorWidth"]*bpeAB == 16 else 1
@@ -3498,7 +3500,15 @@ class Solution:
         numMfmaForNextLoopLR = min(numMfmaForNextLoopLR, numMfmaPerIter - 1)
         barrierMfmaIndex = numMfmaPerIter*(state["LoopIters"]-numItersPLR+1) - numMfmaForNextLoopLR - 1 if numItersPLR else 0
         lwEndMfmaIndex = max(barrierMfmaIndex - numMfmaBetweenLWandBarrier,0) if numItersPLR else numMfmaPerIter*state["LoopIters"] - 1
-        state["LocalWritePerMfma"] = round((numLoadsA+numLoadsB-1+0.02)/max(lwEndMfmaIndex-lwStartMfmaIndex+1,1)+0.005,2)
+        temp1 = 0
+        temp2 = 1
+        writesToSched = (numLoadsA+numLoadsB-1)*100
+        loop = 0
+        while temp1 != temp2 and loop < 10:
+          loop += 1
+          temp1 = temp2
+          temp2 = roundUp((writesToSched + 2 * temp1 - writesToSched % temp1)/max(lwEndMfmaIndex-lwStartMfmaIndex+1,1))
+        state["LocalWritePerMfma"] = temp1/100
       else:
         state["LocalWritePerMfma"] = 1
 

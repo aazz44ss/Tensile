@@ -131,6 +131,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
       # number of mfma between last localWrite and barrier
       # mfma|lw|mfma|mfma|barrier, 2 mfma between last LW and barrier
       numMfmaBetweenLWandBarrier = 2 if kernel["MatrixInstM"] == 32 else 3
+      if kernel["PrefetchGlobalRead"] == 2:
+        numMfmaBetweenLWandBarrier -= 1
       self.numGlobalReadInsPerMfma = int(kernel["GlobalReadPerMfma"]*100)
       self.numLocalWriteModPerMfma = int(kernel["LocalWritePerMfma"]*100)
       ##################################
@@ -364,7 +366,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
           itemsLWToSchedTemp.append(Code.Module())
       if itemsLWToSched:
         itemsLWToSchedTemp.append(itemsLWToSched.pop(0))
-        if self.numLocalWriteModPerMfma % 100 != 0:
+        for i in range(2 * self.numLocalWriteModPerMfma - len(itemsLWToSchedTemp) % self.numLocalWriteModPerMfma):
           itemsLWToSchedTemp.append(Code.Module())
       itemsLWToSched = itemsLWToSchedTemp
       if 1:
@@ -471,7 +473,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
           imod.addCode(item)
           # schedule global instrction that need to be scheduled later
           if itemsGRToSchedLater:
-            if localwriteCnt % 100 == (self.numLocalWriteModPerMfma % 100) or localwriteCnt == writesToSched-1:
+            if localwriteCnt % 100 == (self.numLocalWriteModPerMfma % 100):
               itemGR = itemsGRToSchedLater.pop(0)
               imod.addCode(itemGR)
               readsToWait = readsToWait + itemGR.countType(Code.GlobalReadInst) # GR instruction increments vmcnt
