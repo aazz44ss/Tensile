@@ -9680,10 +9680,10 @@ class KernelWriterAssembly(KernelWriter):
         else:
           # allocate new VGPR for each element:
           addrDVgpr = kw.vgprPool.checkOutAligned(self.cfg.numVgprsPerAddr, \
-              int(ceil(self.cfg.numVgprsPerAddr)), "writeDBatch-addr for ei=%u"%(elementIdx), preventOverflow=not isOptNLL)
+              int(ceil(self.cfg.numVgprsPerAddr)), "writeDBatch-addr for ei=%u"%(elementIdx), preventOverflow=0)
           if kernel["GroupLoadStore"] and kernel["ProblemType"]["UseBeta"]:
             addrCVgpr = kw.vgprPool.checkOutAligned(self.cfg.numVgprsPerAddr, \
-                int(ceil(self.cfg.numVgprsPerAddr)), "loadCBatch-addr for ei=%u"%(elementIdx), preventOverflow=not isOptNLL)
+                int(ceil(self.cfg.numVgprsPerAddr)), "loadCBatch-addr for ei=%u"%(elementIdx), preventOverflow=0)
           else:
             addrCVgpr = addrDVgpr
 
