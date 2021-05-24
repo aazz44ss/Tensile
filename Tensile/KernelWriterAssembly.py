@@ -1003,9 +1003,9 @@ class KernelWriterAssembly(KernelWriter):
 
     if kernel["GlobalReadWarmup"]:
       if kernel["ProblemType"]["TLUA"]:
-        self.defineSgpr("pagesPerLoopA",1)
+        self.defineSgpr("PagesPerLoopA",1)
       if kernel["ProblemType"]["TLUB"]:
-        self.defineSgpr("pagesPerLoopB",1)
+        self.defineSgpr("PagesPerLoopB",1)
 
     # debug flag to allocate dummy / unused sgpr
     # useful when comparing code that adds new kernel arguments to see what
@@ -1805,8 +1805,10 @@ class KernelWriterAssembly(KernelWriter):
     self.startVgprAddressDbg = vgprIdx
     vgprIdx += numVgprAddressDbg
 
-    if kernel["GlobalReadWarmup"]:
-      self.startVgprWarmUp = vgprIdx
+    if kernel["GlobalReadWarmup"] and (kernel["ProblemType"]["TLUA"] or kernel["ProblemType"]["TLUB"]):
+      self.startVgprWarmUpData = vgprIdx
+      vgprIdx += 1
+      self.startVgprWarmUpAddress = vgprIdx
       vgprIdx += 1
 
     self.startVgprSerial = vgprIdx
@@ -2686,8 +2688,9 @@ class KernelWriterAssembly(KernelWriter):
     kStr += self.macroRegister("vgprLocalReadAddrB", \
         self.startVgprLocalReadAddressesB)
 
-    if kernel["GlobalReadWarmup"]:
-      kStr += self.macroRegister("vgprWarmUp", self.startVgprWarmUp)
+    if kernel["GlobalReadWarmup"] and (kernel["ProblemType"]["TLUA"] or kernel["ProblemType"]["TLUB"]):
+      kStr += self.macroRegister("vgprWarmUpData", self.startVgprWarmUpData)
+      kStr += self.macroRegister("vgprWarmUpAddress", self.startVgprWarmUpAddress)
 
     # Serial is always the last register in the pool so the store
     # code doesn't have to deal with fragmentation
@@ -5261,8 +5264,6 @@ class KernelWriterAssembly(KernelWriter):
     kStr += self.comment("initC: remove C-tile %u-%u from pool"%(self.startVgprValuC, self.startVgprValuC+self.numVgprValuC))
     self.vgprPool.remove(self.startVgprValuC, self.numVgprValuC, "ValuC")
     self.agprPool.remove(0, self.totalAgprs, "ValuC")
-    kStr += self.comment("initC: remove AB-tile %u-%u from pool"%(self.startVgprValuA, self.lastValuAB))
-    self.vgprPool.remove(self.startVgprValuA, self.lastValuAB - self.startVgprValuA, "ValuAB")
 
     numCVgpr = max(self.numVgprValuC, self.totalAgprs)
 
@@ -5280,6 +5281,9 @@ class KernelWriterAssembly(KernelWriter):
 
     if kernel["LdsInitCVgprs"]:
       self.vgprPool.checkIn(tmpAddr)
+
+    kStr += self.comment("initC: remove AB-tile %u-%u from pool"%(self.startVgprValuA, self.lastValuAB))
+    self.vgprPool.remove(self.startVgprValuA, self.lastValuAB - self.startVgprValuA, "ValuAB")
 
     if kernel["PersistentKernel"]:
       # Move to next serial wg early since SerialWorkGroupIter is checked in several places below including tail loop which has multiple entry points
@@ -7621,25 +7625,36 @@ class KernelWriterAssembly(KernelWriter):
       # we prefetch 1 page
       if first:
         sTemp = self.sgprPool.checkOut(1,"check for WarmUp code", preventOverflow=0)
-        imod.addInst("s_mov_b32", sgpr("pagesPerLoop%s"%tc), (kernel["DepthU"]-1)*tP["bpe"], "(DepthUxPGR-1), in Bytes")
-        imod.addInst("s_mul_i32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), sgpr("Stride%s%s"%(tc, "L")), "(DepthUxPGR-1)xStride, in Bytes")
+        imod.addInst("s_mov_b32", sgpr("PagesPerLoop%s"%tc), (kernel["DepthU"]-1)*tP["bpe"], "(DepthU-1), in Bytes")
+        imod.addInst("s_mul_i32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), sgpr("Stride%s%s"%(tc, "L")), "(DepthU-1)xStride, in Bytes")
         imod.addInst("s_mov_b32", sgpr(sTemp), kernel[tP["mt"]]*tP["bpe"], "MT, in Bytes")
-        imod.addInst("s_add_u32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), sgpr(sTemp), "(DepthUxPGR-1)xStride+MT")
-        imod.addInst("s_sub_u32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), tP["bpe"], "elementPerLoop - 1")
-        imod.addInst("s_lshr_b32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), log2(bytePerPage), "pages = ((elements-1) x bpe) % 2MB")
-        imod.addInst("s_add_u32", sgpr("pagesPerLoop%s"%tc), sgpr("pagesPerLoop%s"%tc), 2, "add extra 1 prefetch page, 1 for comparing")
-        # imod.addInst("s_mov_b32", sgpr("pagesPerLoop%s"%tc), 0, "debug use")
+        imod.addInst("s_add_u32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), sgpr(sTemp), "(DepthU-1)xStride+MT, in Bytes")
+        imod.addInst("s_sub_u32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), tP["bpe"], "elementPerLoop - 1, in Bytes")
+        imod.addInst("s_lshr_b32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), log2(bytePerPage), "pages = ((elements-1) x bpe) % 2MB")
+        imod.addInst("s_add_u32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), 1, "add extra 1 prefetch page")
+        if kernel["ProblemType"]["TLUA"] and tc == "A":
+          imod.addInst("v_mov_b32", vgpr("WarmUpAddress"), 0, "initial to 0")
+        if not kernel["ProblemType"]["TLUA"] and tc == "B":
+          imod.addInst("v_mov_b32", vgpr("WarmUpAddress"), 0, "initial to 0")
         self.sgprPool.checkIn(sTemp)
 
-      imod.addInst("v_lshlrev_b32", vgpr("WarmUp"), log2(bytePerPage), vgpr("Serial"), "touch 2MB per thread")
-      if not first and not self.staggerU:
+      if first:
+        vTemp = self.vgprPool.checkOut(1,"check for WarmUp code", preventOverflow=0)
+        imod.addInst("v_lshrrev_b32", vgpr(vTemp), log2(kernel["WavefrontSize"]), vgpr("Serial"), "wave_id")
+        wave_id = 0 if tc == "A" else 1
+        imod.addInst("v_cmpx_eq_u32", "vcc", vgpr(vTemp), wave_id, "wave_0 for A, wave_1 for B")
+        imod.addInst("v_and_b32", vgpr(vTemp), vgpr("Serial"), kernel["WavefrontSize"]-1, "wave_tid")
+        imod.addInst("v_cmpx_lt_u32", "vcc", vgpr(vTemp), sgpr("PagesPerLoop%s"%(tc)), "")
+        imod.addInst("v_lshlrev_b32", vgpr("WarmUpAddress"), log2(bytePerPage), vgpr(vTemp), "touch 2MB per thread")
+        imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
+        self.vgprPool.checkIn(vTemp)
+
+      if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
         imod.addInst("v_cmpx_gt_u32", "vcc", sgpr("LoopCounterL"), 2, "")
-      imod.addInst("v_cmpx_lt_u32", "vcc", vgpr("Serial"), sgpr("pagesPerLoop%s"%tc), "")
-      # imod.addInst("s_setvskip", "vccz", 0, "")
-      imod.addInst("buffer_load_dword", vgpr("WarmUp"), vgpr("WarmUp"), sgpr("Srd%s"%tc, 4), 0, \
+      imod.addInst("buffer_load_dword", vgpr("WarmUpData"), vgpr("WarmUpAddress"), sgpr("Srd%s"%tc, 4), 0, \
                     "offen offset:%d"%(self.srdShiftLeft[tc]*tP["bpe"]), "offset to add prepad for pointer shift")
-      # imod.addInst("s_setvskip", 0, 0, "")
-      imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
+      if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
+        imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
 
     return imod
 

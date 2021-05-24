@@ -192,7 +192,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
         #########
         if not kernel["1LDSBuffer"]:
           # TODO: replace here for real number of globalReadIncInst
-          numGRIncInst = 12 if not kernel["StaggerU"] else 18
+          numGRIncInst = globalReadIncACode.countType(Code.Inst) + globalReadIncBCode.countType(Code.Inst)
           numInstPerMfma = max(roundUp(self.miLatencyLeft/2),1)
           numMfmaToSched = roundUp(numGRIncInst/numInstPerMfma)
           lwStartMfmaIndex = 1 + numMfmaToSched
@@ -1549,17 +1549,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
     pflr     = self.numItersPLR
     localWriteEndIter = kernel["LoopIters"] - self.numItersPLR - 1
 
-    if isNGLL:
-      kl.append(self.comment3(" NoGlobalLoadLoop - Begin"))
-      self.perIterLocalWriteCode = self.perIterLocalWriteCodeNGLL
-      self.perIterLocalWriteCanSkip = [ 0 for i in range (kernel["LoopIters"]) ]
-      warmupA = self.globalReadIncrements.findNamedItem("globalReadIncrementA").findNamedItem("glWarmupA")
-      if warmupA:
-        self.globalReadIncrements.findNamedItem("globalReadIncrementA").items().remove(warmupA)
-      warmupB = self.globalReadIncrements.findNamedItem("globalReadIncrementB").findNamedItem("glWarmupB")
-      if warmupB:
-        self.globalReadIncrements.findNamedItem("globalReadIncrementB").items().remove(warmupB)
-    else:
+
+    if not isNGLL:
       if not isOptNLL:
         kl.append(self.comment3("Ord. NoLoadLoop - Begin"))
       else:
@@ -1614,11 +1605,25 @@ class KernelWriter(metaclass=abc.ABCMeta):
           if self.enable["Sync"]:
             kl.append(self.syncThreads(kernel, "sync for local read after write"))
 
-        if not isNGLL:
-          # PAP would have GlobalRead and GlobalInc, but no localWrite
-          # Get the perIterGlobalReadCode code for PAP (if PAP=On), else would be empty
-          self.makeSchedule(kernel, tensorParametersA, tensorParametersB, localWriteEndIter, uDu)
-          kl.append(str(self.unrollLoopHeaderCode))
+        # both NoLoadLoop or NoGlobalLoadLoop no need to warmup
+        if isNGLL and kernel["GlobalReadWarmup"] and (kernel["ProblemType"]["TLUA"] or kernel["ProblemType"]["TLUB"]):
+          self.vgprPool.add(self.startVgprWarmUpData,1)
+          warmupA = self.globalReadIncrements.findNamedItem("globalReadIncrementA").findNamedItem("glWarmupA")
+          if warmupA:
+            self.globalReadIncrements.findNamedItem("globalReadIncrementA").items().remove(warmupA)
+          warmupB = self.globalReadIncrements.findNamedItem("globalReadIncrementB").findNamedItem("glWarmupB")
+          if warmupB:
+            self.globalReadIncrements.findNamedItem("globalReadIncrementB").items().remove(warmupB)
+          self.vgprPool.add(self.startVgprWarmUpAddress,1)
+        # PAP would have GlobalRead and GlobalInc, but no localWrite
+        # Get the perIterGlobalReadCode code for PAP (if PAP=On), else would be empty
+        self.makeSchedule(kernel, tensorParametersA, tensorParametersB, localWriteEndIter, uDu)
+        kl.append(str(self.unrollLoopHeaderCode))
+
+        if isNGLL:
+          kl.append(self.comment3(" NoGlobalLoadLoop - Begin"))
+          self.perIterLocalWriteCode = self.perIterLocalWriteCodeNGLL
+          self.perIterLocalWriteCanSkip = [ 0 for i in range (kernel["LoopIters"]) ]
 
       # which loop iteration to reset the LRO,
       # note if PLR=0, isResetLroIter is False for all u
