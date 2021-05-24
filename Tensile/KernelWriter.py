@@ -123,6 +123,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
       self.globalReadBCode = Code.StructuredModule() # empty
 
     lastLoadIter = 0
+    PRECISION = 100
     if kernel["EnableMatrixInstruction"] and kernel["ScheduleIterAlg"] == 3:
       numMfmaPerIter = self.numMfmaPerIter
       #########
@@ -182,6 +183,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
       #########
       # strategy is to distribute LW/GR as wide as possible to avoid hitting vmem FIFO
       # LWPM = (LW_End - LW_Start) / numLW
+      PRECISION = 100
       if kernel["LocalWritePerMfma"] == -1:
         #########
         # Get localWriteStart
@@ -261,9 +263,9 @@ class KernelWriter(metaclass=abc.ABCMeta):
         numMfmaCanSched = self.lwEndMfmaIndex - lwStartMfmaIndex + 1
         numLoadsA = kernel["DepthU"]*kernel["MacroTileA"]//kernel["GlobalLoadVectorWidthA"]//kernel["NumThreads"]
         numLoadsB = kernel["DepthU"]*kernel["MacroTileB"]//kernel["GlobalLoadVectorWidthB"]//kernel["NumThreads"]
-        writesToSched = (numLoadsA + numLoadsB - 1) * 100
+        writesToSched = (numLoadsA + numLoadsB - 1) * PRECISION
         oldValue = 0
-        newValue = 100
+        newValue = PRECISION
         loop = 0
         #   1. number of padded writesToSched is (numWrites - 1) * 100 + 1
         #     LW ---99--- LW ---99--- LW
@@ -283,7 +285,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
         while oldValue != newValue and loop < 10:
           loop += 1
           oldValue = newValue
-          newValue = roundUp((writesToSched+1 + (oldValue - (writesToSched+1) % oldValue) + oldValue%100) / numMfmaCanSched)
+          newValue = roundUp((writesToSched+1 + (oldValue - (writesToSched+1) % oldValue) + oldValue%PRECISION) / numMfmaCanSched)
         numLocalWriteModPerMfma = newValue
 
       #####
@@ -295,7 +297,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
       #   Ex. GRPM = 0.5
       #        GR ---------99--------- GR --------99---------- GR
       #   mfma --49-- mfma --49-- mfma --49-- mfma --49-- mfma --49--
-      self.numGlobalReadInsPerMfma = roundUp(kernel["GlobalReadPerMfma"]*100)
+      self.numGlobalReadInsPerMfma = roundUp(kernel["GlobalReadPerMfma"]*PRECISION)
       # if kernel["GlobalReadPerMfma"] == -2:
       #   self.numGlobalReadInsPerMfma = 200 if kernel["MatrixInstM"] == 32 and not kernel["ProblemType"]["TLUA"] and not kernel["ProblemType"]["TLUB"] and kernel["TransposeLDS"] and not kernel["1LDSBuffer"] else 100
 
@@ -307,11 +309,11 @@ class KernelWriter(metaclass=abc.ABCMeta):
       #   mfma --49-- mfma --49-- mfma --49-- mfma --49-- mfma --49--
       if kernel["LocalWritePerMfma"] == -1:
         if kernel["PrefetchGlobalRead"] == 1 and kernel["1LDSBuffer"]:
-          self.numLocalWriteModPerMfma = max(numLocalWriteModPerMfma,100)
+          self.numLocalWriteModPerMfma = max(numLocalWriteModPerMfma,PRECISION)
         else:
           self.numLocalWriteModPerMfma = numLocalWriteModPerMfma
       else:
-        self.numLocalWriteModPerMfma = roundUp(kernel["LocalWritePerMfma"]*100)
+        self.numLocalWriteModPerMfma = roundUp(kernel["LocalWritePerMfma"]*PRECISION)
       # if kernel["LocalWritePerMfma"] == -2:
       #   readsLatencyA = self.numReadsPerIterA/numMfmaPerIter if self.numReadsIterCoalescedA == 1 else 0
       #   readsLatencyB = self.numReadsPerIterB/numMfmaPerIter if self.numReadsIterCoalescedB == 1 else 0
@@ -331,7 +333,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
       # last globalread will be scheduled at lwEndMfmaIndex,
       # and last localwrite will be scheduled at lwEndMfmaIndex - 1
       # so we offset lwEndMfmaIndex by 1 mfma
-      if kernel["PrefetchGlobalRead"] == 2 and self.numLocalWriteModPerMfma % 100 != 0:
+      if kernel["PrefetchGlobalRead"] == 2 and self.numLocalWriteModPerMfma % PRECISION != 0:
         numMfmaBetweenLWandBarrier -= 1
       self.lwEndMfmaIndex = max(self.barrierMfmaIndex - numMfmaBetweenLWandBarrier,0) if self.numItersPLR else numMfmaPerIter*kernel["LoopIters"] - 1
 
@@ -343,8 +345,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
       assert localWriteEndIter < kernel["LoopIters"]
       assert self.lwEndMfmaIndex < numMfmaPerIter*kernel["LoopIters"]
     else:
-      numGlobalReadInsPerIter = roundUp(kernel["GlobalReadPerMfma"] * 100) if kernel["GlobalReadPerMfma"] > 0 else 100
-      numLocalWriteModPerIter = roundUp(kernel["LocalWritePerMfma"] * 100) if kernel["LocalWritePerMfma"] > 0 else 100
+      numGlobalReadInsPerIter = roundUp(kernel["GlobalReadPerMfma"] * PRECISION) if kernel["GlobalReadPerMfma"] > 0 else PRECISION
+      numLocalWriteModPerIter = roundUp(kernel["LocalWritePerMfma"] * PRECISION) if kernel["LocalWritePerMfma"] > 0 else PRECISION
       numEmptyGlobalReadIncCode = numGlobalReadInsPerIter - 1
 
     numLocalWritesPerSched = numLocalWriteModPerIter if kernel["ScheduleIterAlg"] != 3 else self.numLocalWriteModPerMfma
@@ -378,7 +380,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
       itemsGRToSchedTemp = []
       for i in range(len(itemsGRToSched)):
         itemsGRToSchedTemp.append(itemsGRToSched.pop(0))
-        for j in range(99):
+        for j in range(PRECISION-1):
           itemsGRToSchedTemp.append(Code.Module())
       itemsGRToSched = itemsGRToSchedTemp
 
@@ -523,11 +525,11 @@ class KernelWriter(metaclass=abc.ABCMeta):
       itemsLWToSchedTemp = []
       for i in range(len(itemsLWToSched)-1):
         itemsLWToSchedTemp.append(itemsLWToSched.pop(0))
-        for j in range(99):
+        for j in range(PRECISION-1):
           itemsLWToSchedTemp.append(Code.Module())
       if itemsLWToSched:
         itemsLWToSchedTemp.append(itemsLWToSched.pop(0))
-        for i in range(numLocalWritesPerSched + numLocalWritesPerSched % 100 - len(itemsLWToSchedTemp) % numLocalWritesPerSched):
+        for i in range(numLocalWritesPerSched + numLocalWritesPerSched % PRECISION - len(itemsLWToSchedTemp) % numLocalWritesPerSched):
           itemsLWToSchedTemp.append(Code.Module())
       itemsLWToSched = itemsLWToSchedTemp
       # This counts the number of modules which contain a ds_write
@@ -601,7 +603,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
           imod.addCode(item)
           # schedule global instrction that need to be scheduled later
           if itemsGRToSchedLater:
-            if localwriteCnt % 100 == (numLocalWritesPerSched % 100):
+            if localwriteCnt % PRECISION == (numLocalWritesPerSched % PRECISION):
               itemGR = itemsGRToSchedLater.pop(0)
               imod.addCode(itemGR)
               readsToWait = readsToWait + itemGR.countType(Code.GlobalReadInst) # GR instruction increments vmcnt
