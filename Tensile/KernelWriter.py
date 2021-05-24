@@ -190,7 +190,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
         #########
         if not kernel["1LDSBuffer"]:
           # TODO: replace here for real number of globalReadIncInst
-          numGRIncInst = 12 if not kernel["StaggerU"] else 18
+          numGRIncInst = globalReadIncACode.countType(Code.Inst) + globalReadIncBCode.countType(Code.Inst)
           numInstPerMfma = max(roundUp(self.miLatencyLeft/2),1)
           numMfmaToSched = roundUp(numGRIncInst/numInstPerMfma)
           lwStartMfmaIndex = 1 + numMfmaToSched
@@ -385,6 +385,8 @@ class KernelWriter(metaclass=abc.ABCMeta):
             itemsGRIncToSched.append(imod)
         numInst = globalReadIncACode.countType(Code.Inst) + globalReadIncBCode.countType(Code.Inst)
         numInstPerMfma = max(roundUp(self.miLatencyLeft/2),1)
+        if kernel["GlobalReadWarmup"] and not kernel["StaggerU"]:
+          numInstPerMfma += 1
         numMfmaToSched = roundUp(numInst/numInstPerMfma)
         globalReadIncItems = globalReadIncACode.flatitems() + globalReadIncBCode.flatitems()
         for j in range(numMfmaToSched):
