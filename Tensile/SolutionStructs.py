@@ -2707,8 +2707,8 @@ class Solution:
       and state["ProblemType"]["DataType"].isHalf():
 
       # Vector-width must be at least 2 for Half (since unroll loop uses packed operations?)
-      if state["VectorWidth"] < 2:
-        reject(state, "VectorWidth must be >= 2 for half")
+      # if state["VectorWidth"] < 2:
+      #   reject(state, "VectorWidth must be >= 2 for half")
       if globalParameters["ArchCaps"][globalParameters["CurrentISA"]]["HasEccHalf"]:
         if not state["ProblemType"]["HighPrecisionAccumulate"] and state["AssertFree0ElementMultiple"] % 2 != 0:
           # beta-on-edge has AF0EM requirement except for HPA kernels
@@ -2819,8 +2819,8 @@ class Solution:
     if state["ProblemType"]["DataType"].isHalf() and \
       state["KernelLanguage"] == "Assembly":
 
-      if state["VectorWidth"] < 2:
-        reject(state, "Assembly half requires VectorWidth >= 2")
+      # if state["VectorWidth"] < 2:
+      #   reject(state, "Assembly half requires VectorWidth >= 2")
 
       if state["GlobalSplitU"] > 1 and (not state["_GlobalAccumulation"]):
         if state["VectorAtomicWidth"] < 2:
