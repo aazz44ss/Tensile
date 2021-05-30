@@ -2667,8 +2667,17 @@ class Solution:
     if state["VectorWidth"] < 1:
       if state["EnableMatrixInstruction"]:
         regPerElem = state["ProblemType"]["DataType"].numRegisters()
-        # half: regPE=0.5, vw=2 / int8: regPE=0.25, vw=4
-        state["VectorWidth"] = int(1//regPerElem) if (regPerElem < 1) else 1
+        if state["SourceSwap"]:
+          optVW = int(4 // regPerElem)
+          while 1:
+            if state["MIWaveTile"][0] % optVW == 0:
+              state["VectorWidth"] = optVW
+              break
+            else:
+              optVW //= 2
+        else:
+          # half: regPE=0.5, vw=2 / int8: regPE=0.25, vw=4
+          state["VectorWidth"] = int(1//regPerElem) if (regPerElem < 1) else 1
       else:
         state["VectorWidth"] = int(4 / state["ProblemType"]["DataType"].numRegisters())
         while state["ThreadTile0"] % state["VectorWidth"] != 0 \
@@ -3251,7 +3260,7 @@ class Solution:
 
 
     if state["1LDSBuffer"] == -1:
-      if ldsNumElementsAB * state["ProblemType"]["DataType"].numBytes() > globalParameters["MaxLDS"]:
+      if ldsNumElementsAB * state["ProblemType"]["DataType"].numBytes() > globalParameters["MaxLDS"]//4:
         state["1LDSBuffer"] = 1
       else:
         state["1LDSBuffer"] = 0
