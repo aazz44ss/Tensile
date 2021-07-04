@@ -10819,6 +10819,9 @@ class KernelWriterAssembly(KernelWriter):
       if kernel["NonTemporalC"]//2==1:
         ntStr += " slc"
 
+      if kernel["StoreCoherent"]:
+        ntStr += "glc slc"
+
       bps = self.bpeCexternal * ss.cfg.gwvw
       rpv = self.bpeCexternal * ss.cfg.gwvw / self.bpr
 
@@ -10994,13 +10997,17 @@ class KernelWriterAssembly(KernelWriter):
       addr0 = vgpr(addr,2)
       addr1 = ""
 
+    extraStr = ""
+    if kernel["StoreCoherent"]:
+      extraStr += "glc slc"
+
     if ss.optSrdIncForRow and addrCalc.rowInc:
       kStr += addrCalc.incrementToNextRow(kernel, "C", ss, tmpS01)
 
     if kernel["ProblemType"]["DestDataType"].isHalf():
       kStr += self.chooseGlobalRead(useBuffer, bps, data, \
                 addr0, addr1, soffset=0, offset=addrCalc.globalOffset, \
-                extraFields="", hi16=vc0 % 2,
+                extraFields=extraStr, hi16=vc0 % 2,
                 comment="load C for beta calc").toStr()
     elif kernel["ProblemType"]["DestDataType"].isBFloat16() or \
          kernel["ProblemType"]["DestDataType"].isInt32() or \
@@ -11010,7 +11017,7 @@ class KernelWriterAssembly(KernelWriter):
          kernel["ProblemType"]["DestDataType"].isDoubleComplex():
       kStr += self.chooseGlobalRead(useBuffer, bps, data, \
                 addr0, addr1, soffset=0, offset=addrCalc.globalOffset, \
-                extraFields="", \
+                extraFields=extraStr, \
                 comment="load C for beta calc").toStr()
 
     return kStr

@@ -893,6 +893,8 @@ validParameters = {
     # Only support for kernel whose totalVgpr counts less than 256 and gcn that has control bit ACC_CD.
     "MIArchVgpr":               [False, True],
 
+    "StoreCoherent": [0,1],
+
     # Disable overlapping AB-tile vgpr and read/write addr vgprs with C-tile vgprs
     # Valid only for MatrixInstruction enabled kernels, which by default overlaps
     # C-tile w/ AB-tile until it's due for v_accvgpr_read before the writeback. Illustrated below:
@@ -1289,6 +1291,7 @@ defaultBenchmarkCommonParameters = [
     {"StoreSyncOpt":              [ 0 ] },
     {"GroupLoadStore":            [ False ] },
     {"MIArchVgpr":                [ False ] },
+    {"StoreCoherent":             [ False ] },
     ]
 # benchmark these solution independently
 defaultForkParameters = []
