@@ -93,12 +93,17 @@ class MatchingLibrary:
     def FromOriginalState(cls, d, solutions):
         indices = d[0]
         origTable = d[1]
+        indices = [0,1,2,3,4,5,6,7]
 
         propertyKeys = {
-                2:lambda: Properties.Property('FreeSizeA', index=0),
-                3:lambda: Properties.Property('FreeSizeB', index=0),
-                #0:lambda: Properties.Property('BatchSize', index=0),
-                1:lambda: Properties.Property('BoundSize', index=0)
+                0:lambda: Properties.Property('FreeSizeA', index=0),
+                1:lambda: Properties.Property('FreeSizeB', index=0),
+                2:lambda: Properties.Property('BatchSize', index=0),
+                3:lambda: Properties.Property('BoundSize', index=0),
+                4:lambda: Properties.Property('DStride', index=1),
+                5:lambda: Properties.Property('CStride', index=1),
+                6:lambda: Properties.Property('AStride', index=1),
+                7:lambda: Properties.Property('BStride', index=1)
             }
 
         properties = list([propertyKeys[i]() for i in indices if i in propertyKeys])

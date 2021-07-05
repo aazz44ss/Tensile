@@ -566,7 +566,10 @@ def problemSizeParams(problemType, problem):
             "Invalid number of problem type indices: {0} - Indices: {1}, problemSize: {2}".format(len(problem.sizes), numIndices,
             ', '.join(map(str, problem.sizes))))
 
-    problemSizeArg = ('problem-size', ','.join(map(str, problem.sizes[:numIndices])))
+    if len(problem.sizes) == numIndices+4:
+      problemSizeArg = ('problem-size', ','.join(map(str, problem.sizes[:numIndices+4])))
+    else:
+      problemSizeArg = ('problem-size', ','.join(map(str, problem.sizes[:numIndices])))
     rv.insert(0, problemSizeArg)
 
     rv.append(('a-strides', ",".join(map(str, astrides))))
