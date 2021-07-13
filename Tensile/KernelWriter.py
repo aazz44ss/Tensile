@@ -602,9 +602,7 @@ class KernelWriter(metaclass=abc.ABCMeta):
           (kernel["PrefetchGlobalRead"] == 2 or \
           (kernel["ScheduleIterAlg"] == 3 and kernel["PrefetchGlobalRead"] == 1 and self.lwStartMfmaIndex - self.grEndMfmaIndex > 1) or \
           (kernel["ScheduleIterAlg"] == 2 and kernel["PrefetchGlobalRead"] == 1)):
-        if kernel["ProblemType"]["TLUA"]:
-          readsToWait += 1
-        if kernel["ProblemType"]["TLUB"]:
+        if kernel["ProblemType"]["TLUA"] or kernel["ProblemType"]["TLUB"]:
           readsToWait += 1
 
       for u in range(startIter, localWriteEndIter+1):

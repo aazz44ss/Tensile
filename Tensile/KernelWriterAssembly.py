@@ -1001,11 +1001,10 @@ class KernelWriterAssembly(KernelWriter):
       numberOfSgpr = self.numGlobalReadOffsetsB if needFirstSgprOffset else (self.numGlobalReadOffsetsB-1)
       self.defineSgpr("ScalarGlobalReadOffsetB", numberOfSgpr)
 
-    if kernel["GlobalReadWarmup"]:
-      if kernel["ProblemType"]["TLUA"]:
-        self.defineSgpr("PagesPerLoopA",1)
-      if kernel["ProblemType"]["TLUB"]:
-        self.defineSgpr("PagesPerLoopB",1)
+    if kernel["GlobalReadWarmup"] and (kernel["ProblemType"]["TLUA"] or kernel["ProblemType"]["TLUB"]):
+      self.defineSgpr("PagesPerLoop",1)
+      if (kernel["ProblemType"]["TLUA"] and kernel["ProblemType"]["TLUB"]):
+        self.defineSgpr("SrdWarm", 4, 4)
 
     # debug flag to allocate dummy / unused sgpr
     # useful when comparing code that adds new kernel arguments to see what
@@ -7625,36 +7624,57 @@ class KernelWriterAssembly(KernelWriter):
       # we prefetch 1 page
       if first:
         sTemp = self.sgprPool.checkOut(1,"check for WarmUp code", preventOverflow=0)
-        imod.addInst("s_mov_b32", sgpr("PagesPerLoop%s"%tc), (kernel["DepthU"]-1)*tP["bpe"], "(DepthU-1), in Bytes")
-        imod.addInst("s_mul_i32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), sgpr("Stride%s%s"%(tc, "L")), "(DepthU-1)xStride, in Bytes")
+        imod.addInst("s_mov_b32", sgpr("PagesPerLoop"), (kernel["DepthU"]-1)*tP["bpe"], "(DepthU-1), in Bytes")
+        imod.addInst("s_mul_i32", sgpr("PagesPerLoop"), sgpr("PagesPerLoop"), sgpr("Stride%s%s"%(tc, "L")), "(DepthU-1)xStride, in Bytes")
         imod.addInst("s_mov_b32", sgpr(sTemp), kernel[tP["mt"]]*tP["bpe"], "MT, in Bytes")
-        imod.addInst("s_add_u32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), sgpr(sTemp), "(DepthU-1)xStride+MT, in Bytes")
-        imod.addInst("s_sub_u32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), tP["bpe"], "elementPerLoop - 1, in Bytes")
-        imod.addInst("s_lshr_b32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), log2(bytePerPage), "pages = ((elements-1) x bpe) % 2MB")
-        imod.addInst("s_add_u32", sgpr("PagesPerLoop%s"%tc), sgpr("PagesPerLoop%s"%tc), 1, "add extra 1 prefetch page")
-        if kernel["ProblemType"]["TLUA"] and tc == "A":
-          imod.addInst("v_mov_b32", vgpr("WarmUpAddress"), 0, "initial to 0")
-        if not kernel["ProblemType"]["TLUA"] and tc == "B":
+        imod.addInst("s_add_u32", sgpr("PagesPerLoop"), sgpr("PagesPerLoop"), sgpr(sTemp), "(DepthU-1)xStride+MT, in Bytes")
+        imod.addInst("s_sub_u32", sgpr("PagesPerLoop"), sgpr("PagesPerLoop"), tP["bpe"], "elementPerLoop - 1, in Bytes")
+        imod.addInst("s_lshr_b32", sgpr("PagesPerLoop"), sgpr("PagesPerLoop"), log2(bytePerPage), "pages = ((elements-1) x bpe) % 2MB")
+        imod.addInst("s_add_u32", sgpr("PagesPerLoop"), sgpr("PagesPerLoop"), 1, "add extra 1 prefetch page")
+        if kernel["ProblemType"]["TLUA"]:
+          if tc == "A":
+            imod.addInst("v_mov_b32", vgpr("WarmUpAddress"), 0, "initial to 0")
+        else:
           imod.addInst("v_mov_b32", vgpr("WarmUpAddress"), 0, "initial to 0")
         self.sgprPool.checkIn(sTemp)
 
       if first:
         vTemp = self.vgprPool.checkOut(1,"check for WarmUp code", preventOverflow=0)
-        imod.addInst("v_lshrrev_b32", vgpr(vTemp), log2(kernel["WavefrontSize"]), vgpr("Serial"), "wave_id")
+        imod.addInst("v_lshrrev_b32", vgpr(vTemp), log2(kernel["WavefrontSize"]), vgpr("Serial"), "get wave_id")
         wave_id = 0 if tc == "A" else 1
         imod.addInst("v_cmpx_eq_u32", "vcc", vgpr(vTemp), wave_id, "wave_0 for A, wave_1 for B")
-        imod.addInst("v_and_b32", vgpr(vTemp), vgpr("Serial"), kernel["WavefrontSize"]-1, "wave_tid")
-        imod.addInst("v_cmpx_lt_u32", "vcc", vgpr(vTemp), sgpr("PagesPerLoop%s"%(tc)), "")
+        imod.addInst("v_and_b32", vgpr(vTemp), vgpr("Serial"), kernel["WavefrontSize"]-1, "get wave_tid")
+        imod.addInst("v_cmpx_lt_u32", "vcc", vgpr(vTemp), sgpr("PagesPerLoop"), "each wave_tid touch 1 page")
         imod.addInst("v_lshlrev_b32", vgpr("WarmUpAddress"), log2(bytePerPage), vgpr(vTemp), "touch 2MB per thread")
+        imod.addInst("v_lshlrev_b32", vgpr(vTemp), 8, vgpr(vTemp), "offset 256 byte to avoid channel conflict")
+        imod.addInst("v_sub_u32", vgpr("WarmUpAddress"), vgpr("WarmUpAddress"), vgpr(vTemp), "offset 256 byte to avoid channel conflict")
         imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
         self.vgprPool.checkIn(vTemp)
 
-      if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
-        imod.addInst("v_cmpx_gt_u32", "vcc", sgpr("LoopCounterL"), 2, "")
-      imod.addInst("buffer_load_dword", vgpr("WarmUpData"), vgpr("WarmUpAddress"), sgpr("Srd%s"%tc, 4), 0, \
-                    "offen offset:%d"%(self.srdShiftLeft[tc]*tP["bpe"]), "offset to add prepad for pointer shift")
-      if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
-        imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
+      # if both A and B need warmup, integrate warmA and warmB to single instruction
+      if (kernel["ProblemType"]["TLUA"] and kernel["ProblemType"]["TLUB"]):
+        if tc == "B":
+          if not first:
+            imod.addInst("s_setprio 3","")
+          imod.addInst("v_cmp_gt_u32", "vcc", vgpr("Serial"), 63, "set address: wave_0 for A, wave_123 for B")
+          imod.addInst("s_mov_b32", "scc", "vccz", "set address: wave_0 for A, wave_123 for B")
+          imod.addInst("s_cselect_b64", sgpr("SrdWarm",2), sgpr("SrdA",2), sgpr("SrdB",2), "set address: wave_0 for A, wave_123 for B")
+          imod.addInst("s_cselect_b64", sgpr("SrdWarm+2",2), sgpr("SrdA+2",2), sgpr("SrdB+2",2), "set address: wave_0 for A, wave_123 for B")
+          if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
+            imod.addInst("v_cmpx_gt_u32", "vcc", sgpr("LoopCounterL"), 2, "")
+          imod.addInst("buffer_load_dword", vgpr("WarmUpData"), vgpr("WarmUpAddress"), sgpr("SrdWarm", 4), 0, \
+                        "offen offset:%d"%(self.srdShiftLeft[tc]*tP["bpe"]), "offset to add prepad for pointer shift")
+          if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
+            imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
+      else:
+        if not first and tc == "A":
+          imod.addInst("s_setprio 3","")
+        if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
+          imod.addInst("v_cmpx_gt_u32", "vcc", sgpr("LoopCounterL"), 2, "")
+        imod.addInst("buffer_load_dword", vgpr("WarmUpData"), vgpr("WarmUpAddress"), sgpr("Srd%s"%(tc), 4), 0, \
+                      "offen offset:%d"%(self.srdShiftLeft[tc]*tP["bpe"]), "offset to add prepad for pointer shift")
+        if not first and not self.staggerU and kernel["PrefetchGlobalRead"] == 1:
+          imod.addInst("s_mov_b64", "exec", "0xffffffffffffffff", "")
 
     return imod
 
